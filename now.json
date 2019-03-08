@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "glitched-news",
+  "alias": [ "glitched.news" ],
+  "builds": [
+    { "src": "www/package.json", "use": "@now/next" },
+    { "src": "api/*/*.js", "use": "@now/node", "config": { "maxLambdaSize": "50mb" } },
+    { "src": "api/*/*/*.js", "use": "@now/node", "config": { "maxLambdaSize": "50mb" } }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1/index.js" },
+    { "src": "/(.*)", "dest": "/www/$1" }
+  ]
+}

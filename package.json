@@ -1,0 +1,19 @@
+{
+  "name": "glitched-news",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "npm-run-all -p -r dev-api dev-www",
+    "dev-api": "npx now-lambda --port 3001",
+    "dev-www": "cd www && npx next",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd api && npm i && cd ../www && npm i "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "now-lambda-runner": "^3.3.0",
+    "npm-run-all": "^4.1.5"
+  }
+}
