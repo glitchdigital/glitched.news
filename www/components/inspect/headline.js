@@ -5,8 +5,7 @@ export default class extends React.Component {
     const { content } = this.props
     return (
       <Fragment>
-        <hr/>
-        <h1 style={{fontWeight: 600}}>
+        <h1 style={{fontWeight: 600, fontSize: 24}}>
           <a target="_blank" href={content.url}>{content.title}</a>
         </h1>
         { content.image && <a target="_blank" href={content.url}><img src={content.image}/></a> }

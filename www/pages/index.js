@@ -70,10 +70,11 @@ export default class extends React.Component {
 
   async onSubmit(e) {
     if (e) e.preventDefault()
-    let url = document.getElementById('url').value
-    
-    if (!url)
+
+    if (!document.getElementById('url') || !document.getElementById('url').value)
       return
+
+    let url = document.getElementById('url').value
 
     // Add protocol to URL if none specified
     if (!url.includes('//')) {
@@ -177,21 +178,22 @@ export default class extends React.Component {
     return (
       <Page>
         <form onSubmit={this.onSubmit}>
-          <br/>
-          <label htmlFor="url">News article URL:</label>
-          <input id="url" name="url" type="text" defaultValue={articleUrl} />
-          <br/>
-          <p>
-            <button type="submit">Check Article</button>
-          </p>
-          <p>
-            <small>A prototype research tool for journalists. Currently only targets analysis of English language articles.</small>
-          </p>
+          <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 20, marginBottom: 10}}>
+            <div style={{display: 'inline-block', width: '100%', marginBottom: 10}}>
+              <label style={{fontWeight: 600, textAlign: 'center', paddingLeft: 20}} htmlFor="url">Enter a news article URL to analyze</label>
+              <input placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50}} id="url" name="url" type="text" defaultValue={articleUrl} />
+            </div>
+            <p style={{marginBottom: 0, paddingLeft: 20}}>
+              <small>A prototype research tool to demonstrate how metadata and automated analysis can be combined.</small>
+            </p>
+            <p style={{paddingLeft: 20}}>
+              <small>This example only targets English language articles for now.</small>
+            </p>
+          </div>
         </form>
         { !articleUrl && trending && <Trending trending={trending} /> }
         { progress > 0 && progress < total && (
           <Fragment>
-            <br/>
             { progress < total && (
               <progress value={progress} max={total} style={{width: '100%'}} />
             )}

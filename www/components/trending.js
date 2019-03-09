@@ -5,16 +5,13 @@ export default class extends React.Component {
     const { trending } = this.props
     return (
       <Fragment>
-        <hr/>
-        <h2>Example articles</h2>
-        <p>Breaking news articles from <strong>Google News</strong></p>
-        <ul>
+        <h4>Example articles</h4>
+        <p>Recent news articles from <strong>Google News</strong></p>
         {trending.articles.map(article => (
-          <li key={article.url}>
+          <p key={article.url} style={{marginBottom: 0}}>
             <a href={`/?url=${article.url}`}>{article.title}</a> <small> – {article.domain}</small>
-          </li>
+          </p>
         ))}
-        </ul>
       </Fragment>
     )
   }
