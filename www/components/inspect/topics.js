@@ -16,11 +16,11 @@ export default class extends React.Component {
             <li>
               <p>
                 <strong>{topic.name}</strong> {topic.count && (<Fragment> – <strong>{topic.count}</strong> possible references</Fragment>)}
-              {topic.url && (
-                <Fragment>
-                  {' '}<br/><a target="_blank" href={topic.url}>⧉ Read about {topic.name} on Wikipedia</a>
-                </Fragment>
-              )}
+                {topic.url && (
+                  <Fragment>
+                    {' '}<br/><a target="_blank" href={topic.url}>⧉ Read about {topic.name} on Wikipedia</a>
+                  </Fragment>
+                )}
               </p>
               {/*
               {topic.description && (
@@ -43,7 +43,16 @@ export default class extends React.Component {
         <ul>
         {topics.keywords.map(keyword => (
           <Fragment>
-            <li><strong>{keyword.name}</strong> {keyword.count && (<Fragment>mentioned <strong>{keyword.count}</strong> times</Fragment>)}</li>
+            <li>
+              <p>
+                <strong>{keyword.name}</strong> {keyword.count && (<Fragment>mentioned <strong>{keyword.count}</strong> times</Fragment>)}
+                {keyword.url && (
+                  <Fragment>
+                    {' '}<br/><a target="_blank" href={keyword.url}>⧉ Read about {keyword.name} on Wikipedia</a>
+                  </Fragment>
+                )}
+              </p>
+            </li>
           </Fragment>
         ))}
         </ul>

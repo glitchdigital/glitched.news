@@ -10,6 +10,7 @@ const mostCommon = require('most-common')
 
 const fetchOptions = require('../content/fetch-options')
 
+// @FIXME This contains a lot of English language specific logic!
 module.exports = async (req, res) => {
   const query = microQuery(req)
 
@@ -27,7 +28,7 @@ module.exports = async (req, res) => {
     structuredData.description,
     structuredData.tags,
     structuredData.text,
-  ].join(' ').replace(/[^A-z0-9\- ]/mg, '')
+  ].join(' ').replace(/[^A-z0-9\-' ]/mg, '')
 
   const wordOccurances = mostCommon(words.split(' '))
   let keywords = []
@@ -55,7 +56,7 @@ module.exports = async (req, res) => {
       if (name.split(' ').length == 2 && name.match(/^(mr|ms|mrs|dr) /i))
         return
 
-      const matches = words.match(new RegExp(name.replace(/[^A-z0-9\- ]/, ''), 'img'))
+      const matches = words.match(new RegExp(name.replace(/[^A-z0-9\-' ]/, ''), 'img'))
       if (matches && matches[0]) {
         name = matches[0]
       }
@@ -104,7 +105,7 @@ module.exports = async (req, res) => {
           let description = (wikipediaData[0]) ? wikipediaData[0].description : null
           let url = (wikipediaData[0]) ? wikipediaData[0].url : null
 
-          const matches = words.match(new RegExp(name.replace(/[^A-z0-9\- ]/, ''), 'img'))
+          const matches = words.match(new RegExp(name.replace(/[^A-z0-9\-' ]/, ''), 'img'))
           if (matches && matches[0]) {
             name = matches[0]
           }
@@ -171,6 +172,18 @@ module.exports = async (req, res) => {
     return (keywordMatchesATopicName) ? false : keyword
   })
   */
+
+  let keywordsWithUrls = []
+  //keywords.forEach(async (keyword,i) => {
+  for (let i in keywords) {
+    const keyword = keywords[i]
+    const wikipediaData = await getWikipediaEntities([keyword.name])
+    if (wikipediaData[0]) {
+      keyword.url = `http://en.wikipedia.org/wiki/${keyword.name.replace(/ /g, '_')}`
+    }
+    keywordsWithUrls.push(keyword)
+  }
+  keywords = keywordsWithUrls
   
   const response = {
     url: query.url,
