@@ -74,36 +74,10 @@ module.exports = async (req, res) => {
     indicators.negative.push({text: `Unable to clearly identify main text of article`})
   }
 
-  const sentences = tokenizer.sentences(structuredData.text) || []
-  const sentencesWithQuotes = structuredData.text.replace(/[“”]/g, '"').replace(/ "/g, "\n").split("\n")
-
-  let quotes = []
-  const rawQuotes = structuredData.text.replace(/[“”]/g, '"').replace(/[”]/g, '".').match(/(["])(\\?.)*?\1/gm) || []
-
-  rawQuotes.forEach(quote => {
-    const trimmedQuote = quote.replace(/( )*"( )*/, '"')
-    if (trimmedQuote.length > 15) {
-      quotes.push(trimmedQuote)
-    }
-  })
-
-  let sentencesWithNumbers = []
-
-  sentences.forEach(sentence => {
-    if (sentence.match(/[0-9]/)) {
-      sentencesWithNumbers.push(sentence)
-    }
-  })
-
-  sentencesWithQuotes.forEach(sentence => {
-    if (sentence) {
-      parser.parse(sentence, 'en', { minLength: 10 } ).forEach(quote => {
-        quotes.push(quote.text)
-      })
-    }
-  }) 
-  
+  // Parse for Quotes
+  const quotes = getQuotes(structuredData.text || '')
   let quotesWithNumbers = []
+
   quotes.forEach(quote => {
     if (quote.match(/[0-9]/))
       quotesWithNumbers.push(quote)
@@ -115,6 +89,16 @@ module.exports = async (req, res) => {
     indicators.negative.push({ text: `No quotes cited in article` })
   }
 
+  // Parse for Sentences
+  const sentences = tokenizer.sentences(structuredData.text) || []
+  let sentencesWithNumbers = []
+
+  sentences.forEach(sentence => {
+    if (sentence.match(/[0-9]/)) {
+      sentencesWithNumbers.push(sentence)
+    }
+  })
+  
   return send(res, 200, {
     url: query.url,
     ...structuredData,
@@ -125,6 +109,43 @@ module.exports = async (req, res) => {
   })
 
 }
+
+function getQuotes(text) {
+  let normalizedtext = text
+
+  // Normalize English quotation marks
+  normalizedtext = normalizedtext.replace(/[“”]/g, '"')
+
+  // Normalize German quotation marks
+  normalizedtext = normalizedtext.replace(/[„“]/g, '"')  
+
+  // Normalize French quotation marks
+  normalizedtext = normalizedtext.replace(/[«»]/g, '"')
+
+  const rawQuotes = normalizedtext.match(/(["])(\\?.)*?\1/gm) || []
+  let quotes = []
+  
+  rawQuotes.forEach(quote => {
+    const trimmedQuote = quote.replace(/( )*"( )*/, '"')
+    quotes.push(trimmedQuote)
+  })
+  
+  // quotes = getOnlyUniqueQuotes(quotes)
+  
+  return quotes
+}
+
+function getOnlyUniqueQuotes(quotes) {
+  let uniqueQuotes = {}
+
+  quotes.forEach(quote => {
+    const key = quote.toLowerCase()
+    uniqueQuotes[key] = quote
+  })
+
+  return Object.values(uniqueQuotes)
+}
+
 
 function truncate(str, length, ending) {
   if (length == null)
