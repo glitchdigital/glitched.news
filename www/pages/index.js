@@ -180,14 +180,11 @@ export default class extends React.Component {
         <form onSubmit={this.onSubmit}>
           <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 20, marginBottom: 10}}>
             <div style={{display: 'inline-block', width: '100%', marginBottom: 10}}>
-              <label style={{fontWeight: 600, textAlign: 'center', paddingLeft: 20}} htmlFor="url">Enter a news article URL to analyze</label>
+              <label style={{fontWeight: 600, textAlign: 'center', padding: '0 20'}} htmlFor="url">Enter a news article URL to analyze</label>
               <input placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50}} id="url" name="url" type="text" defaultValue={articleUrl} />
             </div>
-            <p style={{marginBottom: 0, paddingLeft: 20}}>
+            <p style={{marginBottom: 0}}>
               <small>A prototype research tool to demonstrate how metadata and automated analysis can be combined.</small>
-            </p>
-            <p style={{paddingLeft: 20}}>
-              <small>This example only targets English language articles for now.</small>
             </p>
           </div>
         </form>
