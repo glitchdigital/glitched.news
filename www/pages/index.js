@@ -187,6 +187,9 @@ export default class extends React.Component {
             <p style={{marginBottom: 0}}>
               <small>A prototype research tool to demonstrate how metadata and automated analysis can be combined.</small>
             </p>
+            <p style={{marginBottom: 0}}>
+              <small><a target="_blank" href="https://github.com/glitchdigital/glitched.news">Released as free software under the ISC licence</a></small>
+            </p>
           </div>
         </form>
         { !articleUrl && trending && <Trending trending={trending} /> }
