@@ -10,6 +10,7 @@ import Content from '../components/inspect/content'
 import Website from '../components/inspect/website'
 import FactChecks from '../components/inspect/factchecks'
 import Social from '../components/inspect/social'
+import Sentiment from '../components/inspect/sentiment'
 import Topics from '../components/inspect/topics'
 import Related from '../components/inspect/related'
 import Links from '../components/inspect/links'
@@ -202,6 +203,7 @@ export default class extends React.Component {
         { article.content && <Content content={article.content} /> }
         { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
         { article.social && article.social.facebook && <Social social={article.social} /> }
+        { article.content && <Sentiment content={article.content} /> }
         { article.content && article.factchecks && <FactChecks factchecks={article.factchecks} content={article.content} /> }
         { article.topics && article.topics && <Topics topics={article.topics} /> }
         { article.related && article.related && <Related related={article.related} /> }

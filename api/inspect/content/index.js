@@ -6,7 +6,7 @@ const url = require('url')
 const WAE = require('web-auto-extractor').default
 const moment = require('moment')
 const tokenizer = require('sbd')
-const parser = require('quote-parser')
+const vader = require('vader-sentiment')
 
 const fetchOptions = require('./fetch-options')
 
@@ -98,6 +98,31 @@ module.exports = async (req, res) => {
       sentencesWithNumbers.push(sentence)
     }
   })
+
+  const headlineSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(structuredData.title)
+  const textSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(structuredData.text)
+  const overallSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(`${structuredData.title} ${structuredData.description} ${structuredData.text}`)
+
+  const sentiment = {
+    headline: { 
+      positive: Math.round(headlineSentiment.pos * 100),
+      neutral:  Math.round(headlineSentiment.neu * 100),
+      negative: Math.round(headlineSentiment.neg * 100),
+      compound: Math.round(headlineSentiment.compound * 100)
+    },
+    body: {
+      positive: Math.round(textSentiment.pos * 100),
+      neutral:  Math.round(textSentiment.neu * 100),
+      negative: Math.round(textSentiment.neg * 100),
+      compound: Math.round(textSentiment.compound * 100)
+    },
+    overall: {
+      positive: Math.round(overallSentiment.pos * 100),
+      neutral:  Math.round(overallSentiment.neu * 100),
+      negative: Math.round(overallSentiment.neg * 100),
+      compound: Math.round(overallSentiment.compound * 100)
+    }
+  }
   
   return send(res, 200, {
     url: query.url,
@@ -105,6 +130,7 @@ module.exports = async (req, res) => {
     quotes,
     quotesWithNumbers,
     sentencesWithNumbers,
+    sentiment,
     indicators
   })
 
