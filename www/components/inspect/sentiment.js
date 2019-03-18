@@ -22,21 +22,21 @@ export default class extends React.Component {
           <tbody>
             <tr>
               <th>Headline</th>
-              <td style={{fontWeight: (content.sentiment.headline.positive >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.headline.positive}%</td>
-              <td style={{fontWeight: (content.sentiment.headline.neutral >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.headline.neutral}%</td>
-              <td style={{fontWeight: (content.sentiment.headline.negative >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.headline.negative}%</td>
+              <td style={{fontWeight: (content.sentiment.headline.positive >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.headline.positive}%</td>
+              <td style={{fontWeight: (content.sentiment.headline.neutral >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.headline.neutral}%</td>
+              <td style={{fontWeight: (content.sentiment.headline.negative >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.headline.negative}%</td>
             </tr>
             <tr>
               <th>Body</th>
-              <td style={{fontWeight: (content.sentiment.body.positive >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.body.positive}%</td>
-              <td style={{fontWeight: (content.sentiment.body.neutral >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.body.neutral}%</td>
-              <td style={{fontWeight: (content.sentiment.body.negative >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.body.negative}%</td>
+              <td style={{fontWeight: (content.sentiment.body.positive >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.body.positive}%</td>
+              <td style={{fontWeight: (content.sentiment.body.neutral >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.body.neutral}%</td>
+              <td style={{fontWeight: (content.sentiment.body.negative >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.body.negative}%</td>
             </tr>
             <tr>
               <th>Overall</th>
-              <td style={{fontWeight: (content.sentiment.overall.positive >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.overall.positive}%</td>
-              <td style={{fontWeight: (content.sentiment.overall.neutral >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.overall.neutral}%</td>
-              <td style={{fontWeight: (content.sentiment.overall.negative >= 25) ? 'bold' : 'neutral' }}>{content.sentiment.overall.negative}%</td>
+              <td style={{fontWeight: (content.sentiment.overall.positive >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.overall.positive}%</td>
+              <td style={{fontWeight: (content.sentiment.overall.neutral >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.overall.neutral}%</td>
+              <td style={{fontWeight: (content.sentiment.overall.negative >= 20) ? 'bold' : 'neutral' }}>{content.sentiment.overall.negative}%</td>
             </tr>
           </tbody>
         </table>
