@@ -28,6 +28,9 @@ export default class extends React.Component {
             Copyright <strong>{content.copyright}</strong>
           </li>
         ) }
+        <li>
+        <strong>{content.wordCount}</strong> words / <strong>{content.characterCount}</strong> characters
+        </li>
         </ul>
       </Fragment>
     )

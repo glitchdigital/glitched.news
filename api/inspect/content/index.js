@@ -127,11 +127,13 @@ module.exports = async (req, res) => {
   return send(res, 200, {
     url: query.url,
     ...structuredData,
+    characterCount: structuredData.text.length,
+    wordCount: structuredData.text.split(' ').length,
     quotes,
     quotesWithNumbers,
     sentencesWithNumbers,
     sentiment,
-    indicators
+    indicators,
   })
 
 }
