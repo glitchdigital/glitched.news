@@ -1,10 +1,14 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { links } = this.props
+
+    if (!links)
+      return null
+
     return (
-      <Fragment>
+      <>
         <hr/>
         <h3>Links from this article</h3>
         <p>
@@ -16,7 +20,7 @@ export default class extends React.Component {
             { link.domain && <small> – {' '}{link.domain}</small> }
           </li>
         ))}
-      </Fragment>
+      </>
     )
   }
 }

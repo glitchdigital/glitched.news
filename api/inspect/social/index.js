@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
   ])
 
   const shareData = {
-    facebook: resolved[0],
+    facebook: resolved[0] || {},
     twitter: {}
   }
 
@@ -58,6 +58,7 @@ module.exports = async (req, res) => {
   })
 }
 
+// @FIXME Facebook have changed this API; this no longer works
 async function getFacebookShareCount(url) {
   const res = await fetch(`https://graph.facebook.com/${url}`)
   const json = await res.json()

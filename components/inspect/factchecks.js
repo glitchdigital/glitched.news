@@ -1,10 +1,14 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { factchecks, content  } = this.props
+
+    if (!factchecks || !content)
+      return null
+
     return (
-      <Fragment>
+      <>
         <hr/>
         <h3>Fact checking</h3>
         <h4>Quotes and citations</h4>
@@ -17,7 +21,7 @@ export default class extends React.Component {
         ))}
         </ol>
         {factchecks['snopes'].length > 0 && (
-          <Fragment>
+          <>
             <h4>Snopes</h4>
             <p>
               Fact checks from <a target="_blank" href="https://www.snopes.com">Snopes</a> that might be related
@@ -28,10 +32,10 @@ export default class extends React.Component {
               </li>
             ))}
             <br/>
-          </Fragment>
+          </>
         )}
         {factchecks['factcheck.org'].length > 0 && (
-          <Fragment>
+          <>
             <h4>FactCheck.org</h4>
             <p>
               Fact checks from <a target="_blank" href="https://www.factcheck.org">FactCheck.org</a> that might be related
@@ -42,9 +46,9 @@ export default class extends React.Component {
               </li>
             ))}
             <br/>
-          </Fragment>
+          </>
         )}
-      </Fragment>
+      </>
     )
   }
 }

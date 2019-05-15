@@ -1,10 +1,14 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { social } = this.props
+
+    if (!social)
+     return null
+
     return (
-      <Fragment>
+      <>
         <hr/>
         <h3>Social media</h3>
         <h4>Facebook</h4>
@@ -23,7 +27,7 @@ export default class extends React.Component {
           { social.twitter.metadata && <li>Twitter metadata found on page.</li> }
           { !social.twitter.metadata && <li>No Twitter metadata found on page.</li> }
         </ul>
-      </Fragment>
+      </>
     )
   }
 }

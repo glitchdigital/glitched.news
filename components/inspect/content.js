@@ -1,10 +1,14 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { content } = this.props
+
+    if (!content)
+      return null
+
     return (
-      <Fragment>
+      <>
         <hr/>
         <h3>About article</h3>
         <ul>
@@ -28,11 +32,11 @@ export default class extends React.Component {
             Copyright <strong>{content.copyright}</strong>
           </li>
         ) }
-        <li>
-        <strong>{content.wordCount}</strong> words / <strong>{content.characterCount}</strong> characters
-        </li>
+          <li>
+          <strong>{content.wordCount}</strong> words / <strong>{content.characterCount}</strong> characters
+          </li>
         </ul>
-      </Fragment>
+      </>
     )
   }
 }

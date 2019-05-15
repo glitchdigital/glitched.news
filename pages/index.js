@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React from "react"
 import Router from 'next/router'
 import 'isomorphic-unfetch'
 
@@ -17,10 +17,7 @@ import Links from '../components/inspect/links'
 import Blacklists from '../components/inspect/blacklists'
 
 async function api({ endpoint } = {}) {
-  const server = (process.env.NODE_ENV === 'production') 
-    ? `https://${window.location.host}`
-    : 'http://localhost:3001'
-
+  const server = `${window.location.protocol}//${window.location.host}`
   const request = await fetch(`${server}${endpoint}`)
   return await request.json()
 }
@@ -182,7 +179,7 @@ export default class extends React.Component {
           <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 20, marginBottom: 10}}>
             <div style={{display: 'inline-block', width: '100%', marginBottom: 10}}>
               <label style={{fontWeight: 600, textAlign: 'center', padding: '0 20'}} htmlFor="url">Enter a news article URL to analyze</label>
-              <input placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50}} id="url" name="url" type="text" defaultValue={articleUrl} />
+              <input placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
             </div>
             <p style={{marginBottom: 0}}>
               <small>A prototype research tool to demonstrate how metadata and automated analysis can be combined.</small>
@@ -192,13 +189,13 @@ export default class extends React.Component {
             </p>
           </div>
         </form>
-        { !articleUrl && trending && <Trending trending={trending} /> }
+        { !articleUrl && trending && trending.articles && trending.articles.length > 0 && <Trending trending={trending} /> }
         { progress > 0 && progress < total && (
-          <Fragment>
+          <>
             { progress < total && (
               <progress value={progress} max={total} style={{width: '100%'}} />
             )}
-          </Fragment>
+          </>
         )}
         { article.content && <Headline content={article.content} /> }
         { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }

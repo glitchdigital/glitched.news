@@ -1,10 +1,14 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { topics } = this.props
+
+    if (!topics)
+      return null
+      
     return (
-      <Fragment>
+      <>
         <hr/>
         <h3>Topics</h3>
         <p>
@@ -12,14 +16,14 @@ export default class extends React.Component {
         </p>
         <ul>
         {topics.topics.map(topic => (
-          <Fragment>
+          <>
             <li>
               <p>
-                <strong>{topic.name}</strong> {topic.count && (<Fragment> – <strong>{topic.count}</strong> possible references</Fragment>)}
+                <strong>{topic.name}</strong> {topic.count && (<> – <strong>{topic.count}</strong> possible references</>)}
                 {topic.url && (
-                  <Fragment>
+                  <>
                     {' '}<br/><a target="_blank" href={topic.url}>⧉ Read about {topic.name} on Wikipedia</a>
-                  </Fragment>
+                  </>
                 )}
               </p>
               {/*
@@ -28,35 +32,35 @@ export default class extends React.Component {
                   <small>
                     {topic.description}
                     {topic.url && (
-                      <Fragment>
+                      <>
                         {' '} <a target="_blank" href={topic.url}>⧉ More…</a>
-                      </Fragment>
+                      </>
                     )}
                   </small>
                 </p>
               )}
               */}
             </li>
-          </Fragment>
+          </>
         ))}
         </ul>
         <ul>
         {topics.keywords.map(keyword => (
-          <Fragment>
+          <>
             <li>
               <p>
-                <strong>{keyword.name}</strong> {keyword.count && (<Fragment>mentioned <strong>{keyword.count}</strong> times</Fragment>)}
+                <strong>{keyword.name}</strong> {keyword.count && (<>mentioned <strong>{keyword.count}</strong> times</>)}
                 {keyword.url && (
-                  <Fragment>
+                  <>
                     {' '}<br/><a target="_blank" href={keyword.url}>⧉ Read about {keyword.name} on Wikipedia</a>
-                  </Fragment>
+                  </>
                 )}
               </p>
             </li>
-          </Fragment>
+          </>
         ))}
         </ul>
-      </Fragment>
+      </>
     )
   }
 }

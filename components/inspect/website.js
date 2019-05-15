@@ -1,10 +1,14 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { hosting, domain } = this.props
+
+    if (!hosting || !domain)
+      return null
+      
     return (
-      <Fragment>
+      <>
         <hr/>
         <h3>About website</h3>
         <ul>
@@ -36,7 +40,7 @@ export default class extends React.Component {
         <p>
           <small>Some websites may have hosting in more than one location.</small>
         </p>
-    </Fragment>
+    </>
     )
   }
 }

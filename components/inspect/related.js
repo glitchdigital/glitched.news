@@ -1,18 +1,21 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { related } = this.props
 
+    if (!related)
+      return null
+
     return (
-      <Fragment>
+      <>
         <hr/>
         <h3>Related articles</h3>
         <p>
           Found <strong>{related.domains.length}</strong> other sites with articles that might be related.
         </p>
         { related.articles.length > 0 && (
-          <Fragment>
+          <>
             <p>
             Found <strong>{related.articles.length}</strong> articles that might be related.
             </p>
@@ -21,9 +24,9 @@ export default class extends React.Component {
                 <a href={`/?url=${article.url}`}>{article.title}</a> <small> – {article.domain}</small>
               </li>
             ))}
-          </Fragment>
+          </>
         )}
-      </Fragment>
+      </>
     )
   }
 }

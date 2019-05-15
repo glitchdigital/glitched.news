@@ -35,22 +35,30 @@ module.exports = async (req, res) => {
     indicators.negative.push({text: "URL is not encrypted (does not use HTTPS)"})
   }
 
+  let links = []
   if (structuredData.links) {
     if (structuredData.links.length > 15) {
       indicators.negative.push({text: "Unusually high number of links in the article"})
     }
 
-    structuredData.links = structuredData.links.map(link => {
+    links = structuredData.links.map(link => {
       if (!link.href.includes('://')) {
         link.url = `${url.parse(query.url).protocol}//${url.parse(query.url).hostname}${link.href}`
       } else {
         link.url = link.href
       }
+
       link.title = truncate(link.url, 50)
       link.domain = (link.url && url.parse(link.url).host) ? url.parse(link.url).host.replace(/^www./, '') : null
-      return link
+
+      return {
+        url: link.url,
+        title: link.title,
+        domain: link.domain
+      }
     })
   }
+  links = removeDuplicateObjectsFromArray(links, 'url')
 
   if (structuredData.date) {
     const datePublished = moment.utc(structuredData.date)
@@ -127,6 +135,7 @@ module.exports = async (req, res) => {
   return send(res, 200, {
     url: query.url,
     ...structuredData,
+    links,
     characterCount: structuredData.text.length,
     wordCount: structuredData.text.split(' ').length,
     quotes,
@@ -174,6 +183,11 @@ function getOnlyUniqueQuotes(quotes) {
   return Object.values(uniqueQuotes)
 }
 
+function removeDuplicateObjectsFromArray(array, property) {
+  let uniqueItems = {}
+  array.forEach(item => { uniqueItems[item[property]] = item })
+  return Object.values(uniqueItems)
+}
 
 function truncate(str, length, ending) {
   if (length == null)

@@ -1,10 +1,14 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { content } = this.props
+
+    if (!content)
+      return null
+
     return (
-      <Fragment>
+      <>
         <h1 style={{fontWeight: 600, fontSize: 24}}>
           <a target="_blank" href={content.url}>{content.title}</a>
         </h1>
@@ -12,7 +16,7 @@ export default class extends React.Component {
         <p>
           <a target="_blank" href={content.url}>⧉ {content.url}</a>
         </p>
-      </Fragment>
+      </>
     )
   }
 }

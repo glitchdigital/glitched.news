@@ -1,10 +1,14 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 export default class extends React.Component {
   render() {
     const { content } = this.props
+    
+    if (!content)
+      return null
+      
     return (
-      <Fragment>
+      <>
         <hr/>
         <h3>Sentiment analysis</h3>
         <p>
@@ -45,7 +49,7 @@ export default class extends React.Component {
             Sentiment analysis powered by port of the VADER sentiment analysis tool
           </small>
         </p>
-      </Fragment>
+      </>
     )
   }
 }

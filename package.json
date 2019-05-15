@@ -3,17 +3,46 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "npm-run-all -p -r dev-api dev-www",
-    "dev-api": "npx now-lambda --port 3001",
-    "dev-www": "cd www && npx next",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd api && npm i && cd ../www && npm i "
+    "dev": "now dev",
+    "deploy": "now",
+    "deploy:production": "now --target production",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "compromise": "^11.13.1",
+    "csv-string": "^3.1.5",
+    "dns": "^0.2.2",
+    "effective-domain-name-parser": "0.0.3",
+    "entity-finder": "^0.5.2",
+    "geoip-lite": "^1.3.6",
+    "get-ssl-certificate": "^2.3.2",
+    "google": "^2.1.0",
+    "google-trends-api": "^4.9.0",
+    "install": "^0.12.2",
+    "isomorphic-unfetch": "^3.0.0",
+    "lighthouse": "^5.0.0",
+    "lighthouse-cli": "^0.1.2",
+    "micro": "^9.3.3",
+    "micro-query": "^0.3.0",
+    "moment": "^2.24.0",
+    "most-common": "^1.3.0",
+    "my-google-news": "^3.0.0",
+    "next": "^8.1.1-canary.28",
+    "node-fetch": "^2.3.0",
+    "npm": "^6.8.0",
+    "nprogress": "^0.2.0",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "sbd": "^1.0.14",
+    "stopwords-en": "^0.3.0",
+    "unfluff": "github:iaincollins/node-unfluff",
+    "vader-sentiment": "^1.1.3",
+    "web-auto-extractor": "^1.0.17",
+    "whois-promise": "^1.2.2"
+  },
   "devDependencies": {
-    "now-lambda-runner": "^3.3.0",
-    "npm-run-all": "^4.1.5"
+    "now": "^15.2.0"
   }
 }
