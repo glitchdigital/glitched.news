@@ -27,7 +27,7 @@ export default class extends React.Component {
               Fact checks from <a target="_blank" href="https://www.snopes.com">Snopes</a> that might be related
             </p>
             {factchecks['snopes'].slice(0,5).map((link, i) => (
-              <li key={`${link.url}`}>
+              <li key={`snopes-${link.url}`}>
                 <a target="_blank" href={link.url}>⧉ {link.title}</a>
               </li>
             ))}
@@ -41,7 +41,7 @@ export default class extends React.Component {
               Fact checks from <a target="_blank" href="https://www.factcheck.org">FactCheck.org</a> that might be related
             </p>
             {factchecks['factcheck.org'].slice(0,5).map((link, i) => (
-              <li key={`${link.url}`}>
+              <li key={`factcheck.org-${link.url}`}>
                 <a target="_blank" href={link.url}>⧉ {link.title}</a>
               </li>
             ))}

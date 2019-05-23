@@ -5,16 +5,16 @@ import 'isomorphic-unfetch'
 import Page from '../components/page'
 import Trending from '../components/trending'
 import Trust from '../components/trust'
-import Headline from '../components/inspect/headline'
-import Content from '../components/inspect/content'
-import Website from '../components/inspect/website'
-import FactChecks from '../components/inspect/factchecks'
-import Social from '../components/inspect/social'
-import Sentiment from '../components/inspect/sentiment'
-import Topics from '../components/inspect/topics'
-import Related from '../components/inspect/related'
-import Links from '../components/inspect/links'
-import Blacklists from '../components/inspect/blacklists'
+import Headline from '../components/article-metadata/headline'
+import Content from '../components/article-metadata/content'
+import Website from '../components/article-metadata/website'
+import FactChecks from '../components/article-metadata/factchecks'
+import Social from '../components/article-metadata/social'
+import Sentiment from '../components/article-metadata/sentiment'
+import Topics from '../components/article-metadata/topics'
+import Related from '../components/article-metadata/related'
+import Links from '../components/article-metadata/links'
+import Blacklists from '../components/article-metadata/blacklists'
 
 async function api({ endpoint } = {}) {
   const server = `${window.location.protocol}//${window.location.host}`
@@ -33,7 +33,8 @@ export default class extends React.Component {
     super(props)
 
     this.defaultState = {
-      article: {
+      articleUrl: null,
+      articleMetadata: {
         domain: null,
         hosting: null,
         content: null,
@@ -43,8 +44,7 @@ export default class extends React.Component {
         factchecks: null,
         blacklists: null
       },
-      trending: null,
-      articleUrl: null
+      trending: null
     }
 
     this.state = this.defaultState
@@ -80,95 +80,43 @@ export default class extends React.Component {
       document.getElementById('url').value = url
     }
 
+    // Update browser URL bar
     const href = `/?url=${url}`
     const as = href
     Router.push(href, as, { shallow: true })
 
+    // Reset article state
     let newState = this.defaultState
     newState.articleUrl = url
     this.setState(newState)
 
-    api({ endpoint: `/api/inspect/content?url=${url}` })
-    .then(content => {
-      this.setState(state => {
-        state.article.content = content
-        return state
+    // Get article metadata
+    for (let prop in this.state.articleMetadata) {
+      api({ endpoint: `/api/article-metadata/${prop}?url=${url}` })
+      .then(result => {
+        this.setState(state => {
+          state.articleMetadata[prop] = result
+          return state
+        })
       })
-    })
-
-    api({ endpoint: `/api/inspect/social?url=${url}` })
-    .then(social => {
-      this.setState(state => {
-        state.article.social = social
-        return state
-      })
-    })
-
-    api({ endpoint: `/api/inspect/topics?url=${url}` })
-    .then(topics => {
-      this.setState(state => {
-        state.article.topics = topics
-        return state
-      })
-    })
-
-    api({ endpoint: `/api/inspect/related?url=${url}` })
-    .then(related => {
-      this.setState(state => {
-        state.article.related = related
-        return state
-      })
-    })
-
-    api({ endpoint: `/api/inspect/hosting?url=${url}` })
-    .then(hosting => {
-      this.setState(state => {
-        state.article.hosting = hosting
-        return state
-      })
-    })
-
-    api({ endpoint: `/api/inspect/domain?url=${url}` })
-    .then(domain => {
-      this.setState(state => {
-        state.article.domain = domain
-        return state
-      })
-    })
-
-    api({ endpoint: `/api/inspect/factchecks?url=${url}` })
-    .then(factchecks => {
-      this.setState(state => {
-        state.article.factchecks = factchecks
-        return state
-      })
-    })
-
-    api({ endpoint: `/api/inspect/blacklists?url=${url}` })
-    .then(blacklists => {
-      this.setState(state => {
-        state.article.blacklists = blacklists
-        return state
-      })
-    })
+    }
   }
 
   render() {
-    const { articleUrl, article, trending } = this.state
-
+    const { articleUrl, articleMetadata, trending } = this.state
     const indicators = { positive: [], negative:  [] }
 
-    const total = Object.keys(this.defaultState.article).length
+    const total = Object.keys(this.defaultState.articleMetadata).length
     let progress = 0
-    for (let prop in article) {
-      if (article[prop] !== null) {
+    for (let prop in articleMetadata) {
+      if (articleMetadata[prop] !== null) {
         progress++
 
-        // Get article positive and negative indicators in each section
+        // Get positive and negative indicators in each section
         // (Looping over like this preserves the order of them)
-        if (article[prop].indicators) {
-          indicators.positive = indicators.positive.concat(article[prop].indicators.positive)
-          indicators.negative = indicators.negative.concat(article[prop].indicators.negative)
+        if (articleMetadata[prop].indicators) {
+          indicators.positive = indicators.positive.concat(articleMetadata[prop].indicators.positive)
+          indicators.negative = indicators.negative.concat(articleMetadata[prop].indicators.negative)
         }
       }
     }
@@ -187,27 +135,27 @@ export default class extends React.Component {
             <p style={{marginBottom: 0}}>
               <small><a target="_blank" href="https://github.com/glitchdigital/glitched.news">Released as free software under the ISC licence</a></small>
             </p>
+            { progress > 0 && progress < total && (
+              <>
+                { progress < total && (
+                  <progress value={progress} max={total} style={{marginTop: 10}} />
+                )}
+              </>
+            )}
           </div>
         </form>
         { !articleUrl && trending && trending.articles && trending.articles.length > 0 && <Trending trending={trending} /> }
-        { progress > 0 && progress < total && (
-          <>
-            { progress < total && (
-              <progress value={progress} max={total} style={{width: '100%'}} />
-            )}
-          </>
-        )}
-        { article.content && <Headline content={article.content} /> }
+        { articleMetadata.content && <Headline content={articleMetadata.content} /> }
         { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }
-        { article.blacklists && <Blacklists content={article.blacklists} /> }
-        { article.content && <Content content={article.content} /> }
-        { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
-        { article.social && article.social.facebook && <Social social={article.social} /> }
-        { article.content && <Sentiment content={article.content} /> }
-        { article.content && article.factchecks && <FactChecks factchecks={article.factchecks} content={article.content} /> }
-        { article.topics && article.topics && <Topics topics={article.topics} /> }
-        { article.related && article.related && <Related related={article.related} /> }
-        { article.content && article.content.links && <Links links={article.content.links} /> }
+        { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
+        { articleMetadata.content && <Content content={articleMetadata.content} /> }
+        { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
+        { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
+        { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
+        { articleMetadata.content && articleMetadata.factchecks && <FactChecks factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
+        { articleMetadata.topics && articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
+        { articleMetadata.related && articleMetadata.related && <Related related={articleMetadata.related} /> }
+        { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
       </Page>
     )
   }
