@@ -1,0 +1,15 @@
+{
+  compileNamespace: "cjs",
+  fallbackLocale: "en",
+  sourceLocale: "en",
+  localeDir: "<rootDir>/locales",
+  srcPathDirs: [
+    "<rootDir>"
+  ],
+  srcPathIgnorePatterns: [
+    "/api/",
+    "/node_modules/",
+    "/.next/",
+  ],
+  format: "minimal"
+}

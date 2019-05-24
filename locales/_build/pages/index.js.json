@@ -1,0 +1,20 @@
+{
+  "url_prompt": {
+    "defaults": "Enter a news article URL to analyze",
+    "origin": [
+      [
+        "pages/index.js",
+        153
+      ]
+    ]
+  },
+  "about_prototype": {
+    "defaults": "A prototype research tool to demonstrate how metadata and automated analysis can be combined.",
+    "origin": [
+      [
+        "pages/index.js",
+        161
+      ]
+    ]
+  }
+}

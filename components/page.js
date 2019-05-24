@@ -16,21 +16,21 @@ export default ({ children }) => (
       <link rel="stylesheet" href="https://cdn.rawgit.com/mblode/marx/master/css/marx.min.css" />
       <style>{`
         progress {
-          border-radius: 20px; 
+          border-radius: 10px; 
           width: 100%;
-          height: 20px;
-          background-color: #fff;
+          height: 10px;
+          background-color: #ccc;
         }
         progress::-webkit-progress-bar {
-          background-color: #fff;
-          border-radius: 20px;
+          background-color: #ccc;
+          border-radius: 10px;
         }
         progress::-webkit-progress-value {
-          border-radius: 20px 0 0 20px; 
+          border-radius: 10px;
           background-color: rgb(48,124,246);
         }
         progress::-moz-progress-bar {
-          border-radius: 20px 0 0 20px; 
+          border-radius: 10px;
           background-color: rgb(48,124,246);
         }
       `}</style>

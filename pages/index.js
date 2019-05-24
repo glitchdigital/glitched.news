@@ -15,6 +15,7 @@ import Topics from '../components/article-metadata/topics'
 import Related from '../components/article-metadata/related'
 import Links from '../components/article-metadata/links'
 import Blacklists from '../components/article-metadata/blacklists'
+import { Trans } from "@lingui/macro"
 
 async function api({ endpoint } = {}) {
   const server = `${window.location.protocol}//${window.location.host}`
@@ -22,7 +23,7 @@ async function api({ endpoint } = {}) {
   return await request.json()
 }
 
-export default class extends React.Component {
+export default class Hm extends React.Component {
   static async getInitialProps({ query }) {
     return {
       articleUrl: query.url
@@ -31,9 +32,8 @@ export default class extends React.Component {
 
   constructor(props) {
     super(props)
-
-    this.defaultState = {
-      articleUrl: null,
+    this.state = {
+      articleUrl: props.articleUrl || null,
       articleMetadata: {
         domain: null,
         hosting: null,
@@ -46,59 +46,71 @@ export default class extends React.Component {
       },
       trending: null
     }
-
-    this.state = this.defaultState
-    this.state.articleUrl = props.articleUrl || null
     this.onSubmit = this.onSubmit.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.state.articleUrl) {
       this.onSubmit()
     } else {
-      api({ endpoint: `/api/trending` })
-      .then(trending => {
-        this.setState(state => {
-          state.trending = trending
-          return state
-        })
-      })
+      const trending = await api({ endpoint: `/api/trending` })
+      this.setState({ trending })
     }
   }
 
   async onSubmit(e) {
     if (e) e.preventDefault()
 
-    if (!document.getElementById('url') || !document.getElementById('url').value)
-      return
+    let articleUrl = null
 
-    let url = document.getElementById('url').value
+    if (!document.getElementById('url') || !document.getElementById('url').value) {
+      // Reset URL browser address bar to reflect is no URL
+      Router.push('/', '/', { shallow: true })
+    } else {
+      // Update URL browser address bar to reflect it has a URL
+      articleUrl = document.getElementById('url').value
 
-    // Add protocol to URL if none specified
-    if (!url.includes('//')) {
-      url = 'https://'+url
-      document.getElementById('url').value = url
+      // Add protocol to URL if none specified
+      if (!articleUrl.includes('//')) {
+        articleUrl = 'https://'+articleUrl
+        document.getElementById('url').value = articleUrl
+      }
+
+      const href = `/?url=${articleUrl}`
+      const as = href
+      Router.push(href, as, { shallow: true })
     }
 
-    // Update browser URL bar
-    const href = `/?url=${url}`
-    const as = href
-    Router.push(href, as, { shallow: true })
+    // Reset state
+    this.setState({
+      articleUrl: articleUrl,
+      articleMetadata: {
+        domain: null,
+        hosting: null,
+        content: null,
+        social: null,
+        topics: null,
+        related: null,
+        factchecks: null,
+        blacklists: null
+      }
+    })
 
-    // Reset article state
-    let newState = this.defaultState
-    newState.articleUrl = url
-    this.setState(newState)
-
-    // Get article metadata
+    // If we have a URL, get article metadata
+    if (articleUrl) {
     for (let prop in this.state.articleMetadata) {
-      api({ endpoint: `/api/article-metadata/${prop}?url=${url}` })
+      api({ endpoint: `/api/article-metadata/${prop}?url=${articleUrl}` })
       .then(result => {
         this.setState(state => {
-          state.articleMetadata[prop] = result
-          return state
+          let newState = state
+          newState.articleMetadata[prop] = result
+          return newState
         })
       })
+      .catch(e => {
+        // @TODO
+      })
+    } 
     }
   }
 
@@ -106,7 +118,7 @@ export default class extends React.Component {
     const { articleUrl, articleMetadata, trending } = this.state
     const indicators = { positive: [], negative:  [] }
 
-    const total = Object.keys(this.defaultState.articleMetadata).length
+    const total = Object.keys(articleMetadata).length
     let progress = 0
     for (let prop in articleMetadata) {
       if (articleMetadata[prop] !== null) {
@@ -126,14 +138,19 @@ export default class extends React.Component {
         <form onSubmit={this.onSubmit}>
           <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 20, marginBottom: 10}}>
             <div style={{display: 'inline-block', width: '100%', marginBottom: 10}}>
-              <label style={{fontWeight: 600, textAlign: 'center', padding: '0 20'}} htmlFor="url">Enter a news article URL to analyze</label>
+              <label style={{fontWeight: 600, textAlign: 'center', padding: '0 20'}} htmlFor="url">
+                <Trans id="url_prompt">
+                  Enter a news article URL to analyze
+                </Trans>
+              </label>
               <input placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
             </div>
             <p style={{marginBottom: 0}}>
-              <small>A prototype research tool to demonstrate how metadata and automated analysis can be combined.</small>
-            </p>
-            <p style={{marginBottom: 0}}>
-              <small><a target="_blank" href="https://github.com/glitchdigital/glitched.news">Released as free software under the ISC licence</a></small>
+              <small>
+                <Trans id="about_prototype">
+                  A prototype research tool to demonstrate how metadata and automated analysis can be combined.
+                </Trans>
+              </small>
             </p>
             { progress > 0 && progress < total && (
               <>
@@ -156,6 +173,15 @@ export default class extends React.Component {
         { articleMetadata.topics && articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
         { articleMetadata.related && articleMetadata.related && <Related related={articleMetadata.related} /> }
         { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
+        <hr/>
+        <p>
+          <small>
+            <span>&copy; GLITCH DIGITAL LIMITED, 2019. </span>
+            <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
+              Released as free software under the ISC licence.
+            </a>
+          </small>
+        </p>
       </Page>
     )
   }

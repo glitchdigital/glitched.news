@@ -6,11 +6,15 @@
     "dev": "now dev",
     "deploy": "now",
     "deploy:production": "now --target production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "add-locale": "lingui add-locale",
+    "extract": "lingui extract",
+    "compile": "lingui compile"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@lingui/react": "^2.8.3",
     "compromise": "^11.13.1",
     "csv-string": "^3.1.5",
     "dns": "^0.2.2",
@@ -43,6 +47,13 @@
     "whois-promise": "^1.2.2"
   },
   "devDependencies": {
-    "now": "^15.2.0"
+    "@babel/core": "^7.4.5",
+    "@lingui/cli": "^2.8.3",
+    "@lingui/loader": "^2.8.3",
+    "@lingui/macro": "^2.8.3",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-plugin-macros": "^2.5.1",
+    "now": "^15.3.0",
+    "raw-loader": "^2.0.0"
   }
 }
