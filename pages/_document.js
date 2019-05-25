@@ -6,13 +6,12 @@ export default class Document extends NextDocument {
   static async getInitialProps(ctx) {
     const initialProps = await NextDocument.getInitialProps(ctx)
 
-    // Get locale, first locale specified in supportedLocales is the default
-    // @TODO Lookup locale from cookie instead of query param.
-    // @TODO If cookie is empty, inspect headers to determine lang, save to cookie, use that locale.
-    const queryLocale = ctx.query.locale
+    // Get locale from hostname (e.g. `en.example.com`, `de.example.com`, etc)
+    // First locale specified in supportedLocales is the default fallback used
+    const queryLocale = ctx.req.headers.host.split('.')[0]
     const locale = supportedLocales.find(l => l === queryLocale) ? queryLocale : supportedLocales[0]
     
-    // Load source for current translation file and inject into page
+    // Load source for current translation file and inject into page (hacky!)
     let i18n_catalog = await import(`raw-loader!../locales/${locale}/messages.js`).then(mod => mod.default)
     i18n_catalog = i18n_catalog.replace('module.exports = {', 'window.i18n_catalog = {')
 

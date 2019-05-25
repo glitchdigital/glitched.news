@@ -23,7 +23,7 @@ async function api({ endpoint } = {}) {
   return await request.json()
 }
 
-export default class Hm extends React.Component {
+export default class extends React.Component {
   static async getInitialProps({ query }) {
     return {
       articleUrl: query.url
@@ -58,6 +58,20 @@ export default class Hm extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.articleUrl !== prevProps.articleUrl) {
+      let articleUrl = this.props.articleUrl || null
+
+      // Add protocol to URL if none specified
+      if (articleUrl && !articleUrl.includes('//')) {
+        articleUrl = 'https://'+articleUrl
+      }
+
+      document.getElementById('url').value = articleUrl
+      this.onSubmit()
+    }
+  }
+
   async onSubmit(e) {
     if (e) e.preventDefault()
 
@@ -65,13 +79,14 @@ export default class Hm extends React.Component {
 
     if (!document.getElementById('url') || !document.getElementById('url').value) {
       // Reset URL browser address bar to reflect is no URL
-      Router.push('/', '/', { shallow: true })
+      //Router.push('/', '/', { shallow: true })
+      Router.push('/', '/', {})
     } else {
       // Update URL browser address bar to reflect it has a URL
       articleUrl = document.getElementById('url').value
 
       // Add protocol to URL if none specified
-      if (!articleUrl.includes('//')) {
+      if (articleUrl && !articleUrl.includes('//')) {
         articleUrl = 'https://'+articleUrl
         document.getElementById('url').value = articleUrl
       }
@@ -143,7 +158,7 @@ export default class Hm extends React.Component {
                   Enter a news article URL to analyze
                 </Trans>
               </label>
-              <input placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
+              <input placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50, fontSize: '.9em'}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
             </div>
             <p style={{marginBottom: 0}}>
               <small>
@@ -178,7 +193,7 @@ export default class Hm extends React.Component {
           <small>
             <span>&copy; GLITCH DIGITAL LIMITED, 2019. </span>
             <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
-              Released as free software under the ISC licence.
+              Source published under ISC License 
             </a>
           </small>
         </p>

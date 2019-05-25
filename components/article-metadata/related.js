@@ -1,4 +1,5 @@
 import React from "react"
+import Link from 'next/link'
 
 export default class extends React.Component {
   render() {
@@ -21,7 +22,15 @@ export default class extends React.Component {
             </p>
             {related.articles.map(article => (
               <li key={article.url}>
-                <a href={`/?url=${article.url}`}>{article.title}</a> <small> – {article.domain}</small>
+                <Link
+                  prefetch
+                  href={{
+                    pathname: '/index',
+                    query: { url: article.url }
+                  }}
+                  as={`/?url=${article.url}`}
+                ><a>{article.title}</a></Link>
+                <small> – {article.domain}</small>
               </li>
             ))}
           </>
