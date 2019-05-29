@@ -1,6 +1,9 @@
 import React from "react"
 import Router from 'next/router'
+import { Trans } from "@lingui/macro"
 import 'isomorphic-unfetch'
+
+import { locales } from '../locales'
 
 import Page from '../components/page'
 import Trending from '../components/trending'
@@ -15,7 +18,6 @@ import Topics from '../components/article-metadata/topics'
 import Related from '../components/article-metadata/related'
 import Links from '../components/article-metadata/links'
 import Blacklists from '../components/article-metadata/blacklists'
-import { Trans } from "@lingui/macro"
 
 async function api({ endpoint } = {}) {
   const server = `${window.location.protocol}//${window.location.host}`
@@ -44,12 +46,16 @@ export default class extends React.Component {
         factchecks: null,
         blacklists: null
       },
-      trending: null
+      trending: null,
+      locale: null
     }
     this.onSubmit = this.onSubmit.bind(this)
+    this.onSetLocale = this.onSetLocale.bind(this)
   }
 
   async componentDidMount() {
+    this.setState({ locale: document.documentElement.lang })
+
     if (this.state.articleUrl) {
       this.onSubmit()
     } else {
@@ -72,14 +78,35 @@ export default class extends React.Component {
     }
   }
 
+  async onSetLocale(e) {
+    e.preventDefault()
+
+    let { articleUrl } = this.props
+    const locale = e.target.getAttribute('data-locale')
+
+    // Set new locale at run time in the app
+    const i18nCatalog = await api({ endpoint: `/api/locale?locale=${locale}` })
+    eval(i18nCatalog.i18nCatalog)
+
+    // Push route change with Router to update the app state
+    Router.push({
+      pathname: '/',
+      asPath: `/?locale=${locale}&url=${articleUrl}`,
+      query: { url: articleUrl, locale }
+    })
+
+    // Updates the HTML lang attribute on the DOM
+    document.documentElement.lang = locale
+    this.setState({ locale: document.documentElement.lang })
+  }
+
   async onSubmit(e) {
     if (e) e.preventDefault()
 
     let articleUrl = null
 
     if (!document.getElementById('url') || !document.getElementById('url').value) {
-      // Reset URL browser address bar to reflect is no URL
-      //Router.push('/', '/', { shallow: true })
+      // Reset URL browser address bar
       Router.push('/', '/', {})
     } else {
       // Update URL browser address bar to reflect it has a URL
@@ -130,8 +157,9 @@ export default class extends React.Component {
   }
 
   render() {
-    const { articleUrl, articleMetadata, trending } = this.state
-    const indicators = { positive: [], negative:  [] }
+    const { url } = this.props
+    const { articleUrl, articleMetadata, trending, locale } = this.state
+    const indicators = { positive: [], negative: [] }
 
     const total = Object.keys(articleMetadata).length
     let progress = 0
@@ -189,12 +217,25 @@ export default class extends React.Component {
         { articleMetadata.related && articleMetadata.related && <Related related={articleMetadata.related} /> }
         { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
         <hr/>
-        <p>
+        <p style={{marginBottom: 5}}>
           <small>
             <span>&copy; GLITCH DIGITAL LIMITED, 2019. </span>
             <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
-              Source published under ISC License 
+              Published under the ISC License 
             </a>
+          </small>
+        </p>
+        <p>
+          <small>
+            {Object.keys(locales).map(l => 
+              <span key={`locale-${l}`}>
+                <a href={`?locale=${l}`}
+                   onClick={this.onSetLocale}
+                   data-locale={l}
+                   style={{fontWeight: (l === locale) ? 'bold' : 'normal'}}
+                  >{l.toUpperCase()}</a>{' '}
+              </span>
+            )}
           </small>
         </p>
       </Page>
