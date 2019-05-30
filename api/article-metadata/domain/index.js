@@ -7,6 +7,8 @@ const moment = require('moment')
 const sslCertificate = require('get-ssl-certificate')
 
 module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
+  
   const query = microQuery(req)
 
   let domain = ''

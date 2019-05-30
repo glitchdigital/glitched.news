@@ -6,6 +6,8 @@ const fetch = require('node-fetch')
 const fetchOptions = require('../content/fetch-options')
 
 module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
+  
   const query = microQuery(req)
 
   if (!query.url)

@@ -9,6 +9,8 @@ const fetchOptions = require('../content/fetch-options')
 google.resultsPerPage = 25
 
 module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
+  
   const query = microQuery(req)
   
   if (!query.url)

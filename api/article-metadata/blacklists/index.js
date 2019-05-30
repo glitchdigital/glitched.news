@@ -8,6 +8,8 @@ const dailydot = require('./dailydot')
 const politifact = require('./politifact')
 
 module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
+  
   const query = microQuery(req)
 
   let domain = ''
@@ -34,7 +36,7 @@ module.exports = async (req, res) => {
   if (blacklists.length === 0) {
     indicators.positive.push({ text: `${domain} not found on any blacklists` })
   }
-
+  
   return send(res, 200, {
     domain,
     blacklists,

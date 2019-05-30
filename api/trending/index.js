@@ -5,6 +5,8 @@ const url = require('url')
 googleNews.resultsPerPage = 25 // max 100
 
 module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 10}`)
+
   let domains = []
   const articles = await new Promise(async (resolve) => {
     googleNews('breaking', (err, response) => {

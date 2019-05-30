@@ -11,6 +11,8 @@ const vader = require('vader-sentiment')
 const fetchOptions = require('./fetch-options')
 
 module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
+  
   const query = microQuery(req)
 
   if (!query.url)
