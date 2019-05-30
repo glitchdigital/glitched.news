@@ -1,6 +1,10 @@
 const { send } = require('micro')
 const microQuery = require('micro-query')
-const { locales, defaultLocale } = require('../../locales')
+//const { locales, defaultLocale } = require('../../locales')
+
+// @TODO Refactor so supported locales only need to be in one place
+const locales = { en: 'true', de: 'true '}
+const defaultLocale = 'en'
 
 module.exports = async (req, res) => {
   const query = microQuery(req)
