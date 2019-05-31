@@ -1,6 +1,12 @@
+const withCSS = require('@zeit/next-css')
 const path = require("path")
 
-module.exports = {
+module.exports = withCSS({
+  cssModules: true,
+  cssLoaderOptions: {
+    importLoaders: 1,
+    localIdentName: '[local]',
+  },
   target: 'serverless',
   webpack(config, { isServer }) {
     config.resolve.alias = config.resolve.alias || {}
@@ -13,4 +19,4 @@ module.exports = {
     }
     return config
   }
-}
+})

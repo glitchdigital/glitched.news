@@ -151,15 +151,15 @@ export default class extends React.Component {
     return (
       <Page>
         <Locale/>
-        <form onSubmit={this.onSubmit}>
-          <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 20, marginBottom: 10}}>
+        <form onSubmit={this.onSubmit} style={{margin: 0}}>
+          <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 0, marginBottom: 20}}>
             <div style={{display: 'inline-block', width: '100%', marginBottom: 10}}>
               <label style={{fontWeight: 600, textAlign: 'center', padding: '0 20'}} htmlFor="url">
                 <Trans id="url_prompt">
                   Enter a news article URL to analyze
                 </Trans>
               </label>
-              <input placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50, fontSize: '.9em'}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
+              <input disabled={(progress > 0 && progress < total)} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50, fontSize: '.9em'}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
             </div>
             <p style={{marginBottom: 0}}>
               <small>
@@ -192,9 +192,10 @@ export default class extends React.Component {
         <hr/>
         <p style={{marginBottom: 5}}>
           <small>
-            <span>&copy; GLITCH DIGITAL LIMITED, 2019. </span>
+            <strong>gliched.news</strong>
+            <span> &copy; GLITCH DIGITAL LIMITED, 2019. </span>
             <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
-              Published under the ISC License 
+              Open Source (ISC License)
             </a>
           </small>
         </p>

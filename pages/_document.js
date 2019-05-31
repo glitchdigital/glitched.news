@@ -21,6 +21,8 @@ export default class Document extends NextDocument {
     return (
       <html lang={locale}>
         <Head>
+          <title>glitched.news</title>
+          <meta name="description" content="A prototype research tool to demonstrate how metadata and automated analysis can be combined."/>
           <script dangerouslySetInnerHTML={{ __html: i18nCatalog }} />
         </Head>
         <body>

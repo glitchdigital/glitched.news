@@ -49,7 +49,7 @@ class Locale extends React.Component {
     return (
       <I18n>
         {({ i18n }) => (
-          <p style={{marginTop: 10, textAlign: 'right'}}>
+          <p style={{marginTop: 10, marginBottom: 10, textAlign: 'right', fontSize: '0.9em'}}>
             <span>Language: </span>
             {Object.keys(localeNames).map(l => 
               <span key={`locale-${l}`}>
