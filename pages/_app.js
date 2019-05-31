@@ -5,9 +5,13 @@ import getCatalog from "@catalogs"
 
 export default class App extends NextApp {
   static async getInitialProps({ Component, ctx }) {
-    const locale = ctx.query.locale
+    // Look for 'locale' value in query string, if none look for host header
+    let locale = ctx.query.locale
+    if (!locale && ctx.req && ctx.req.headers && ctx.req.headers.host) {
+      locale = ctx.req.headers.host.split('.')[0]
+    }
+
     let pageProps = {}
-    
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
     }

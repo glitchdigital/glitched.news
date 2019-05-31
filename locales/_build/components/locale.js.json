@@ -1,0 +1,11 @@
+{
+  "_locale": {
+    "defaults": "en",
+    "origin": [
+      [
+        "components/locale.js",
+        57
+      ]
+    ]
+  }
+}

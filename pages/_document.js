@@ -8,7 +8,7 @@ export default class Document extends NextDocument {
     // Get locale from query string or hostname (e.g. `?locale=de` or `de.example.com`, etc)
     const detectedLocale = ctx.query.locale || ctx.req.headers.host.split('.')[0]
     const locale = (locales[detectedLocale]) ? detectedLocale : defaultLocale
-    
+
     // Load source for translation file and inject into page
     let i18nCatalog = await import(`raw-loader!../locales/${locale}/messages.js`).then(mod => mod.default)
     i18nCatalog = i18nCatalog.replace('module.exports = {', 'window.i18n_catalog = {')
@@ -21,7 +21,7 @@ export default class Document extends NextDocument {
     return (
       <html lang={locale}>
         <Head>
-          <script id="i18n-catalog" dangerouslySetInnerHTML={{ __html: i18nCatalog }} />
+          <script dangerouslySetInnerHTML={{ __html: i18nCatalog }} />
         </Head>
         <body>
           <Main />

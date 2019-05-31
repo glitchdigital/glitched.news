@@ -3,9 +3,8 @@ import Router from 'next/router'
 import { Trans } from "@lingui/macro"
 import 'isomorphic-unfetch'
 
-import { locales } from '../locales'
-
 import Page from '../components/page'
+import Locale from '../components/locale'
 import Trending from '../components/trending'
 import Trust from '../components/trust'
 import Headline from '../components/article-metadata/headline'
@@ -46,16 +45,12 @@ export default class extends React.Component {
         factchecks: null,
         blacklists: null
       },
-      trending: null,
-      locale: null
+      trending: null
     }
     this.onSubmit = this.onSubmit.bind(this)
-    this.onSetLocale = this.onSetLocale.bind(this)
   }
 
   async componentDidMount() {
-    this.setState({ locale: document.documentElement.lang })
-
     if (this.state.articleUrl) {
       this.onSubmit()
     } else {
@@ -76,28 +71,6 @@ export default class extends React.Component {
       document.getElementById('url').value = articleUrl
       this.onSubmit()
     }
-  }
-
-  async onSetLocale(e) {
-    e.preventDefault()
-
-    let { articleUrl } = this.props
-    const locale = e.target.getAttribute('data-locale')
-
-    // Set new locale at run time in the app
-    const i18nCatalog = await api({ endpoint: `/api/locale?locale=${locale}` })
-    eval(i18nCatalog.i18nCatalog)
-
-    // Push route change with Router to update the app state
-    Router.push({
-      pathname: '/',
-      asPath: `/?locale=${locale}&url=${articleUrl}`,
-      query: { url: articleUrl, locale }
-    })
-
-    // Updates the HTML lang attribute on the DOM
-    document.documentElement.lang = locale
-    this.setState({ locale: document.documentElement.lang })
   }
 
   async onSubmit(e) {
@@ -156,9 +129,8 @@ export default class extends React.Component {
     }
   }
 
-  render() {
-    const { url } = this.props
-    const { articleUrl, articleMetadata, trending, locale } = this.state
+  render() { 
+    const { articleUrl, articleMetadata, trending } = this.state
     const indicators = { positive: [], negative: [] }
 
     const total = Object.keys(articleMetadata).length
@@ -178,6 +150,7 @@ export default class extends React.Component {
 
     return (
       <Page>
+        <Locale/>
         <form onSubmit={this.onSubmit}>
           <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 20, marginBottom: 10}}>
             <div style={{display: 'inline-block', width: '100%', marginBottom: 10}}>
@@ -223,19 +196,6 @@ export default class extends React.Component {
             <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
               Published under the ISC License 
             </a>
-          </small>
-        </p>
-        <p>
-          <small>
-            {Object.keys(locales).map(l => 
-              <span key={`locale-${l}`}>
-                <a href={`?locale=${l}`}
-                   onClick={this.onSetLocale}
-                   data-locale={l}
-                   style={{fontWeight: (l === locale) ? 'bold' : 'normal'}}
-                  >{l.toUpperCase()}</a>{' '}
-              </span>
-            )}
           </small>
         </p>
       </Page>
