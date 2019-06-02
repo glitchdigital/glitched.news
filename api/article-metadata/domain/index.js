@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
       if (!whois.registrantStreet.toLowerCase().includes('redacted') &&
           !whois.registrantCity.toLowerCase().includes('redacted') &&
           !whois.registrantCountry.toLowerCase().includes('redacted') ) {
-        indicators.positive.push({text: "Domain has owner has address listed"})
+        indicators.positive.push({text: "Domain owner has address listed"})
       } else {
         indicators.negative.push({text: "Domain owner address redacted"})
       }
@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
       if (!whois.registrantStreet.toLowerCase().includes('redacted') &&
           !whois.registrantCity.toLowerCase().includes('redacted') &&
           !whois.registrantCountry.toLowerCase().includes('redacted') ) {
-        indicators.positive.push({text: "Domain has owner has address listed"})
+        indicators.positive.push({text: "Domain owner has address listed"})
       } else {
         indicators.negative.push({text: "Domain owner address redacted"})
       }
