@@ -10,7 +10,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h3>Topics</h3>
+        <h3>Topics and keywords</h3>
         <p>
           Identified <strong>{topics.topics.length} topics</strong> and <strong>{topics.keywords.length} keywords</strong> that may be referenced in this article.
         </p>
@@ -18,7 +18,7 @@ export default class extends React.Component {
         {topics.topics.map((topic, i) => (
           <li key={`topic-${i}`}>
             <p>
-              <strong>{topic.name}</strong> {topic.count && (<> – <strong>{topic.count}</strong> possible references</>)}
+              <strong>{topic.name}</strong> – <strong>{topic.count || 1}</strong> possible references to this topic
               {topic.url && (
                 <>
                   {' '}<br/><a target="_blank" href={topic.url}>⧉ Read about {topic.name} on Wikipedia</a>
@@ -32,7 +32,7 @@ export default class extends React.Component {
         {topics.keywords.map((keyword, i) => (
           <li key={`keyword-${i}`}>
             <p>
-              <strong>{keyword.name}</strong> {keyword.count && (<>mentioned <strong>{keyword.count}</strong> times</>)}
+              <strong>{keyword.name}</strong> – <strong>{keyword.count || 1}</strong> mentions of this keyword
               {keyword.url && (
                 <>
                   {' '}<br/><a target="_blank" href={keyword.url}>⧉ Read about {keyword.name} on Wikipedia</a>

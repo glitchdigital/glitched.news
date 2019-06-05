@@ -1,26 +1,24 @@
-const { send } = require('micro')
-const microQuery = require('micro-query')
 const unfluff = require('unfluff')
 const fetch = require('node-fetch')
-const url = require('url')
+const urlParser = require('url')
 const WAE = require('web-auto-extractor').default
 const moment = require('moment')
 const tokenizer = require('sbd')
 const vader = require('vader-sentiment')
 
-const fetchOptions = require('./fetch-options')
+const { send, addHeaders, queryParser } = require('../../lib/helper')
+const fetchOptions = require('../../lib/fetch-options')
 
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
-  
-  const query = microQuery(req)
+  addHeaders(res)
 
-  if (!query.url)
+  const { url } = queryParser(req)
+
+  if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
   const indicators = { positive: [], negative: [] }
-  
-  const fetchRes = await fetch(query.url, fetchOptions)
+  const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
   const structuredData = unfluff(text)
   const metadata = WAE().parse(text)
@@ -31,7 +29,7 @@ module.exports = async (req, res) => {
     }
   }
 
-  if (query.url.startsWith('https://')) {
+  if (url.startsWith('https://')) {
     indicators.positive.push({text: "URL is encrypted (uses HTTPS)"})
   } else {
     indicators.negative.push({text: "URL is not encrypted (does not use HTTPS)"})
@@ -45,13 +43,13 @@ module.exports = async (req, res) => {
 
     links = structuredData.links.map(link => {
       if (!link.href.includes('://')) {
-        link.url = `${url.parse(query.url).protocol}//${url.parse(query.url).hostname}${link.href}`
+        link.url = `${urlParser.parse(url).protocol}//${urlParser.parse(url).hostname}${link.href}`
       } else {
         link.url = link.href
       }
 
       link.title = truncate(link.url, 50)
-      link.domain = (link.url && url.parse(link.url).host) ? url.parse(link.url).host.replace(/^www./, '') : null
+      link.domain = (link.url && urlParser.parse(link.url).host) ? urlParser.parse(link.url).host.replace(/^www./, '') : null
 
       return {
         url: link.url,
@@ -135,7 +133,7 @@ module.exports = async (req, res) => {
   }
   
   return send(res, 200, {
-    url: query.url,
+    url,
     ...structuredData,
     links,
     characterCount: structuredData.text.length,

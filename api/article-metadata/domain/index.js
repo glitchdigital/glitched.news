@@ -1,29 +1,23 @@
-const { send } = require('micro')
-const microQuery = require('micro-query')
-const url = require('url')
+const urlParser = require('url')
 const domainParser = require('effective-domain-name-parser')
 const whoisLookup = require('whois-promise')
 const moment = require('moment')
 const sslCertificate = require('get-ssl-certificate')
 
-module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
-  
-  const query = microQuery(req)
+const { send, addHeaders, queryParser } = require('../../lib/helper')
 
-  let domain = ''
+module.exports = async (req, res) => {
+  addHeaders(res)
+
+  const { url } = queryParser(req)
+
+  if (!url)
+    return send(res, 400, { error: 'URL parameter missing' })
 
   const indicators = { positive: [], negative: [] }
-
-  if (query.url) {
-    const urlParts = url.parse(query.url)
-    const domainParts = domainParser.parse(urlParts.hostname)
-    domain = `${domainParts.sld}.${domainParts.tld}`
-  } else if (query.domain) {
-    domain = query.domain
-  } else {
-    return send(res, 400, { error: 'URL or domain parameter required' })
-  }
+  const urlParts = urlParser.parse(url)
+  const domainParts = domainParser.parse(urlParts.hostname)
+  const domain = `${domainParts.sld}.${domainParts.tld}`
 
   const whois = await whoisLookup.json(domain)
 
@@ -91,6 +85,7 @@ module.exports = async (req, res) => {
   }
  
   return send(res, 200, {
+    url,
     domain,
     whois,
     certificate,

@@ -1,21 +1,20 @@
-const { send } = require('micro')
-const microQuery = require('micro-query')
 const fetch = require('node-fetch')
 const WAE = require('web-auto-extractor').default
 
-const fetchOptions = require('../content/fetch-options')
+const { send, addHeaders, queryParser } = require('../../lib/helper')
+const fetchOptions = require('../../lib/fetch-options')
 
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
+  addHeaders(res)
+
+  const { url } = queryParser(req)
   
-  const query = microQuery(req)
-  
-  if (!query.url)
+  if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
   const indicators = { positive: [], negative: [] }
 
-  const fetchRes = await fetch(query.url, fetchOptions)
+  const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
   const metadata = WAE().parse(text)
 
@@ -23,6 +22,7 @@ module.exports = async (req, res) => {
   let hasTwitterMetadata = false
 
   if (metadata) {
+    // @TODO Check for additional fields (and compare with content of article?)
     if (metadata.metatags) {
       if (metadata.metatags['fb:app_id']) {
         hasFacebookMetadata = true
@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
 
   // @TODO Add other platforms here
   const resolved = await Promise.all([
-    getFacebookShareCount(query.url)
+    getFacebookShareCount(url)
   ])
 
   const shareData = {
@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
   }
 
   return send(res, 200, {
-    url: query.url,
+    url,
     ...shareData,
     indicators
   })

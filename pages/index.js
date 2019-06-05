@@ -1,8 +1,10 @@
 import React from "react"
 import Router from 'next/router'
+import Head from 'next/head'
 import { Trans } from "@lingui/macro"
 import 'isomorphic-unfetch'
 
+import Package from '../package'
 import Page from '../components/page'
 import Locale from '../components/locale'
 import Trending from '../components/trending'
@@ -150,6 +152,9 @@ export default class extends React.Component {
 
     return (
       <Page>
+        <Head>
+          <title>glitched.news</title>
+        </Head>
         <Locale/>
         <form onSubmit={this.onSubmit} style={{margin: 0}}>
           <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 0, marginBottom: 20}}>
@@ -193,9 +198,10 @@ export default class extends React.Component {
         <p style={{marginBottom: 5}}>
           <small>
             <strong>gliched.news</strong>
-            <span> &copy; GLITCH DIGITAL LIMITED, 2019. </span>
+            <> &copy; <a href="https://glitch.digital">GLITCH DIGITAL LIMITED</a>, 2019. </>
+            <> Version {Package.version}. </>
             <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
-              Open Source (ISC License)
+              Open source (ISC License).
             </a>
           </small>
         </p>

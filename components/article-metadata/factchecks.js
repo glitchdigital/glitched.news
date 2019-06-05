@@ -11,13 +11,13 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Fact checking</h3>
-        <h4>Quotes and citations</h4>
         <p>
-          Found <strong>{ content.quotes.length } quotes</strong> in the article, <strong>{ content.quotesWithNumbers.length } quotes</strong> and <strong>{ content.sentencesWithNumbers.length } sentences</strong> cite specific dates or numbers
+          Found <strong>{ content.quotes.length } quotes</strong> in the article, <strong>{ content.quotesWithNumbers.length } quotes</strong> and <strong>{ content.sentencesWithNumbers.length } sentences</strong> cite specific dates or numbers.
         </p>
+        {content.quotes.length > 0 && <h4>Quotes</h4>}
         <ol>
         {content.quotes.map((quote, i) => (
-          <li key={`${quote}-${i}`}><em>{quote}</em></li>
+          <li key={`${quote}-${i}`}><p><em>{quote}</em></p></li>
         ))}
         </ol>
         {factchecks['snopes'].length > 0 && (

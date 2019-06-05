@@ -1,9 +1,10 @@
-const { send } = require('micro')
-const microQuery = require('micro-query')
+const { send, addHeaders, queryParser } = require('./lib/helper')
 
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=0, s-maxage=${60 * 60 * 24}`)
-  const query = microQuery(req)
+  addHeaders(res)
+
+  const query = queryParser(req)
+
   try {
     const locale = query.locale.replace(/[^a-zA-Z\-]+/g, '')
     // Load source for translation file and return it as a string to be executed in the client

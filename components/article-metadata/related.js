@@ -20,6 +20,7 @@ export default class extends React.Component {
             <p>
             Found <strong>{related.articles.length}</strong> articles that might be related.
             </p>
+            <ul>
             {related.articles.map(article => (
               <li key={article.url}>
                 <Link
@@ -33,6 +34,7 @@ export default class extends React.Component {
                 <small> – {article.domain}</small>
               </li>
             ))}
+            </ul>
           </>
         )}
       </>

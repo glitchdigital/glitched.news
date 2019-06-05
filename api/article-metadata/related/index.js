@@ -1,24 +1,23 @@
-const { send } = require('micro')
-const microQuery = require('micro-query')
 const unfluff = require('unfluff')
 const googleNews = require('my-google-news')
 const fetch = require('node-fetch')
-const url = require('url')
+const urlParser = require('url')
 
-const fetchOptions = require('../content/fetch-options')
+const { send, addHeaders, queryParser } = require('../../lib/helper')
+const fetchOptions = require('../../lib/fetch-options')
 
-googleNews.resultsPerPage = 25 // max 100
+googleNews.resultsPerPage = 25 // Can be max 100
 
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
-  
-  const query = microQuery(req)
+  addHeaders(res)
 
-  if (!query.url)
+  const { url } = queryParser(req)
+
+  if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
   // Fetch page
-  const fetchRes = await fetch(query.url, fetchOptions)
+  const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
   const structuredData = unfluff(text)
 
@@ -32,7 +31,7 @@ module.exports = async (req, res) => {
     googleNews(words, (err, response) => {
       if (err || !response.links) return resolve([])
       let links = response.links.map(link => {
-        const domain = url.parse(link.href).host.replace(/^www./, '')
+        const domain = urlParser.parse(link.href).host.replace(/^www./, '')
         if (!domains.includes(domain))
           domains.push(domain)
         return {
@@ -64,7 +63,7 @@ module.exports = async (req, res) => {
   }
 
   return send(res, 200, {
-    url: query.url,
+    url,
     articles,
     domains,
     indicators

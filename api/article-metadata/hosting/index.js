@@ -1,27 +1,23 @@
-const { send } = require('micro')
-const microQuery = require('micro-query')
-const url = require('url')
+const urlParser = require('url')
 const dns = require('dns')
 const geoip = require('geoip-lite')
 
+const { send, addHeaders, queryParser } = require('../../lib/helper')
+
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
-  
-  const query = microQuery(req)
+  addHeaders(res)
 
-  let hostname = ''
+  const { url } = queryParser(req)
 
-  if (query.url) {
-    const urlParts = url.parse(query.url)
-    hostname = urlParts.hostname
-  } else if (query.hostname) {
-    hostname = query.domain
-  } else {
-    return send(res, 400, { error: 'URL or hostname parameter required' })
-  }
+  if (!url)
+    return send(res, 400, { error: 'URL parameter missing' })
+
+  const urlParts = urlParser.parse(url)
+  const hostname = urlParts.hostname
 
   dns.resolve(hostname, (error, address, family) => {
     return send(res, 200, {
+      url,
       hostname,
       ip: address,
       location: (address) ? geoip.lookup(address[0]) : null

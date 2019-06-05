@@ -1,22 +1,21 @@
-const { send } = require('micro')
-const microQuery = require('micro-query')
 const fetch = require('node-fetch')
 const unfluff = require('unfluff')
 const google = require('google')
 
-const fetchOptions = require('../content/fetch-options')
+const { send, addHeaders, queryParser } = require('../../lib/helper')
+const fetchOptions = require('../../lib/fetch-options')
 
 google.resultsPerPage = 25
 
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
+  addHeaders(res)
+
+  const { url } = queryParser(req)
   
-  const query = microQuery(req)
-  
-  if (!query.url)
+  if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
   
-  const fetchRes = await fetch(query.url, fetchOptions)
+  const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
   const structuredData = unfluff(text)
 
@@ -34,11 +33,11 @@ module.exports = async (req, res) => {
           } else {
             const links = []
             res.links.forEach(link => {
-              const url = link.link
+              const linkUrl = link.link
               const title = link.title.replace(/^FACT CHECK: /, '').replace(/ - Snopes.com$/, '')
-              if (url && url.startsWith('https://www.snopes.com/fact-check/')) {
+              if (linkUrl && linkUrl.startsWith('https://www.snopes.com/fact-check/')) {
                 links.push({
-                  url,
+                  url: linkUrl,
                   title
                 })
               }
@@ -65,10 +64,10 @@ module.exports = async (req, res) => {
           } else {
             const links = []
             res.links.forEach(link => {
-              const url = link.link
+              const linkUrl = link.link
               const title = link.title.replace(/ - FactCheck.org$/, '').replace(/^FactCheck.org -/, '').replace(/ site:www.factcheck.org$/, '')
               links.push({
-                url,
+                url: linkUrl,
                 title
               })
             })
@@ -94,7 +93,7 @@ module.exports = async (req, res) => {
   }
 
   return send(res, 200, {
-    url: query.url,
+    url,
     ...factChecks,
     indicators,
     potentiallyDisputed

@@ -1,11 +1,12 @@
-const { send } = require('micro')
 const googleNews = require('my-google-news')
 const url = require('url')
 
 googleNews.resultsPerPage = 25 // max 100
 
+const { send, addHeaders } = require('../lib/helper')
+
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 10}`)
+  addHeaders(res)
 
   let domains = []
   const articles = await new Promise(async (resolve) => {

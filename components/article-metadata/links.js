@@ -15,6 +15,7 @@ export default class extends React.Component {
         <p>
           Found <strong>{links.length}</strong> links from this article.
         </p>
+        <ul>
         {links.map((link, i) => (
           <li key={`${link.url}`}>
             <Link
@@ -28,6 +29,7 @@ export default class extends React.Component {
             { link.domain && <small> – {' '}{link.domain}</small> }
           </li>
         ))}
+        </ul>
       </>
     )
   }

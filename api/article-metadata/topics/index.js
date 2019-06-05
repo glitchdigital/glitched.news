@@ -1,5 +1,3 @@
-const { send } = require('micro')
-const microQuery = require('micro-query')
 const fetch = require('node-fetch')
 const unfluff = require('unfluff')
 const nlp = require('compromise')
@@ -8,19 +6,20 @@ const googleTrendsApi = require('google-trends-api')
 const stopwords = require('stopwords-en')
 const mostCommon = require('most-common')
 
-const fetchOptions = require('../content/fetch-options')
+const { send, addHeaders, queryParser } = require('../../lib/helper')
+const fetchOptions = require('../../lib/fetch-options')
 
 // @FIXME This contains a lot of English language specific logic!
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', `max-age=60, s-maxage=${60 * 60}`)
-  
-  const query = microQuery(req)
+  addHeaders(res)
 
-  if (!query.url)
+  const { url } = queryParser(req)
+
+  if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
   // Fetch page
-  const fetchRes = await fetch(query.url, fetchOptions)
+  const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
   const structuredData = unfluff(text)
 
@@ -91,12 +90,12 @@ module.exports = async (req, res) => {
           let name = googleTopic.title
           let count = topic.count
           let description = (wikipediaData[0]) ? wikipediaData[0].description : googleTopic.type
-          let url = (wikipediaData[0]) ? wikipediaData[0].url : null
+          let topicUrl = (wikipediaData[0]) ? wikipediaData[0].url : null
           
           topicsWithDetail.push({
             name,
             description,
-            url,
+            url: topicUrl,
             count
           })
         } else {
@@ -105,7 +104,7 @@ module.exports = async (req, res) => {
           let name = topic.name
           let count = topic.count
           let description = (wikipediaData[0]) ? wikipediaData[0].description : null
-          let url = (wikipediaData[0]) ? wikipediaData[0].url : null
+          let topicUrl = (wikipediaData[0]) ? wikipediaData[0].url : null
 
           const matches = words.match(new RegExp(name.replace(/[^A-z0-9\-' ]/, ''), 'img'))
           if (matches && matches[0]) {
@@ -115,7 +114,7 @@ module.exports = async (req, res) => {
           topicsWithDetail.push({
             name,
             description,
-            url,
+            url: topicUrl,
             count
           })
         }
@@ -188,7 +187,7 @@ module.exports = async (req, res) => {
   keywords = keywordsWithUrls
   
   const response = {
-    url: query.url,
+    url,
     topics,
     keywords
   }

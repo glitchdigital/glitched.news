@@ -18,3 +18,15 @@ progress::-moz-progress-bar {
   border-radius: 10px;
   background-color: rgb(48,124,246);
 }
+
+ol, ul {
+  padding-left: 20px;
+}
+
+ul {
+  list-style-type: square;
+}
+
+th, td {
+  padding: 5px;
+}
