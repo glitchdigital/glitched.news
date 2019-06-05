@@ -1,10 +1,9 @@
 import React from "react"
 import Router from 'next/router'
-import Head from 'next/head'
 import { Trans } from "@lingui/macro"
-import 'isomorphic-unfetch'
 
 import Package from '../package'
+import { fetchFromApi } from '../components/api'
 import Page from '../components/page'
 import Locale from '../components/locale'
 import Trending from '../components/trending'
@@ -19,12 +18,6 @@ import Topics from '../components/article-metadata/topics'
 import Related from '../components/article-metadata/related'
 import Links from '../components/article-metadata/links'
 import Blacklists from '../components/article-metadata/blacklists'
-
-async function api({ endpoint } = {}) {
-  const server = `${window.location.protocol}//${window.location.host}`
-  const request = await fetch(`${server}${endpoint}`)
-  return await request.json()
-}
 
 export default class extends React.Component {
   static async getInitialProps({ query }) {
@@ -56,7 +49,7 @@ export default class extends React.Component {
     if (this.state.articleUrl) {
       this.onSubmit()
     } else {
-      const trending = await api({ endpoint: `/api/trending` })
+      const trending = await fetchFromApi(`/api/trending`)
       this.setState({ trending })
     }
   }
@@ -116,7 +109,7 @@ export default class extends React.Component {
     // If we have a URL, get article metadata
     if (articleUrl) {
     for (let prop in this.state.articleMetadata) {
-      api({ endpoint: `/api/article-metadata/${prop}?url=${articleUrl}` })
+      fetchFromApi(`/api/article-metadata/${prop}?url=${articleUrl}`)
       .then(result => {
         this.setState(state => {
           let newState = state
@@ -125,7 +118,7 @@ export default class extends React.Component {
         })
       })
       .catch(e => {
-        // @TODO
+        console.e.log(`Error getting article metadata for ${prop}`, e)
       })
     } 
     }
@@ -152,9 +145,6 @@ export default class extends React.Component {
 
     return (
       <Page>
-        <Head>
-          <title>glitched.news</title>
-        </Head>
         <Locale/>
         <form onSubmit={this.onSubmit} style={{margin: 0}}>
           <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 0, marginBottom: 20}}>
