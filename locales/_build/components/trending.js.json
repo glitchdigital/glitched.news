@@ -1,6 +1,6 @@
 {
   "try_inspecting": {
-    "defaults": "Try inspecting recent news articles from <0>Google News</0>",
+    "defaults": "Try inspecting recent news articles",
     "origin": [
       [
         "components/trending.js",

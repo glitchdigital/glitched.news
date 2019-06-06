@@ -4,11 +4,9 @@ const whoisLookup = require('whois-promise')
 const moment = require('moment')
 const sslCertificate = require('get-ssl-certificate')
 
-const { send, addHeaders, queryParser } = require('../../lib/helper')
+const { send, queryParser } = require('../../../lib/request-handler')
 
 module.exports = async (req, res) => {
-  addHeaders(res)
-
   const { url } = queryParser(req)
 
   if (!url)

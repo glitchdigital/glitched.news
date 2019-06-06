@@ -2,11 +2,9 @@ const urlParser = require('url')
 const dns = require('dns')
 const geoip = require('geoip-lite')
 
-const { send, addHeaders, queryParser } = require('../../lib/helper')
+const { send, queryParser } = require('../../../lib/request-handler')
 
 module.exports = async (req, res) => {
-  addHeaders(res)
-
   const { url } = queryParser(req)
 
   if (!url)

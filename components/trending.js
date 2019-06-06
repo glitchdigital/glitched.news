@@ -7,7 +7,7 @@ export default class extends React.Component {
     return (
       <>
         <p>
-          <em><Trans id="try_inspecting">Try inspecting recent news articles from <strong>Google News</strong></Trans>…</em>
+          <em><Trans id="try_inspecting">Try inspecting recent news articles</Trans>…</em>
         </p>
         {trending.articles.map(article => (
           <p key={article.url} style={{marginBottom: 0}}>

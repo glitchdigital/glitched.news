@@ -3,11 +3,9 @@ const url = require('url')
 
 googleNews.resultsPerPage = 25 // max 100
 
-const { send, addHeaders } = require('../lib/helper')
+const { send } = require('../../lib/request-handler')
 
 module.exports = async (req, res) => {
-  addHeaders(res)
-
   let domains = []
   const articles = await new Promise(async (resolve) => {
     googleNews('breaking', (err, response) => {

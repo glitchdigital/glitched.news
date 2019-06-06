@@ -2,13 +2,11 @@ const domainParser = require('effective-domain-name-parser')
 const urlParser = require('url')
 const csvString = require('csv-string')
 
-const { send, addHeaders, queryParser } = require('../../lib/helper')
+const { send, queryParser } = require('../../../lib/request-handler')
 const dailydot = require('./dailydot')
 const politifact = require('./politifact')
 
 module.exports = async (req, res) => {
-  addHeaders(res)
-
   const { url } = queryParser(req)
 
   if (!url)

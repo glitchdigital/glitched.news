@@ -1,4 +1,6 @@
 @import "marx.min.css";
+@import "animate";
+@import "spinner";
 
 progress {
   border-radius: 10px; 
@@ -29,4 +31,14 @@ ul {
 
 th, td {
   padding: 5px;
+}
+
+.footer {
+  color: rgba(0,0,0,.54);
+  small, a {
+    color: rgba(0,0,0,.54);
+  }
+  a {
+    text-decoration: underline;
+  }
 }

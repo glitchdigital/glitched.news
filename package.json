@@ -1,16 +1,16 @@
 {
   "name": "glitched-news",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "A prototype research tool to demonstrate how metadata and automated analysis can be combined.",
   "repository": "https://github.com/glitchdigital/glitched.news",
   "scripts": {
     "dev": "now dev",
     "deploy": "now",
-    "deploy:production": "now --target production",
+    "deploy:prod": "now --target production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "add-locale": "lingui add-locale",
-    "locale:extract": "lingui extract",
-    "locale:compile": "lingui compile"
+    "extract": "lingui extract",
+    "compile": "lingui compile"
   },
   "author": "Iain Collins <iain@glitch.digital>",
   "license": "ISC",

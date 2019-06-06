@@ -3,7 +3,6 @@ import Router from 'next/router'
 import { Trans } from "@lingui/macro"
 
 import Package from '../package'
-import { fetchFromApi } from '../components/api'
 import Page from '../components/page'
 import Locale from '../components/locale'
 import Trending from '../components/trending'
@@ -40,16 +39,25 @@ export default class extends React.Component {
         factchecks: null,
         blacklists: null
       },
-      trending: null
+      trending: null,
+      indicators: {
+        positive: [],
+        negative: []
+      },
+      inProgress: false
     }
     this.onSubmit = this.onSubmit.bind(this)
+    this.serverUrl = null // Set when page loads on client
   }
 
   async componentDidMount() {
+    this.serverUrl = `${window.location.protocol}//${window.location.host}`
+
     if (this.state.articleUrl) {
       this.onSubmit()
     } else {
-      const trending = await fetchFromApi(`/api/trending`)
+      const request = await fetch(`${this.serverUrl}/api/trending`)
+      const trending = await request.json()
       this.setState({ trending })
     }
   }
@@ -73,12 +81,13 @@ export default class extends React.Component {
 
     let articleUrl = null
 
-    if (!document.getElementById('url') || !document.getElementById('url').value) {
+    if (!document.getElementById('url').value) {
       // Reset URL browser address bar
       Router.push('/', '/', {})
     } else {
       // Update URL browser address bar to reflect it has a URL
       articleUrl = document.getElementById('url').value
+      document.getElementById('url').className = 'animated rubberBand'
 
       // Add protocol to URL if none specified
       if (articleUrl && !articleUrl.includes('//')) {
@@ -103,74 +112,92 @@ export default class extends React.Component {
         related: null,
         factchecks: null,
         blacklists: null
-      }
+      },
+      indicators: {
+        positive: [],
+        negative: []
+      },
+      inProgress: (articleUrl) ? true : false
     })
 
     // If we have a URL, get article metadata
     if (articleUrl) {
-    for (let prop in this.state.articleMetadata) {
-      fetchFromApi(`/api/article-metadata/${prop}?url=${articleUrl}`)
-      .then(result => {
-        this.setState(state => {
-          let newState = state
-          newState.articleMetadata[prop] = result
-          return newState
+      /*
+      const request = await fetch(`${this.serverUrl}/api/article-metadata?url=${articleUrl}`
+      const articleMetadata = await request.json()
+      this.setState({
+        articleMetadata,
+        inProgress: false
+      })
+      */
+      this.eventSource = new EventSource(`${this.serverUrl}/api/article-metadata?url=${articleUrl}&stream=true`)
+      this.eventSource.addEventListener('message', event => {
+        // Update state with latest data
+        const eventData = JSON.parse(event.data)
+        let articleMetadata = this.state.articleMetadata
+        articleMetadata[eventData.endpoint] = eventData.data
+        
+        const indicators = { positive: [], negative: [] }
+        for (let prop in articleMetadata) {
+          if (articleMetadata[prop] !== null) {
+            // Get positive and negative indicators in each section
+            // (Looping over like this preserves the order of them)
+            if (articleMetadata[prop].indicators) {
+              indicators.positive = indicators.positive.concat(articleMetadata[prop].indicators.positive)
+              indicators.negative = indicators.negative.concat(articleMetadata[prop].indicators.negative)
+            }
+          }
+        }
+        
+        this.setState({
+          articleMetadata,
+          indicators,
+          inProgress: eventData.inProgress
         })
+    
+        // If data complete close event source
+        if (eventData.inProgress !== true) {
+          this.eventSource.close()
+          document.getElementById('url').className = ''
+        }
       })
-      .catch(e => {
-        console.e.log(`Error getting article metadata for ${prop}`, e)
+      this.eventSource.addEventListener('error', event => {
+        this.eventSource.close()
+        this.setState({ inProgress: false })
+        document.getElementById('url').className = ''
       })
-    } 
     }
   }
 
   render() { 
-    const { articleUrl, articleMetadata, trending } = this.state
-    const indicators = { positive: [], negative: [] }
-
-    const total = Object.keys(articleMetadata).length
-    let progress = 0
-    for (let prop in articleMetadata) {
-      if (articleMetadata[prop] !== null) {
-        progress++
-
-        // Get positive and negative indicators in each section
-        // (Looping over like this preserves the order of them)
-        if (articleMetadata[prop].indicators) {
-          indicators.positive = indicators.positive.concat(articleMetadata[prop].indicators.positive)
-          indicators.negative = indicators.negative.concat(articleMetadata[prop].indicators.negative)
-        }
-      }
-    }
+    const { articleUrl, articleMetadata, inProgress, indicators, trending } = this.state
 
     return (
       <Page>
         <Locale/>
-        <form onSubmit={this.onSubmit} style={{margin: 0}}>
-          <div style={{background: '#eee', padding: '10px 20px', borderRadius: 10, marginTop: 0, marginBottom: 20}}>
-            <div style={{display: 'inline-block', width: '100%', marginBottom: 10}}>
-              <label style={{fontWeight: 600, textAlign: 'center', padding: '0 20'}} htmlFor="url">
-                <Trans id="url_prompt">
-                  Enter a news article URL to analyze
-                </Trans>
-              </label>
-              <input disabled={(progress > 0 && progress < total)} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{marginTop: 5, borderRadius: 50, fontSize: '.9em'}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
-            </div>
-            <p style={{marginBottom: 0}}>
-              <small>
-                <Trans id="about_prototype">
-                  A prototype research tool to demonstrate how metadata and automated analysis can be combined.
-                </Trans>
-              </small>
-            </p>
-            { progress > 0 && progress < total && (
-              <>
-                { progress < total && (
-                  <progress value={progress} max={total} style={{marginTop: 10}} />
-                )}
-              </>
-            )}
+        <form id="url-form" onSubmit={this.onSubmit} style={{margin: 0}}>
+          <label style={{fontWeight: 600}} htmlFor="url">
+            <Trans id="url_prompt">
+              Enter a news article URL to analyze
+            </Trans>
+          </label>
+          <input disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{fontSize: '.9em'}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
+          <p>
+            <small>
+              <Trans id="about_prototype">
+                A prototype research tool to demonstrate how metadata and automated analysis can be combined.
+              </Trans>
+            </small>
+          </p>
+          { inProgress && (
+            <div className="">
+          <div className="spinner">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="45"/>
+            </svg>
           </div>
+          </div>
+          )}
         </form>
         { !articleUrl && trending && trending.articles && trending.articles.length > 0 && <Trending trending={trending} /> }
         { articleMetadata.content && <Headline content={articleMetadata.content} /> }
@@ -185,11 +212,11 @@ export default class extends React.Component {
         { articleMetadata.related && articleMetadata.related && <Related related={articleMetadata.related} /> }
         { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
         <hr/>
-        <p style={{marginBottom: 5}}>
+        <p className="footer">
           <small>
-            <strong>gliched.news</strong>
-            <> &copy; <a href="https://glitch.digital">GLITCH DIGITAL LIMITED</a>, 2019. </>
-            <> Version {Package.version}. </>
+            <a href="https://glitched.news">glitched.news</a> &copy; <a href="https://glitch.digital">GLITCH DIGITAL LIMITED</a>, 2019.
+            Version {Package.version}.
+            {' '}
             <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
               Open source (ISC License).
             </a>

@@ -3,14 +3,12 @@ const googleNews = require('my-google-news')
 const fetch = require('node-fetch')
 const urlParser = require('url')
 
-const { send, addHeaders, queryParser } = require('../../lib/helper')
-const fetchOptions = require('../../lib/fetch-options')
+const { send, queryParser } = require('../../../lib/request-handler')
+const fetchOptions = require('../../../lib/fetch-options')
 
 googleNews.resultsPerPage = 25 // Can be max 100
 
 module.exports = async (req, res) => {
-  addHeaders(res)
-
   const { url } = queryParser(req)
 
   if (!url)

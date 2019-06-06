@@ -2,14 +2,12 @@ const fetch = require('node-fetch')
 const unfluff = require('unfluff')
 const google = require('google')
 
-const { send, addHeaders, queryParser } = require('../../lib/helper')
-const fetchOptions = require('../../lib/fetch-options')
+const { send, queryParser } = require('../../../lib/request-handler')
+const fetchOptions = require('../../../lib/fetch-options')
 
 google.resultsPerPage = 25
 
 module.exports = async (req, res) => {
-  addHeaders(res)
-
   const { url } = queryParser(req)
   
   if (!url)
