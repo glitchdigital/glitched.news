@@ -175,7 +175,7 @@ export default class extends React.Component {
     return (
       <Page>
         <Locale/>
-        <form id="url-form" onSubmit={this.onSubmit} style={{margin: 0}}>
+        <form id="url-form" onSubmit={this.onSubmit} style={{margin: 0, overflow: 'hidden'}}>
           <label style={{fontWeight: 600}} htmlFor="url">
             <Trans id="url_prompt">
               Enter a news article URL to analyze
