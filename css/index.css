@@ -1,24 +1,15 @@
 @import "marx.min.css";
 @import "animations";
 @import "spinner";
+@import "article";
+@import "sentiment";
 
-progress {
-  border-radius: 10px; 
-  width: 100%;
-  height: 10px;
-  background-color: #ccc;
-}
-progress::-webkit-progress-bar {
-  background-color: #ccc;
-  border-radius: 10px;
-}
-progress::-webkit-progress-value {
-  border-radius: 10px;
-  background-color: rgb(48,124,246);
-}
-progress::-moz-progress-bar {
-  border-radius: 10px;
-  background-color: rgb(48,124,246);
+header,
+footer {
+  display: block;
+  margin: 0 auto;
+  max-width: 768px;
+  padding: 0 16px 16px;
 }
 
 ol, ul {
@@ -33,12 +24,9 @@ th, td {
   padding: 5px;
 }
 
-.footer {
-  color: rgba(0,0,0,.54);
-  small, a {
-    color: rgba(0,0,0,.54);
-  }
-  a {
-    text-decoration: underline;
+footer {
+  padding-top: 16px;
+  p {
+    font-size: 0.8em;
   }
 }

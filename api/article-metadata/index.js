@@ -13,9 +13,10 @@ module.exports = async (req, res) => {
     'hosting',
     'related',
     'social',
-    'text',
+    // 'text', // This isn't use currently (duplicates functionality in 'content')
     'topics'
   ]
+
   const protocol = (req.headers['x-forwarded-proto']) ? req.headers['x-forwarded-proto'] : 'https'
   const server = req.headers['host']
 

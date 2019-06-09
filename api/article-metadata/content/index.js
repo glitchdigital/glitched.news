@@ -9,6 +9,7 @@ const vader = require('vader-sentiment')
 const { send, queryParser } = require('../../../lib/request-handler')
 const fetchOptions = require('../../../lib/fetch-options')
 
+// @TODO Consider pros and cons of breaking out functionality into different endpoints
 module.exports = async (req, res) => {
   const { url } = queryParser(req)
 

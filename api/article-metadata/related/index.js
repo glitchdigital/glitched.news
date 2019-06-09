@@ -25,18 +25,28 @@ module.exports = async (req, res) => {
   ].join(' ').replace(/[^A-z0-9\- ]/mg, ' ')
 
   let domains = []
-  const articles = await new Promise(async (resolve) => {
+  let articles = []
+
+  await new Promise(async (resolve) => {
     googleNews(words, (err, response) => {
       if (err || !response.links) return resolve([])
       let links = response.links.map(link => {
+        // If article URL matches input URL do not consider it
+        // a 'related article'
+        if (link.href === url) return
+
+        // Simple approach to domain checking is fine
+        // Some sites have subdomains that are different publications
+        // and this approach works well with that
         const domain = urlParser.parse(link.href).host.replace(/^www./, '')
         if (!domains.includes(domain))
           domains.push(domain)
-        return {
+        
+        articles.push({
           title: link.title,
           url: link.href,
-          domain, 
-        }
+          domain
+        })
       })
       return resolve(links)
     })

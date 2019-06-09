@@ -50,15 +50,17 @@ class Locale extends React.Component {
       <I18n>
         {({ i18n }) => (
           <p style={{marginTop: 10, marginBottom: 10, textAlign: 'right', fontSize: '0.9em'}}>
-            <span>Language: </span>
-            {Object.keys(localeNames).map(l => 
-              <span key={`locale-${l}`}>
-                <a href={`?locale=${l}`}
-                    onClick={this.onSetLocale}
-                    data-locale={l}
-                    style={{fontWeight: ((locale) ? l === locale : l === i18n._(t('_locale')`en`)) ? 'bold' : 'normal'}}
-                  >{localeNames[l]}</a>{' '}
-              </span>
+            {Object.keys(localeNames).map((l, i) =>
+              <>
+                {i > 0 && <> | </> }
+                <span key={`locale-${l}`}>
+                  <a href={`https://${l}.glitched.news`}
+                      onClick={this.onSetLocale}
+                      data-locale={l}
+                      style={{fontWeight: ((locale) ? l === locale : l === i18n._(t('_locale')`en`)) ? 'bold' : 'normal'}}
+                    >{localeNames[l]}</a>{' '}
+                </span>
+              </>
             )}
           </p>
         )}

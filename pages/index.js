@@ -55,11 +55,11 @@ export default class extends React.Component {
 
     if (this.state.articleUrl) {
       this.onSubmit()
-    } else {
-      const request = await fetch(`${this.serverUrl}/api/trending`)
-      const trending = await request.json()
-      this.setState({ trending })
     }
+
+    const request = await fetch(`${this.serverUrl}/api/trending`)
+    const trending = await request.json()
+    this.setState({ trending })
   }
 
   componentDidUpdate(prevProps) {
@@ -83,11 +83,11 @@ export default class extends React.Component {
 
     if (!document.getElementById('url').value) {
       // Reset URL browser address bar
-      Router.push('/', '/', {})
+      Router.push('/', '/', { shallow: true })
     } else {
       // Update URL browser address bar to reflect it has a URL
       articleUrl = document.getElementById('url').value
-      document.getElementById('url').className = 'animated rubberBand'
+      document.getElementById('url').className = 'animated pulse faster'
 
       // Add protocol to URL if none specified
       if (articleUrl && !articleUrl.includes('//')) {
@@ -122,51 +122,69 @@ export default class extends React.Component {
 
     // If we have a URL, get article metadata
     if (articleUrl) {
-      /*
-      const request = await fetch(`${this.serverUrl}/api/article-metadata?url=${articleUrl}`
-      const articleMetadata = await request.json()
-      this.setState({
-        articleMetadata,
-        inProgress: false
-      })
-      */
-      this.eventSource = new EventSource(`${this.serverUrl}/api/article-metadata?url=${articleUrl}&stream=true`)
-      this.eventSource.addEventListener('message', event => {
-        // Update state with latest data
-        const eventData = JSON.parse(event.data)
-        let articleMetadata = this.state.articleMetadata
-        articleMetadata[eventData.endpoint] = eventData.data
-        
-        const indicators = { positive: [], negative: [] }
-        for (let prop in articleMetadata) {
-          if (articleMetadata[prop] !== null) {
-            // Get positive and negative indicators in each section
-            // (Looping over like this preserves the order of them)
-            if (articleMetadata[prop].indicators) {
-              indicators.positive = indicators.positive.concat(articleMetadata[prop].indicators.positive)
-              indicators.negative = indicators.negative.concat(articleMetadata[prop].indicators.negative)
-            }
+      // Server Side Events are experimental feature for now
+      // as it's proving slightly slower than just using REST
+      // and the streaming of events isn't working as intended
+      // (output is being buffered but shouldn't be).
+      const ENABLE_SERVER_SIDE_EVENTS = false
+      if (ENABLE_SERVER_SIDE_EVENTS && typeof(EventSource) !== 'undefined') {
+        // Use Server Side Events (EventSource) if the browser supports them
+        this.eventSource = new EventSource(`${this.serverUrl}/api/article-metadata?url=${articleUrl}&stream=true`)
+        this.eventSource.addEventListener('message', event => {
+          // Update state with latest data
+          const eventData = JSON.parse(event.data)
+          let articleMetadata = this.state.articleMetadata
+          articleMetadata[eventData.endpoint] = eventData.data          
+          const indicators = this.getTrustIndicators(articleMetadata)
+          
+          this.setState({
+            articleMetadata,
+            indicators,
+            inProgress: eventData.inProgress
+          })
+      
+          // If data complete close event source
+          if (eventData.inProgress !== true) {
+            this.eventSource.close()
+            document.getElementById('url').className = ''
           }
-        }
-        
+        })
+        this.eventSource.addEventListener('error', event => {
+          this.eventSource.close()
+          this.setState({ inProgress: false })
+          document.getElementById('url').className = ''
+        })
+      } else {
+        // If the browser doesn't support EventSource (Server Side Events) use REST API
+        // (This is really just Internet Explorer - including Edge!)
+        const request = await fetch(`${this.serverUrl}/api/article-metadata?url=${articleUrl}`)
+        const articleMetadata = await request.json()
+        const indicators = this.getTrustIndicators(articleMetadata)
+
         this.setState({
           articleMetadata,
           indicators,
-          inProgress: eventData.inProgress
+          inProgress: false
         })
-    
-        // If data complete close event source
-        if (eventData.inProgress !== true) {
-          this.eventSource.close()
-          document.getElementById('url').className = ''
-        }
-      })
-      this.eventSource.addEventListener('error', event => {
-        this.eventSource.close()
-        this.setState({ inProgress: false })
+
         document.getElementById('url').className = ''
-      })
+      }
     }
+  }
+
+  getTrustIndicators(articleMetadata) {
+    const indicators = { positive: [], negative: [] }
+    for (let prop in articleMetadata) {
+      if (articleMetadata[prop] !== null) {
+        // Get positive and negative indicators in each section
+        // (Looping over like this preserves the order of them)
+        if (articleMetadata[prop].indicators) {
+          indicators.positive = indicators.positive.concat(articleMetadata[prop].indicators.positive)
+          indicators.negative = indicators.negative.concat(articleMetadata[prop].indicators.negative)
+        }
+      }
+    }
+    return indicators 
   }
 
   render() { 
@@ -174,54 +192,58 @@ export default class extends React.Component {
 
     return (
       <Page>
-        <Locale/>
-        <form id="url-form" onSubmit={this.onSubmit} style={{margin: 0, overflow: 'hidden'}}>
-          <label style={{fontWeight: 600}} htmlFor="url">
-            <Trans id="url_prompt">
-              Enter a news article URL to analyze
-            </Trans>
-          </label>
-          <input disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{fontSize: '.9em'}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
-          <p>
-            <small>
-              <Trans id="about_prototype">
-                A prototype research tool to demonstrate how metadata and automated analysis can be combined.
+        <header>
+          <Locale/>
+          <form id="url-form" onSubmit={this.onSubmit}>
+            <label style={{fontWeight: 600}} htmlFor="url">
+              <Trans id="url_prompt">
+                Enter a news article URL to analyze
               </Trans>
-            </small>
-          </p>
+            </label>
+            <input disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{fontSize: '.9em'}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
+            <p>
+              <small>
+                <Trans id="about_prototype">
+                  A prototype research tool to demonstrate how metadata and automated analysis can be combined.
+                </Trans>
+              </small>
+            </p>
+          </form>
+        </header>
+        <main>
           { inProgress && (
-            <div className="">
-          <div className="spinner">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="50" cy="50" r="45"/>
-            </svg>
-          </div>
-          </div>
-          )}
-        </form>
-        { !articleUrl && trending && trending.articles && trending.articles.length > 0 && <Trending trending={trending} /> }
-        { articleMetadata.content && <Headline content={articleMetadata.content} /> }
-        { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }
-        { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
-        { articleMetadata.content && <Content content={articleMetadata.content} /> }
-        { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
-        { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
-        { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
-        { articleMetadata.content && articleMetadata.factchecks && <FactChecks factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
-        { articleMetadata.topics && articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
-        { articleMetadata.related && articleMetadata.related && <Related related={articleMetadata.related} /> }
-        { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
-        <hr/>
-        <p className="footer">
-          <small>
+              <div className="spinner">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="50" cy="50" r="45"/>
+                </svg>
+              </div>
+            )}
+            { !articleUrl && trending && trending.articles && trending.articles.length > 0 && <Trending trending={trending} /> }
+            { articleMetadata.content && <Headline content={articleMetadata.content} /> }
+            { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }
+            { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
+            { articleMetadata.content && <Content content={articleMetadata.content} /> }
+            { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
+            { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
+            { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
+            { articleMetadata.content && articleMetadata.factchecks && <FactChecks factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
+            { articleMetadata.topics && articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
+            { articleMetadata.related && articleMetadata.related && <Related related={articleMetadata.related} /> }
+            { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
+        </main>
+        {/* <aside></aside> */}
+        <footer>
+          <p>
             <a href="https://glitched.news">glitched.news</a> &copy; <a href="https://glitch.digital">GLITCH DIGITAL LIMITED</a>, 2019.
+          </p>
+          <p>
             Version {Package.version}.
             {' '}
             <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
-              Open source (ISC License).
+              Open source (ISC License)  
             </a>
-          </small>
-        </p>
+          </p>
+        </footer>
       </Page>
     )
   }

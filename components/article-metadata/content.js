@@ -33,7 +33,7 @@ export default class extends React.Component {
           </li>
         ) }
           <li>
-          <strong>{content.wordCount}</strong> words / <strong>{content.characterCount}</strong> characters
+          <strong>{content.wordCount}</strong> words ({content.characterCount} characters)
           </li>
         </ul>
       </>

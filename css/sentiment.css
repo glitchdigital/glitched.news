@@ -1,0 +1,12 @@
+.sentiment__positive,
+.sentiment__negative { }
+
+.sentiment__positive--highlighted {
+  font-weight: 600;
+  color: green;
+}
+
+.sentiment__negative--highlighted {
+  font-weight: 600;
+  color: red;
+}

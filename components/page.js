@@ -17,8 +17,6 @@ export default ({ children }) => (
       <link rel="shortcut icon" href="/static/favicon.ico" />
       <title>glitched.news</title>
     </Head>
-    <main>
-      { children }
-    </main>
+    { children }
   </>
 )

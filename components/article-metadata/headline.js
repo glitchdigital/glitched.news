@@ -8,15 +8,15 @@ export default class extends React.Component {
       return null
 
     return (
-      <>
-        <h1 style={{fontWeight: 600, fontSize: 24}}>
+      <div className="article__headline">
+        { content.image && <a target="_blank" href={content.url}><img src={content.image}/></a> }
+        <h1>
           <a target="_blank" href={content.url}>{content.title}</a>
         </h1>
-        { content.image && <a target="_blank" href={content.url}><img src={content.image}/></a> }
         <p>
-          <a target="_blank" href={content.url}>⧉ {content.url}</a>
+          <a target="_blank" href={content.url}>{content.url}</a>
         </p>
-      </>
+      </div>
     )
   }
 }

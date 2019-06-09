@@ -1,11 +1,15 @@
 .spinner {
   margin: 5em 0;
   text-align: center;
+  width: 100%;
 }
 
 .spinner svg {
   animation: 2s linear infinite svg-animation;
-  max-width: 100px;
+  max-width: 40px;
+  background: #eee;
+  padding: 5px;
+  border-radius: 40px;
 }
 
 @keyframes svg-animation {
@@ -22,10 +26,11 @@
   display: block;
   fill: transparent;
   stroke: #ddd;
+  stroke: rgb(48,124,246);
   stroke-linecap: round;
   stroke-dasharray: 283;
   stroke-dashoffset: 280;
-  stroke-width: 5px;
+  stroke-width: 15px;
   transform-origin: 50% 50%;
 }
 
