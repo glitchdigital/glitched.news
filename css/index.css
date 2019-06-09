@@ -2,6 +2,7 @@
 @import "animations";
 @import "spinner";
 @import "article";
+@import "trending";
 @import "sentiment";
 
 header,
@@ -18,6 +19,10 @@ ol, ul {
 
 ul {
   list-style-type: square;
+}
+
+li {
+  line-height: 1.8;
 }
 
 th, td {

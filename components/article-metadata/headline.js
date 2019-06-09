@@ -9,7 +9,7 @@ export default class extends React.Component {
 
     return (
       <div className="article__headline">
-        { content.image && <a target="_blank" href={content.url}><img src={content.image}/></a> }
+        { content.image && <a target="_blank" href={content.url}><img alt="Main image from article" src={content.image}/></a> }
         <h1>
           <a target="_blank" href={content.url} rel='noreferrer'>{content.title}</a>
         </h1>
