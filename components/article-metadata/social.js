@@ -11,9 +11,8 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Social media</h3>
-        <h4>Facebook</h4>
         <ul>
-          { social.facebook.metadata && <li>Facebook metadata found on page.</li> }
+          { social.facebook.metadata && <li><strong>Facebook</strong> metadata found on page.</li> }
           { !social.facebook.metadata && <li>No Facebook metadata found on page.</li> }
           { social.facebook.comment_count &&
           <>
@@ -25,10 +24,7 @@ export default class extends React.Component {
             </li>
           </>
           }
-        </ul>
-        <h4>Twitter</h4>
-        <ul>
-          { social.twitter.metadata && <li>Twitter metadata found on page.</li> }
+          { social.twitter.metadata && <li><strong>Twitter</strong> metadata found on page.</li> }
           { !social.twitter.metadata && <li>No Twitter metadata found on page.</li> }
         </ul>
       </>

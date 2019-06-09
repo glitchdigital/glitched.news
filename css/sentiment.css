@@ -1,12 +1,24 @@
 .sentiment__positive,
 .sentiment__negative { }
 
+.sentiment__positive--highlighted,
+.sentiment__negative--highlighted {
+  span {
+    padding: .2em .4em;
+    border-radius: 1em;
+    font-weight: 600;
+    color: white;
+  }
+}
+
 .sentiment__positive--highlighted {
-  font-weight: 600;
-  color: green;
+  span {
+    background-color: green;
+  }
 }
 
 .sentiment__negative--highlighted {
-  font-weight: 600;
-  color: red;
+  span {
+    background-color: red;
+  }
 }

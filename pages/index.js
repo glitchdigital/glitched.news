@@ -224,10 +224,10 @@ export default class extends React.Component {
             { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
             { articleMetadata.content && <Content content={articleMetadata.content} /> }
             { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
-            { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
             { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
             { articleMetadata.content && articleMetadata.factchecks && <FactChecks factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
             { articleMetadata.topics && articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
+            { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
             { articleMetadata.related && articleMetadata.related && <Related related={articleMetadata.related} /> }
             { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
         </main>
