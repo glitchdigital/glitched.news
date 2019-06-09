@@ -234,12 +234,12 @@ export default class extends React.Component {
         {/* <aside></aside> */}
         <footer>
           <p>
-            <a href="https://glitched.news">glitched.news</a> &copy; <a href="https://glitch.digital">GLITCH DIGITAL LIMITED</a>, 2019.
+            <a target='_blank' rel='noreferrer' href='https://glitched.news'>glitched.news</a> &copy; <a target='_blank' rel='noreferrer' href='https://glitch.digital'>GLITCH.DIGITAL LIMITED</a>, {new Date().getFullYear()}
           </p>
           <p>
             Version {Package.version}.
             {' '}
-            <a target="_blank" href="https://github.com/glitchdigital/glitched.news">
+            <a target='_blank' rel='noreferrer' href='https://github.com/glitchdigital/glitched.news'>
               Open source (ISC License)  
             </a>
           </p>
