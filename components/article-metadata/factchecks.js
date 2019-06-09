@@ -24,11 +24,11 @@ export default class extends React.Component {
           <>
             <h4>Snopes</h4>
             <p>
-              Fact checks from <a target="_blank" href="https://www.snopes.com">Snopes</a> that might be related
+              Fact checks from <a target='_blank' href='https://www.snopes.com' rel='noreferrer'>Snopes</a> that might be related
             </p>
             {factchecks['snopes'].slice(0,5).map((link, i) => (
               <li key={`snopes-${link.url}`}>
-                <a target="_blank" href={link.url}>⧉ {link.title}</a>
+                <a target='_blank' href={link.url} rel='noreferrer'>{link.title}</a>
               </li>
             ))}
             <br/>
@@ -38,11 +38,11 @@ export default class extends React.Component {
           <>
             <h4>FactCheck.org</h4>
             <p>
-              Fact checks from <a target="_blank" href="https://www.factcheck.org">FactCheck.org</a> that might be related
+              Fact checks from <a target='_blank' href='https://www.factcheck.org' rel='noreferrer'>FactCheck.org</a> that might be related
             </p>
             {factchecks['factcheck.org'].slice(0,5).map((link, i) => (
               <li key={`factcheck.org-${link.url}`}>
-                <a target="_blank" href={link.url}>⧉ {link.title}</a>
+                <a target='_blank' href={link.url} rel='noreferrer'>{link.title}</a>
               </li>
             ))}
             <br/>

@@ -18,7 +18,7 @@ export default class extends React.Component {
                 query: { url: article.url }
               }}
               as={`/?url=${article.url}`}
-            ><a>{article.title}</a></Link>
+            ><a rel='noreferrer'>{article.title}</a></Link>
             <small> – {article.domain}</small>
           </p>
         ))}
