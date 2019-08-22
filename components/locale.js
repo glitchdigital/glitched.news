@@ -36,7 +36,10 @@ class Locale extends React.Component {
     // changes and have the new locale take effect
     let router = this.props.router
     router.query.locale = locale
-    Router.push(this.props.router)
+    Router.push({ 
+      pathname: router.pathname,
+      query: router.query
+    })
 
     // Update the HTML lang attribute on the DOM and window variable
     document.documentElement.lang = locale
@@ -49,18 +52,18 @@ class Locale extends React.Component {
     return (
       <I18n>
         {({ i18n }) => (
-          <p style={{marginTop: 10, marginBottom: 10, textAlign: 'right', fontSize: '0.9em'}}>
+          <p className="locales" style={{marginTop: 10, marginBottom: 10, textAlign: 'right', fontSize: '0.9em'}}>
             {Object.keys(localeNames).map((l, i) =>
-              <>
+              <span key={`locale locale-${l}`}>
                 {i > 0 && <> | </> }
-                <span key={`locale-${l}`}>
+                <span className='locale-name'>
                   <a href={`https://${l}.glitched.news`}
                       onClick={this.onSetLocale}
                       data-locale={l}
                       style={{fontWeight: ((locale) ? l === locale : l === i18n._(t('_locale')`en`)) ? 'bold' : 'normal'}}
-                    >{localeNames[l]}</a>{' '}
+                    >{localeNames[l]}</a>
                 </span>
-              </>
+              </span>
             )}
           </p>
         )}

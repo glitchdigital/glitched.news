@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
   const indicators = { positive: [], negative: [] }
   const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
-  const structuredData = unfluff(text)
+  const structuredData = unfluff(text, () => { console.log("unfluff callback")})
   const metadata = WAE().parse(text)
 
   if (metadata) {

@@ -2,7 +2,7 @@ const domainParser = require('effective-domain-name-parser')
 const urlParser = require('url')
 const csvString = require('csv-string')
 
-const { send, queryParser } = require('../../../lib/request-handler')
+const { send, queryParser } = require('../../../../lib/request-handler')
 const dailydot = require('./dailydot')
 const politifact = require('./politifact')
 

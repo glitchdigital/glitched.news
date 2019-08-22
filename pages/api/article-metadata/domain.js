@@ -1,3 +1,4 @@
+/*
 const urlParser = require('url')
 const domainParser = require('effective-domain-name-parser')
 const whoisLookup = require('whois-promise')
@@ -90,3 +91,4 @@ module.exports = async (req, res) => {
     indicators
   })
 }
+*/

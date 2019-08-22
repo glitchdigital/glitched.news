@@ -17,6 +17,7 @@ import Topics from '../components/article-metadata/topics'
 import Related from '../components/article-metadata/related'
 import Links from '../components/article-metadata/links'
 import Blacklists from '../components/article-metadata/blacklists'
+import StructuredData from '../components/article-metadata/structured-data'
 
 export default class extends React.Component {
   static async getInitialProps({ query }) {
@@ -37,7 +38,8 @@ export default class extends React.Component {
         topics: null,
         related: null,
         factchecks: null,
-        blacklists: null
+        blacklists: null,
+        'structured-data': null
       },
       trending: null,
       indicators: {
@@ -111,7 +113,8 @@ export default class extends React.Component {
         topics: null,
         related: null,
         factchecks: null,
-        blacklists: null
+        blacklists: null,
+        'structured-data': null,
       },
       indicators: {
         positive: [],
@@ -134,7 +137,7 @@ export default class extends React.Component {
           // Update state with latest data
           const eventData = JSON.parse(event.data)
           let articleMetadata = this.state.articleMetadata
-          articleMetadata[eventData.endpoint] = eventData.data          
+          articleMetadata[eventData.endpoint] = eventData.data
           const indicators = this.getTrustIndicators(articleMetadata)
           
           this.setState({
@@ -226,9 +229,10 @@ export default class extends React.Component {
             { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
             { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
             { articleMetadata.content && articleMetadata.factchecks && <FactChecks factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
-            { articleMetadata.topics && articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
+            { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
             { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
-            { articleMetadata.related && articleMetadata.related && <Related related={articleMetadata.related} /> }
+            { articleMetadata['structured-data'] && articleMetadata['structured-data'].testResults && <StructuredData testResults={articleMetadata['structured-data'].testResults} /> }
+            { articleMetadata.related && <Related related={articleMetadata.related} /> }
             { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
         </main>
         {/* <aside></aside> */}

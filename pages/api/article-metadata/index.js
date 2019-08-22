@@ -1,6 +1,6 @@
+//require('promise.allsettled').shim()
 const fetch = require('node-fetch')
-
-const { send, queryParser } = require('../../lib/request-handler')
+const { send, queryParser } = require('../../../lib/request-handler')
 
 module.exports = async (req, res) => {
   const { url, stream } = queryParser(req)
@@ -8,16 +8,17 @@ module.exports = async (req, res) => {
   const endpoints = [
     'blacklists',
     'content',
-    'domain',
+    // 'domain', // Disabled due to webpack issue with whois module since upgrading to Next.js 9
     'factchecks',
     'hosting',
     'related',
     'social',
     // 'text', // This isn't use currently (duplicates functionality in 'content')
-    'topics'
+    'topics',
+    'structured-data'
   ]
 
-  const protocol = (req.headers['x-forwarded-proto']) ? req.headers['x-forwarded-proto'] : 'https'
+  const protocol = (req.headers['x-forwarded-proto']) ? req.headers['x-forwarded-proto'] : 'http'
   const server = req.headers['host']
 
   let data = {}
@@ -27,8 +28,11 @@ module.exports = async (req, res) => {
     res.writeHead(200, {
       Connection: "keep-alive",
       'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache,no-transform'
+      'Cache-Control': 'no-cache,no-transform',
+      'X-Accel-Buffering': 'no'
     })
+
+    res.write(`id: none\n`)
 
     endpoints.map(async (endpoint) => {
       try {
