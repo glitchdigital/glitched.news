@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     'factchecks',
     'hosting',
     'related',
-    'social',
+    // 'social', // Removing social check as is redundant (and doesn't check accurately!)
     // 'text', // This isn't use currently (duplicates functionality in 'content')
     'topics',
     'structured-data'
