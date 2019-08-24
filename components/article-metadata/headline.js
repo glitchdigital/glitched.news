@@ -9,13 +9,11 @@ export default class extends React.Component {
 
     return (
       <div className="article__headline">
+        <h6>HEADLINE</h6>
         { content.image && <a target="_blank" href={content.url} rel='noreferrer'><img alt="Main image from article" src={content.image}/></a> }
         <h1>
           <a target="_blank" href={content.url} rel='noreferrer'>{content.title}</a>
         </h1>
-        <p>
-          <a target="_blank" href={content.url} rel='noreferrer'>{content.url}</a>
-        </p>
       </div>
     )
   }

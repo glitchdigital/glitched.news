@@ -1,6 +1,6 @@
 {
-  "try_inspecting": {
-    "defaults": "Try inspecting recent news articles",
+  "try_analyzing": {
+    "defaults": "Try analyzing recent news articles",
     "origin": [
       [
         "components/trending.js",

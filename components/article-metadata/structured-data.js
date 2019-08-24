@@ -3,7 +3,7 @@ import React from "react"
 export default class extends React.Component {
   render() {
     const { testResults } = this.props
-    //console.log('testResults', testResults)
+
     if (!testResults)
      return null
 
@@ -39,24 +39,24 @@ class TestResult extends React.Component {
   render() {
     const { test, description, value, passed, warning, info } = this.props
     let icon = '✕'
-    let className = 'test-fail'
+    let className = 'structured-data__test--fail'
     if (passed) {
       if (info) {
         icon = 'ⓘ'
-        className = 'test-info'
+        className = 'structured-data__test--info'
       } else {
         icon = '✓'
-        className = 'test-pass'
+        className = 'structured-data__test--pass'
       }
     } else if (warning) {
       icon = '⚠'
-      className = 'test-warn'
+      className = 'structured-data__test--warn'
     }
     return(
       <li className={className}>
-        <span className='test-summary'>
-          <span className='icon'>{icon} </span>
-          <span className='test-description'>{description || test}</span><br/>
+        <span className='structured-data__test-summary'>
+          <span className='structured-data__test-icon'>{icon} </span>
+          <span className='structured-data__test-description'>{description || test}</span><br/>
         </span>
       </li>
     )

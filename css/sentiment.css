@@ -5,7 +5,7 @@
 .sentiment__negative--highlighted {
   span {
     padding: .2em .4em;
-    border-radius: 1em;
+    border-radius: 5px;
     font-weight: 600;
     color: white;
   }
@@ -13,12 +13,12 @@
 
 .sentiment__positive--highlighted {
   span {
-    background-color: green;
+    background-color: #87ba72;
   }
 }
 
 .sentiment__negative--highlighted {
   span {
-    background-color: red;
+    background-color: #ff5e5e;
   }
 }

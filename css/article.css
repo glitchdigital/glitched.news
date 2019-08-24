@@ -1,17 +1,18 @@
+.article__headline {
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: #444;
+  }
 
-@media only screen and (min-width: 600px) {
-  .article__headline {
-    h1 {
-      font-size: 32px;
-      font-weight: 600;
-    }
-    img {
-      max-width: 220px;
-      padding: 8px 16px 16px 0;
-      float: left;
-    }
-    p {
-      clear: both;
-    }
+  h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+  }
+  
+  img {
+    display: none;
   }
 }

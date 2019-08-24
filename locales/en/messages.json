@@ -1,6 +1,6 @@
 {
   "_locale": "en",
   "about_prototype": "A prototype research tool to demonstrate how metadata and automated analysis can be combined.",
-  "try_inspecting": "Try inspecting recent news articles",
+  "try_analyzing": "Try analyzing recent news articles",
   "url_prompt": "Enter a news article URL to analyze"
 }

@@ -1,0 +1,20 @@
+.structured-data__test--pass .structured-data__test-icon {
+  color: #87ba72;
+}
+
+.structured-data__test--info .structured-data__test-icon {
+  color: #3682c9;
+}
+
+.structured-data__test--warn .structured-data__test-icon {
+  color:#d4b148;
+}
+
+.structured-data__test--fail .structured-data__test-icon {
+  color: #ff5e5e;
+}
+
+.structured-data__test-icon {
+  margin-right: 10px;
+  font-weight: 800;
+}

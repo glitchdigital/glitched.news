@@ -4,6 +4,8 @@
 @import "article";
 @import "trending";
 @import "sentiment";
+@import "locale";
+@import "structured-data";
 
 header,
 footer {
@@ -11,6 +13,13 @@ footer {
   margin: 0 auto;
   max-width: 768px;
   padding: 0 16px 16px;
+  position: relative;
+}
+
+h2, h3, h4, h5, h6 {
+  text-transform: uppercase;
+  color: #666;
+  font-weight: 300;
 }
 
 ol, ul {

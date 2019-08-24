@@ -1,0 +1,45 @@
+.locales {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  text-align: right;
+  color: #888;
+  border: 1px solid #ccc;
+  background: #fff;
+  text-transform: uppercase;
+  border-radius: 2px;
+  line-height: 1em;
+  span {
+    padding: 0 .2em;
+    font-size: .8em;
+  }
+
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: #444;
+  }
+
+  .locale {
+    display: none;
+    padding: .2em .4em;
+    line-height: 1.2em;
+    text-transform: none;
+    &:hover,
+    &:focus {
+      background: #eee;
+    }
+  }
+
+  &:hover,
+  &:focus {
+    .locale {
+      display: block;
+    }
+  }
+
+  .locale--active {
+    font-weight: bold;
+  }
+}
