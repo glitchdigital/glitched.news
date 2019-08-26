@@ -1,16 +1,16 @@
 .locales {
   position: absolute;
-  top: 4px;
+  top: -10px;
   right: 0;
   text-align: right;
   color: #888;
   border: 1px solid #ccc;
-  background: #fff;
+  background: #eee;
   text-transform: uppercase;
   border-radius: 2px;
   line-height: 1em;
   span {
-    padding: 0 .2em;
+    padding: 0 .4em;
     font-size: .8em;
   }
 
@@ -34,6 +34,7 @@
 
   &:hover,
   &:focus {
+    background: #fff;
     .locale {
       display: block;
     }

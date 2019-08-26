@@ -1,7 +1,7 @@
 const googleNews = require('my-google-news')
 const url = require('url')
 
-googleNews.resultsPerPage = 25 // max 100
+googleNews.resultsPerPage = 15 // max 100
 
 const { send } = require('../../lib/request-handler')
 

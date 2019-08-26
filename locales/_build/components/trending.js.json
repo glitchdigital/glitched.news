@@ -1,6 +1,6 @@
 {
-  "try_analyzing": {
-    "defaults": "Try analyzing recent news articles",
+  "recent_articles": {
+    "defaults": "Recent news articles",
     "origin": [
       [
         "components/trending.js",

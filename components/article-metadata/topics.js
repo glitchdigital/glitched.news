@@ -21,7 +21,7 @@ export default class extends React.Component {
               <strong>{topic.name}</strong> – <strong>{topic.count || 1}</strong> possible references to this topic
               {topic.url && (
                 <>
-                  {' '}<br/><a target="_blank" href={topic.url} rel='noreferrer'>{topic.name} on Wikipedia</a>
+                  {' '}<br/><small><a target="_blank" href={topic.url} rel='noreferrer'>{topic.name} on Wikipedia</a></small>
                 </>
               )}
             </p>
@@ -35,7 +35,7 @@ export default class extends React.Component {
               <strong>{keyword.name}</strong> – <strong>{keyword.count || 1}</strong> mentions of this keyword
               {keyword.url && (
                 <>
-                  {' '}<br/><a target="_blank" href={keyword.url} rel='noreferrer'>{keyword.name} on Wikipedia</a>
+                  {' '}<br/><small><a target="_blank" href={keyword.url} rel='noreferrer'>{keyword.name} on Wikipedia</a></small>
                 </>
               )}
             </p>

@@ -232,8 +232,8 @@ export default class extends React.Component {
             { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
             { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
             { articleMetadata['structured-data'] && articleMetadata['structured-data'].testResults && <StructuredData testResults={articleMetadata['structured-data'].testResults} /> }
-            { articleMetadata.related && <Related related={articleMetadata.related} /> }
             { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
+            { articleMetadata.related && <Related related={articleMetadata.related} /> }
         </main>
         {/* <aside></aside> */}
         <footer>

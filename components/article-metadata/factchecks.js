@@ -17,7 +17,7 @@ export default class extends React.Component {
         {content.quotes.length > 0 && <h4>Quotes</h4>}
         <ol>
         {content.quotes.map((quote, i) => (
-          <li key={`${quote}-${i}`}><p><em>{quote}</em></p></li>
+          <li key={`${quote}-${i}`}><em>{quote}</em></li>
         ))}
         </ol>
         {factchecks['snopes'].length > 0 && (

@@ -6,7 +6,7 @@ export default class extends React.Component {
     
     if (!content) return null
 
-    const SENTIMENT_HIGHLIGHT_THRESHOLD = 10
+    const SENTIMENT_HIGHLIGHT_THRESHOLD = 0
       
     return (
       <>
@@ -15,34 +15,36 @@ export default class extends React.Component {
         <p>
           Be wary of headlines or articles with extremely positive or negative scores.
         </p>
-        <table style={{width: '100%', border: 0}}>
+        <table className="sentiment">
           <thead>
             <tr style={{opacity: 0.5}}>
-              <th style={{border: 0}}>&nbsp;</th>
-              <th style={{textAlign: "center"}}>Negative</th>
-              <th style={{textAlign: "center"}}>Neutral</th>
-              <th style={{textAlign: "center"}}>Positive</th>
+              <th>&nbsp;</th>
+              <th>Negative</th>
+              <th>Neutral</th>
+              <th>Positive</th>
             </tr>
           </thead>
-          <tbody style={{textAlign: "center"}}>
+          <tbody>
             <tr>
-              <th style={{textAlign: "right", opacity: 0.5, border: 0}}>Headline</th>
-              <td className={(content.sentiment.headline.negative > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__negative--highlighted' : 'sentiment__negative' }><span>{content.sentiment.headline.negative}%</span></td>
-              <td>{content.sentiment.headline.neutral}%</td>
-              <td className={(content.sentiment.headline.positive > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__positive--highlighted' : 'sentiment__positive' }><span>{content.sentiment.headline.positive}%</span></td>
+              <th>Headline</th>
+              <td className={(content.sentiment.headline.negative > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__negative--highlighted' : 'sentiment__negative' }>{content.sentiment.headline.negative}%</td>
+              <td className={(content.sentiment.headline.neutral > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__neutral--highlighted' : 'sentiment__neutral' }>{content.sentiment.headline.neutral}%</td>
+              <td className={(content.sentiment.headline.positive > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__positive--highlighted' : 'sentiment__positive' }>{content.sentiment.headline.positive}%</td>
             </tr>
             <tr>
-              <th style={{textAlign: "right", opacity: 0.5, border: 0}}>Body</th>
-              <td className={(content.sentiment.body.negative > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__negative--highlighted' : 'sentiment__negative' }><span>{content.sentiment.body.negative}%</span></td>
-              <td>{content.sentiment.body.neutral}%</td>
-              <td className={(content.sentiment.body.positive > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__positive--highlighted' : 'sentiment__positive' }><span>{content.sentiment.body.positive}%</span></td>
+              <th>Body</th>
+              <td className={(content.sentiment.body.negative > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__negative--highlighted' : 'sentiment__negative' }>{content.sentiment.body.negative}%</td>
+              <td className={(content.sentiment.body.neutral > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__neutral--highlighted' : 'sentiment__neutral' }>{content.sentiment.body.neutral}%</td>
+              <td className={(content.sentiment.body.positive > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__positive--highlighted' : 'sentiment__positive' }>{content.sentiment.body.positive}%</td>
             </tr>
+            {/*
             <tr>
-              <th style={{textAlign: "right", opacity: 0.5, border: 0}}>Overall</th>
-              <td className={(content.sentiment.overall.negative > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__negative--highlighted' : 'sentiment__negative' }><span>{content.sentiment.overall.negative}%</span></td>
-              <td>{content.sentiment.overall.neutral}%</td>
-              <td className={(content.sentiment.overall.positive > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__positive--highlighted' : 'sentiment__positive' }><span>{content.sentiment.overall.positive}%</span></td>
+              <th>Overall</th>
+              <td className={(content.sentiment.overall.negative > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__negative--highlighted' : 'sentiment__negative' }>{content.sentiment.overall.negative}%</td>
+              <td className={(content.sentiment.overall.neutral > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__neutral--highlighted' : 'sentiment__neutral' }>{content.sentiment.overall.neutral}%</td>
+              <td className={(content.sentiment.overall.positive > SENTIMENT_HIGHLIGHT_THRESHOLD) ? 'sentiment__positive--highlighted' : 'sentiment__positive' }>{content.sentiment.overall.positive}%</td>
             </tr>
+            */}
           </tbody>
         </table>
         <p>

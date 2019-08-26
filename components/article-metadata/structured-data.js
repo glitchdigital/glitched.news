@@ -11,9 +11,10 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Structured Data</h3>
+        <h6>Stuctured Data Test Summary</h6>
         <ol style={{listStyle: 'none'}}>
-          <li>Checks Passed: { testResults.passed }</li>
-          <li>Checks Failed: { testResults.failed }</li>
+          <li>Okay: { testResults.passed }</li>
+          <li>Errors: { testResults.failed }</li>
           <li>Warnings: { testResults.warnings }</li>
         </ol>
         {Object.keys(testResults.groups).map(group => {

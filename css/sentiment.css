@@ -1,24 +1,57 @@
 .sentiment__positive,
-.sentiment__negative { }
+.sentiment__negative,
+.sentiment__neutral {
+  opacity: .5;
+}
 
 .sentiment__positive--highlighted,
-.sentiment__negative--highlighted {
-  span {
-    padding: .2em .4em;
-    border-radius: 5px;
-    font-weight: 600;
-    color: white;
-  }
+.sentiment__negative--highlighted,
+.sentiment__neutral--highlighted {
+  font-weight: 600;
+}
+
+.sentiment__neutral--highlighted {
+  color: #666;
 }
 
 .sentiment__positive--highlighted {
-  span {
-    background-color: #87ba72;
-  }
+  color: #87ba72;
 }
 
 .sentiment__negative--highlighted {
-  span {
-    background-color: #ff5e5e;
+  color: #ff5e5e;
+}
+
+table.sentiment {
+  border: 0;
+  width: 100%;
+
+  td,
+  tr {
+    border: 0;
+  }
+
+  thead {
+    tr {
+      th {
+        text-align: center;
+        &:first-child {
+          border: 0;
+        }
+      }
+    }
+  }
+  tbody {
+    tr {
+      th {
+        padding-right: 1em;
+        border: 0;
+        text-align: right;
+        opacity: .5;
+      }
+      td {
+        text-align: center;
+      }
+    }
   }
 }
