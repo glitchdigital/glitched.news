@@ -5,11 +5,12 @@ module.exports = withCSS({
   cssModules: true,
   cssLoaderOptions: {
     importLoaders: 1,
-    localIdentName: '[local]',
+    localIdentName: '[local]'
   },
   target: 'serverless',
   webpack(config, { isServer }) {
-    config.resolve.alias = config.resolve.alias || {}
+    config.resolve.modules.unshift(path.resolve('./'))
+    config.resolve.alias = config.resolve.alias || {}  
     config.resolve.alias["@catalogs$"] = path.resolve(
       __dirname,
       isServer ? "./locales/catalogs.server.js" : "./locales/catalogs.client.js"

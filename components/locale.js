@@ -2,7 +2,6 @@ import React from "react"
 import Router from 'next/router'
 import { withRouter } from 'next/router'
 import { I18n } from "@lingui/react"
-import { t } from "@lingui/macro"
 import 'isomorphic-unfetch'
 
 import { localeNames } from '../locales'
@@ -22,7 +21,8 @@ class Locale extends React.Component {
     e.preventDefault()
 
     // Get locale from element
-    const locale = e.target.getAttribute('data-locale')
+    const locale = e.target.value
+    console.log(locale)
 
     // Fetch locale catalog from server
     const server = `${window.location.protocol}//${window.location.host}`
@@ -52,16 +52,16 @@ class Locale extends React.Component {
     return (
       <I18n>
         {({ i18n }) => (
-          <p className="locales">
-            <span>{locale}</span>
+          <select className="form-control locale__list" onChange={this.onSetLocale}>
             {Object.keys(localeNames).map((l, i) =>
-              <a href={`https://${l}.glitched.news`}
-              onClick={this.onSetLocale}
-              data-locale={l} key={`locale-${l}`} className={`locale ${((locale) ? l === locale : l === i18n._(t('_locale')`en`)) ? 'locale--active' : ''}`}>
-                  {localeNames[l]}
-              </a>
+              <option key={`locale-${l}`}
+                className="locale__list--item"
+                selected={l === locale}
+                value={l}>
+                  {localeNames[l]} ({String(l).toUpperCase()})
+              </option>
             )}
-          </p>
+          </select>
         )}
       </I18n>
     )

@@ -1,8 +1,8 @@
 const fetch = require('node-fetch')
 const unfluff = require('unfluff')
 
-const { send, queryParser } = require('../../../lib/request-handler')
-const fetchOptions = require('../../../lib/fetch-options')
+const { send, queryParser } = require('lib/request-handler')
+const fetchOptions = require('lib/fetch-options')
 
 module.exports = async (req, res) => {
   const { url } = queryParser(req)

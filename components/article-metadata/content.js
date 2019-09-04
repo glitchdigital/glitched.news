@@ -1,4 +1,5 @@
 import React from "react"
+import truncate from "lib/truncate"
 
 export default class extends React.Component {
   render() {
@@ -14,7 +15,7 @@ export default class extends React.Component {
         <ul>
         { content.publisher && (
           <li>
-            Published by <strong>{content.publisher}</strong>
+            Published by <strong>{truncate(content.publisher, 128)}</strong>
           </li>
         ) }
         { content.author && content.author != '' && content.author != 0 && (
@@ -29,7 +30,7 @@ export default class extends React.Component {
         ) }
         { content.copyright && (
           <li>
-            Copyright <strong>{content.copyright}</strong>
+            Copyright <strong>{truncate(content.copyright, 128)}</strong>
           </li>
         ) }
           <li>

@@ -2,15 +2,16 @@ import React from "react"
 import Router from 'next/router'
 import { Trans } from "@lingui/macro"
 
-import Package from '../package'
 import Page from '../components/page'
-import Locale from '../components/locale'
+import Sidebar from 'components/sidebar'
+import Loader from '../components/loader'
+import UrlInput from '../components/url-input'
 import Trending from '../components/trending'
 import Trust from '../components/trust'
 import Headline from '../components/article-metadata/headline'
 import Content from '../components/article-metadata/content'
 import Website from '../components/article-metadata/website'
-import FactChecks from '../components/article-metadata/factchecks'
+import FactCheck from '../components/article-metadata/factcheck'
 import Social from '../components/article-metadata/social'
 import Sentiment from '../components/article-metadata/sentiment'
 import Topics from '../components/article-metadata/topics'
@@ -62,6 +63,13 @@ export default class extends React.Component {
     const request = await fetch(`${this.serverUrl}/api/trending`)
     const trending = await request.json()
     this.setState({ trending })
+
+    if (!window.hashchangeEventListenerAdded) {
+      window.hashchangeEventListenerAdded = true
+      window.addEventListener("hashchange", function () {
+        window.scrollTo(window.scrollX, window.scrollY - 40)
+      })
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -73,7 +81,7 @@ export default class extends React.Component {
         articleUrl = 'https://'+articleUrl
       }
 
-      document.getElementById('url').value = articleUrl
+      document.getElementsByName('url').forEach(el => el.value = articleUrl)
       this.onSubmit()
     }
   }
@@ -82,22 +90,33 @@ export default class extends React.Component {
     if (e) e.preventDefault()
 
     let articleUrl = null
+    let url  = null
 
-    if (!document.getElementById('url').value) {
+    if (e) {
+      // Handle submit from a form
+      url = e.currentTarget[0].value;
+      document.getElementsByName('url').forEach(el => el.value = url)
+    } else {
+      // If not submit from a from, grab URL from any form element named 'url'
+      document.getElementsByName('url').forEach(el => {
+        if (el.value && el.value !== '')
+          url = el.value
+      })
+    }
+
+    if (!url) {
       // Reset URL browser address bar
       Router.push('/', '/', { shallow: true })
     } else {
       // Update URL browser address bar to reflect it has a URL
-      articleUrl = document.getElementById('url').value
-      document.getElementById('url').className = 'animated pulse faster'
+      articleUrl = url
 
       // Add protocol to URL if none specified
       if (articleUrl && !articleUrl.includes('//')) {
         articleUrl = 'https://'+articleUrl
-        document.getElementById('url').value = articleUrl
+        document.getElementsByName('url').forEach(el => el.value = articleUrl)
       }
-
-      const href = `/?url=${articleUrl}`
+      const href = `${window.location.pathname}?url=${articleUrl}`
       const as = href
       Router.push(href, as, { shallow: true })
     }
@@ -149,13 +168,11 @@ export default class extends React.Component {
           // If data complete close event source
           if (eventData.inProgress !== true) {
             this.eventSource.close()
-            document.getElementById('url').className = ''
           }
         })
         this.eventSource.addEventListener('error', event => {
           this.eventSource.close()
           this.setState({ inProgress: false })
-          document.getElementById('url').className = ''
         })
       } else {
         // If the browser doesn't support EventSource (Server Side Events) use REST API
@@ -169,8 +186,6 @@ export default class extends React.Component {
           indicators,
           inProgress: false
         })
-
-        document.getElementById('url').className = ''
       }
     }
   }
@@ -195,59 +210,69 @@ export default class extends React.Component {
 
     return (
       <Page>
-        <header>
-          <Locale/>
-          <form id="url-form" onSubmit={this.onSubmit}>
-            <label style={{fontWeight: 600}} htmlFor="url">
-              <Trans id="url_prompt">
-                Enter a news article URL to analyze
-              </Trans>
-            </label>
-            <input disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" style={{fontSize: '.9em'}} id="url" name="url" type="text" defaultValue={articleUrl || ''} />
-            <p>
-              <small>
-                <Trans id="about_prototype">
-                  A prototype research tool to demonstrate how metadata and automated analysis can be combined.
-                </Trans>
-              </small>
-            </p>
-          </form>
+        <header className="container-fluid">
+          <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark row">
+            <div className="col-md-3">
+              <a className="navbar-brand" href="/">GLITCHED.NEWS</a>
+            </div>
+            <div className="col-md-9 collapse navbar-collapse" id="navbarCollapse">
+              <form className="form-inline mt-10 mt-md-0 navbar-nav mr-auto" style={{width: '100%'}} onSubmit={this.onSubmit}>
+                <input style={{width: '100%'}} className="form-control" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={articleUrl || ''} />
+              </form>
+            </div>
+          </nav>
         </header>
-        <main>
-          { inProgress && (
-              <div className="spinner">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="50" cy="50" r="45"/>
-                </svg>
+        
+        <div className="d-none d-md-block">{ inProgress && <div className="pt-5"><Loader/></div> }</div>
+
+        <div className="container-fluid">
+          <div className="row">
+            { articleUrl && !inProgress &&
+              <nav className="col-md-3 d-none d-md-block bg-light sidebar">
+                <Sidebar/>
+              </nav>
+            }
+            <main role="main" className="col-md-9 ml-sm-auto">
+              <form className="form-inline d-md-none mb-3" style={{width: '100%'}} onSubmit={this.onSubmit}>
+                <input style={{width: '100%'}} className="form-control" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={articleUrl || ''} />
+              </form>
+              <div className="d-block d-md-none">{ inProgress && <Loader/> }</div>
+              <div id="trending">
+                { !articleUrl && trending && trending.articles && trending.articles.length > 0 && <Trending trending={trending} /> }
               </div>
-            )}
-            { !articleUrl && trending && trending.articles && trending.articles.length > 0 && <Trending trending={trending} /> }
-            { articleMetadata.content && <Headline content={articleMetadata.content} /> }
-            { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }
-            { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
-            { articleMetadata.content && <Content content={articleMetadata.content} /> }
-            { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
-            { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
-            { articleMetadata.content && articleMetadata.factchecks && <FactChecks factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
-            { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
-            { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
-            { articleMetadata['structured-data'] && articleMetadata['structured-data'].testResults && <StructuredData testResults={articleMetadata['structured-data'].testResults} /> }
-            { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
-            { articleMetadata.related && <Related related={articleMetadata.related} /> }
-        </main>
-        {/* <aside></aside> */}
-        <footer>
-          <p>
-            <a target='_blank' rel='noreferrer' href='https://glitched.news'>glitched.news</a> &copy; <a target='_blank' rel='noreferrer' href='https://glitch.digital'>GLITCH.DIGITAL LIMITED</a>, {new Date().getFullYear()}
-          </p>
-          <p>
-            Version {Package.version}.
-            {' '}
-            <a target='_blank' rel='noreferrer' href='https://github.com/glitchdigital/glitched.news'>
-              Open source (ISC License)  
-            </a>
-          </p>
-        </footer>
+              <div id="article-summary">
+                { articleMetadata.content && <Headline content={articleMetadata.content} /> }
+                { articleMetadata.content && <Content content={articleMetadata.content} /> } 
+                { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
+                { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
+              </div>
+              <div id="article-trust">
+                { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }
+              </div>
+              <div id="article-sentiment">
+                { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
+              </div>
+              <div id="article-factcheck"> 
+                { articleMetadata.content && articleMetadata.factchecks && <FactCheck factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
+              </div>
+              <div id="article-topics">
+                { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
+              </div>
+              <div id="article-social"> 
+                { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
+              </div>
+              <div id="article-structured-data"> 
+                { articleMetadata['structured-data'] && articleMetadata['structured-data'].testResults && <StructuredData testResults={articleMetadata['structured-data'].testResults} /> }
+              </div>
+              <div id="article-links"> 
+                { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
+              </div>
+              <div id="article-related"> 
+                { articleMetadata.related && <Related related={articleMetadata.related} /> }
+              </div> 
+            </main>
+          </div>
+        </div>
       </Page>
     )
   }

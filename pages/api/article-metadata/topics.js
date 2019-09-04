@@ -6,8 +6,8 @@ const googleTrendsApi = require('google-trends-api')
 const stopwords = require('stopwords-en')
 const mostCommon = require('most-common')
 
-const { send, queryParser } = require('../../../lib/request-handler')
-const fetchOptions = require('../../../lib/fetch-options')
+const { send, queryParser } = require('lib/request-handler')
+const fetchOptions = require('lib/fetch-options')
 
 // @FIXME This contains a lot of English language specific logic!
 module.exports = async (req, res) => {

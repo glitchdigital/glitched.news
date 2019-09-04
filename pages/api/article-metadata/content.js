@@ -6,8 +6,9 @@ const moment = require('moment')
 const tokenizer = require('sbd')
 const vader = require('vader-sentiment')
 
-const { send, queryParser } = require('../../../lib/request-handler')
-const fetchOptions = require('../../../lib/fetch-options')
+const truncate = require('lib/truncate')
+const { send, queryParser } = require('lib/request-handler')
+const fetchOptions = require('lib/fetch-options')
 
 // @TODO Consider pros and cons of breaking out functionality into different endpoints
 module.exports = async (req, res) => {
@@ -186,20 +187,6 @@ function removeDuplicateObjectsFromArray(array, property) {
   let uniqueItems = {}
   array.forEach(item => { uniqueItems[item[property]] = item })
   return Object.values(uniqueItems)
-}
-
-function truncate(str, length, ending) {
-  if (length == null)
-    length = 100
-
-  if (ending == null)
-    ending = '...'
-
-  if (str.length > length) {
-    return str.substring(0, length - ending.length) + ending
-  } else {
-    return str
-  }
 }
 
 function hasNewsArticleMetadata(metadata) {

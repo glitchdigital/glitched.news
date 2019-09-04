@@ -1,6 +1,6 @@
 //require('promise.allsettled').shim()
 const fetch = require('node-fetch')
-const { send, queryParser } = require('../../../lib/request-handler')
+const { send, queryParser } = require('lib/request-handler')
 
 module.exports = async (req, res) => {
   const { url, stream } = queryParser(req)

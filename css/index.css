@@ -1,28 +1,33 @@
-@import "marx.min.css";
+/*@import "../node_modules/bootstrap-material-design/dist/css/bootstrap-material-design.css";*/
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+@import "sidebar";
 @import "animations";
-@import "spinner";
 @import "article";
 @import "trending";
 @import "sentiment";
-@import "locale";
 @import "structured-data";
 
-body {
-  margin-top: 20px;
-  font-size: .9em;
+
+main {
+  padding-top: 5em;
 }
 
-header,
 footer {
-  display: block;
-  margin: 0 auto;
-  max-width: 768px;
-  padding: 0 16px 16px;
-  position: relative;
+  padding-top: 1em;
+  font-size: .8em;
+  select {
+    display: inline;
+    width: auto;
+  }
+}
+
+.loader {
+  margin: 3em 0 2em 0;
+  padding: 2em 0;
+  text-align: center;
 }
 
 h2, h3, h4, h5, h6 {
-  text-transform: uppercase;
   color: #666;
   font-weight: 300;
 }
@@ -41,11 +46,4 @@ li {
 
 th, td {
   padding: 5px;
-}
-
-footer {
-  padding-top: 16px;
-  p {
-    font-size: 0.8em;
-  }
 }

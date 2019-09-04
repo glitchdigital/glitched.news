@@ -3,8 +3,8 @@ const { structuredDataTestHtml } = require('structured-data-testing-tool')
 const { Google, SocialMedia } = require('structured-data-testing-tool/presets')
 const { groupTestResults } = require('structured-data-testing-tool/lib/group-test-results')
 
-const { send, queryParser } = require('../../../lib/request-handler')
-const fetchOptions = require('../../../lib/fetch-options')
+const { send, queryParser } = require('lib/request-handler')
+const fetchOptions = require('lib/fetch-options')
 
 module.exports = async (req, res) => {
   const { url } = queryParser(req)

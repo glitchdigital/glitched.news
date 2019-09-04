@@ -2,8 +2,8 @@ const fetch = require('node-fetch')
 const unfluff = require('unfluff')
 const google = require('google')
 
-const { send, queryParser } = require('../../../lib/request-handler')
-const fetchOptions = require('../../../lib/fetch-options')
+const { send, queryParser } = require('lib/request-handler')
+const fetchOptions = require('lib/fetch-options')
 
 google.resultsPerPage = 25
 

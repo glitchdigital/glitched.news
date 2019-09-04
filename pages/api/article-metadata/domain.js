@@ -5,7 +5,7 @@ const whoisLookup = require('whois-promise')
 const moment = require('moment')
 const sslCertificate = require('get-ssl-certificate')
 
-const { send, queryParser } = require('../../../lib/request-handler')
+const { send, queryParser } = require('lib/request-handler')
 
 module.exports = async (req, res) => {
   const { url } = queryParser(req)

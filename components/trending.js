@@ -6,9 +6,7 @@ export default class extends React.Component {
     const { trending } = this.props
     return (
       <>
-        <p>
-          <h6><Trans id="recent_articles">Recent news articles</Trans></h6>
-        </p>
+        <h6><Trans id="recent_articles">Recent news articles</Trans></h6>
         <div className="trending__news-articles">
           {trending.articles.map(article => (
             <p key={article.url}>
