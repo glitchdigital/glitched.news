@@ -47,9 +47,11 @@ export default class extends React.Component {
         positive: [],
         negative: []
       },
-      inProgress: false
+      inProgress: false,
+      currentSection: 'article-summary'
     }
     this.onSubmit = this.onSubmit.bind(this)
+    this.toggleSection = this.toggleSection.bind(this)
     this.serverUrl = null // Set when page loads on client
   }
 
@@ -139,8 +141,13 @@ export default class extends React.Component {
         positive: [],
         negative: []
       },
-      inProgress: (articleUrl) ? true : false
+      inProgress: (articleUrl) ? true : false,
+      currentSection: 'article-summary'
     })
+
+    // Reset section highlighting
+    Array.prototype.slice.call(document.getElementsByTagName('section')).map(el => el.className = '')
+    document.getElementById('article-summary').className = 'd-block'
 
     // If we have a URL, get article metadata
     if (articleUrl) {
@@ -164,7 +171,7 @@ export default class extends React.Component {
             indicators,
             inProgress: eventData.inProgress
           })
-      
+
           // If data complete close event source
           if (eventData.inProgress !== true) {
             this.eventSource.close()
@@ -184,7 +191,8 @@ export default class extends React.Component {
         this.setState({
           articleMetadata,
           indicators,
-          inProgress: false
+          inProgress: false,
+          currentSection: 'article-summary'
         })
       }
     }
@@ -205,19 +213,27 @@ export default class extends React.Component {
     return indicators 
   }
 
+  toggleSection(e) {
+    e.preventDefault()
+    const currentSection = e.target.getAttribute('href').replace('#', '')
+    Array.prototype.slice.call(document.getElementsByTagName('section')).map(el => el.className = '')
+    document.getElementById(currentSection).className = 'd-block'
+    this.setState({currentSection})
+  }
+
   render() { 
-    const { articleUrl, articleMetadata, inProgress, indicators, trending } = this.state
+    const { currentSection, articleUrl, articleMetadata, inProgress, indicators, trending } = this.state
 
     return (
       <Page>
         <header className="container-fluid">
-          <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark row">
-            <div className="col-md-3">
-              <a className="navbar-brand" href="/">GLITCHED.NEWS</a>
+          <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-primary border-bottom row">
+            <div className="col-md-3 col-lg-2">
+              <a className="navbar-brand" href="/">Article Inspector</a>
             </div>
-            <div className="col-md-9 collapse navbar-collapse" id="navbarCollapse">
-              <form className="form-inline mt-10 mt-md-0 navbar-nav mr-auto" style={{width: '100%'}} onSubmit={this.onSubmit}>
-                <input style={{width: '100%'}} className="form-control" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={articleUrl || ''} />
+            <div className="col-md-9 col-lg-10 collapse navbar-collapse p-0 pr-2" id="navbarCollapse">
+              <form className="form-inline mt-10 mt-md-10 navbar-nav mr-auto" style={{width: '100%'}} onSubmit={this.onSubmit}>
+                <input style={{width: '100%'}} className="form-control border-0 rounded-0" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={articleUrl || ''} />
               </form>
             </div>
           </nav>
@@ -225,54 +241,60 @@ export default class extends React.Component {
         
         <div className="d-none d-md-block">{ inProgress && <div className="pt-5"><Loader/></div> }</div>
 
-        <div className="container-fluid">
-          <div className="row">
-            { articleUrl && !inProgress &&
-              <nav className="col-md-3 d-none d-md-block bg-light sidebar">
-                <Sidebar/>
-              </nav>
-            }
-            <main role="main" className="col-md-9 ml-sm-auto">
+        <main role="main">
+          <div className="container-fluid">
+            <div className="row">
               <form className="form-inline d-md-none mb-3" style={{width: '100%'}} onSubmit={this.onSubmit}>
-                <input style={{width: '100%'}} className="form-control" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={articleUrl || ''} />
+                <input style={{width: '100%'}} className="form-control rounded-0" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={articleUrl || ''} />
               </form>
-              <div className="d-block d-md-none">{ inProgress && <Loader/> }</div>
-              <div id="trending">
-                { !articleUrl && trending && trending.articles && trending.articles.length > 0 && <Trending trending={trending} /> }
+
+              { !articleUrl && trending && trending.articles && trending.articles.length > 0 &&
+                <div id="trending" className="m-auto">
+                  <Trending trending={trending} />
+                </div>
+              }
+
+              { articleUrl && !inProgress &&
+                <div className="col-md-3 col-lg-2 d-none d-md-block sidebar bg-light">
+                  <Sidebar currentSection={currentSection} onClickHandler={this.toggleSection} />
+                </div>
+              }
+              <div className="col-md-9 col-lg-10 ml-sm-auto article">
+                <div className="d-block d-md-none">{ inProgress && <Loader/> }</div>
+                <section id="article-summary">
+                  { articleMetadata.content && <Headline content={articleMetadata.content} /> }
+                  { articleMetadata.content && <Content content={articleMetadata.content} /> } 
+                  { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
+                  { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
+                </section>
+                <section id="article-trust">
+                  { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }
+                </section>
+                <section id="article-sentiment">
+                  { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
+                </section>
+                <section id="article-factcheck"> 
+                  { articleMetadata.content && articleMetadata.factchecks && <FactCheck factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
+                </section>
+                <section id="article-topics">
+                  { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
+                </section>
+                <section id="article-social"> 
+                  { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
+                </section>
+                <section id="article-structured-data"> 
+                  { articleMetadata['structured-data'] && articleMetadata['structured-data'].testResults && <StructuredData testResults={articleMetadata['structured-data'].testResults} /> }
+                </section>
+                <section id="article-links"> 
+                  { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
+                </section>
+                <section id="article-related"> 
+                  { articleMetadata.related && <Related related={articleMetadata.related} /> }
+                </section> 
               </div>
-              <div id="article-summary">
-                { articleMetadata.content && <Headline content={articleMetadata.content} /> }
-                { articleMetadata.content && <Content content={articleMetadata.content} /> } 
-                { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
-                { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
-              </div>
-              <div id="article-trust">
-                { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }
-              </div>
-              <div id="article-sentiment">
-                { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
-              </div>
-              <div id="article-factcheck"> 
-                { articleMetadata.content && articleMetadata.factchecks && <FactCheck factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
-              </div>
-              <div id="article-topics">
-                { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
-              </div>
-              <div id="article-social"> 
-                { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
-              </div>
-              <div id="article-structured-data"> 
-                { articleMetadata['structured-data'] && articleMetadata['structured-data'].testResults && <StructuredData testResults={articleMetadata['structured-data'].testResults} /> }
-              </div>
-              <div id="article-links"> 
-                { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
-              </div>
-              <div id="article-related"> 
-                { articleMetadata.related && <Related related={articleMetadata.related} /> }
-              </div> 
-            </main>
+            </div>
           </div>
-        </div>
+        </main>
       </Page>
     )
   }

@@ -10,8 +10,8 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h3>Structured Data</h3>
-        <h6>Stuctured Data Test Summary</h6>
+        <h3>Structured data</h3>
+        <h6>Structured data test summary</h6>
         <ol style={{listStyle: 'none'}}>
           <li>Okay: { testResults.passed }</li>
           <li>Errors: { testResults.failed }</li>
@@ -21,15 +21,17 @@ export default class extends React.Component {
           if (group === 'Metatags')
             return
 
-          return (<>
-            <h6>{group}</h6>
-            <ul style={{listStyle: 'none'}}>
-            { testResults.groups[group].passed.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
-            { /* testResults.groups[group].info.map(test => <TestResult key={JSON.stringify(test)} {...test} />) */ }
-            { testResults.groups[group].warnings.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
-            { testResults.groups[group].failed.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
-            </ul>
-          </>)
+          return (
+            <div key={`group-${group}`}>
+              <h6>{group}</h6>
+              <ul style={{listStyle: 'none'}}>
+              { testResults.groups[group].passed.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
+              { /* testResults.groups[group].info.map(test => <TestResult key={JSON.stringify(test)} {...test} />) */ }
+              { testResults.groups[group].warnings.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
+              { testResults.groups[group].failed.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
+              </ul>
+            </div>
+          )
         })}
       </>
     )

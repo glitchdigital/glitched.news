@@ -3,34 +3,24 @@
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 0;
-  padding-top: 4.5em;
+  z-index: 100;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-
-  .nav-link {
-    margin: 0 0.5em;
-    border-radius: 5px;
-    font-weight: 500;
-    color: #666;
-    text-transform: none;
-    &:hover {
-      background-color: #ddd;
-    }
-    .active {
-      color: #007bff;
-    }
+  padding: 50px 0 0 0;
+  .nav-item:hover {
+    background-color: rgba(0,0,0,0.1);
   }
 }
 
-.sidebar-heading {
-  font-size: .75rem;
+.sidebar__heading {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  margin: 10px;
 }
 
 .sidebar-sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 48px; /* Height of navbar */
   height: calc(100vh - 48px);
   padding-top: .5rem;
   overflow-x: hidden;

@@ -1,19 +1,28 @@
 import React from "react"
+import classnames from "classnames"
+
+const sidebarItems = {
+  ['article-summary']: 'Summary' ,
+  ['article-trust']: 'Trust indicators',
+  ['article-sentiment']: 'Sentiment analysis',
+  ['article-factcheck']: 'Facts, figures & quotes',
+  ['article-topics']: 'Topics & keywords',
+  //['article-social']: 'Social media',
+  ['article-structured-data']: 'Structured data',
+  ['article-links']: 'Links from this article',
+  ['article-related']: 'Related articles',
+}
 
 export default class extends React.Component {
   render() {
+    const { currentSection, onClickHandler } = this.props
     return (
       <div className="sidebar-sticky">
+        <h5 className="sidebar__heading text-muted">Navigation</h5>
         <ul className="nav flex-column">
-          <li className="nav-item"><a className="nav-link" href="#article-summary">Summary</a></li>
-          <li className="nav-item"><a className="nav-link" href="#article-trust">Trust indicators</a></li>
-          <li className="nav-item"><a className="nav-link" href="#article-sentiment">Sentiment analysis</a></li>
-          <li className="nav-item"><a className="nav-link" href="#article-factcheck">Facts, figures &amp; quotes</a></li>
-          <li className="nav-item"><a className="nav-link" href="#article-topics">Topics &amp; keywords</a></li>
-          {/*<li className="nav-item"><a className="nav-link" href="#article-social">Social media</a></li>*/}
-          <li className="nav-item"><a className="nav-link" href="#article-structured-data">Structured data</a></li>
-          <li className="nav-item"><a className="nav-link" href="#article-links">Links from this article</a></li>
-          <li className="nav-item"><a className="nav-link" href="#article-related">Related articles</a></li>
+        { Object.keys(sidebarItems).map(item => 
+          <li className="nav-item"><a onClick={onClickHandler} className={classnames('nav-link', currentSection === item ? 'active bg-primary text-light' : 'text-dark')} href={`#${item}`}>{sidebarItems[item]}</a></li>
+        )}
         </ul>
       </div>
     )

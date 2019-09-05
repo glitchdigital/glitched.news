@@ -7,9 +7,8 @@
 @import "sentiment";
 @import "structured-data";
 
-
 main {
-  padding-top: 5em;
+  padding: 70px 10px 10px 10px;
 }
 
 footer {
@@ -27,10 +26,10 @@ footer {
   text-align: center;
 }
 
-h2, h3, h4, h5, h6 {
+/* h2, h3, h4, h5, h6 {
   color: #666;
   font-weight: 300;
-}
+} */
 
 ol, ul {
   padding-left: 20px;
