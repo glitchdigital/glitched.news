@@ -21,7 +21,7 @@ export default class extends React.Component {
         <h5 className="sidebar__heading text-muted">Navigation</h5>
         <ul className="nav flex-column">
         { Object.keys(sidebarItems).map(item => 
-          <li className="nav-item"><a onClick={onClickHandler} className={classnames('nav-link', currentSection === item ? 'active bg-primary text-light' : 'text-dark')} href={`#${item}`}>{sidebarItems[item]}</a></li>
+          <li key={`sidebar-${item}`} className="nav-item"><a onClick={onClickHandler} className={classnames('nav-link', currentSection === item ? 'active bg-primary text-white' : 'text-dark')} href={`#${item}`}>{sidebarItems[item]}</a></li>
         )}
         </ul>
       </div>

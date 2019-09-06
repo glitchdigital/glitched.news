@@ -3,12 +3,11 @@
 @import "sidebar";
 @import "animations";
 @import "article";
-@import "trending";
 @import "sentiment";
 @import "structured-data";
 
 main {
-  padding: 70px 10px 10px 10px;
+  padding-top: 70px;
 }
 
 footer {
@@ -25,11 +24,6 @@ footer {
   padding: 2em 0;
   text-align: center;
 }
-
-/* h2, h3, h4, h5, h6 {
-  color: #666;
-  font-weight: 300;
-} */
 
 ol, ul {
   padding-left: 20px;

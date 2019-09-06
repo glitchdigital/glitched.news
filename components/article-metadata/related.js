@@ -24,12 +24,11 @@ export default class extends React.Component {
             {related.articles.map(article => (
               <li key={article.url}>
                 <Link
-                  prefetch
                   href={{
-                    pathname: '/index',
+                    pathname: '/inspect',
                     query: { url: article.url }
                   }}
-                  as={`/?url=${article.url}`}
+                  as={`/inspect?url=${article.url}`}
                 ><a rel='noreferrer'>{article.title}</a></Link>
                 <small> – {article.domain}</small>
               </li>

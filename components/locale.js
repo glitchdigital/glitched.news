@@ -52,11 +52,10 @@ class Locale extends React.Component {
     return (
       <I18n>
         {({ i18n }) => (
-          <select className="form-control locale__list" onChange={this.onSetLocale}>
+          <select className="locale__list d-inline-block" onChange={this.onSetLocale} defaultValue={locale}>
             {Object.keys(localeNames).map((l, i) =>
               <option key={`locale-${l}`}
                 className="locale__list--item"
-                selected={l === locale}
                 value={l}>
                   {localeNames[l]} ({String(l).toUpperCase()})
               </option>
