@@ -10,7 +10,7 @@ Router.onRouteChangeStart = () => NProgress.start()
 Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
-export default ({ children, disableInput, inputUrl, onInputSubmit, hideInput }) => (
+export default ({ children, disableInput, inputUrl, onInputSubmit, onInputChange, hideInput }) => (
   <>
     <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,7 +26,7 @@ export default ({ children, disableInput, inputUrl, onInputSubmit, hideInput }) 
         <div className="col-md-9 col-lg-10 collapse navbar-collapse p-0 pr-2" id="navbarCollapse">
           {!hideInput && 
             <form className="form-inline mt-10 mt-md-10 navbar-nav mr-auto" style={{width: '100%'}} onSubmit={onInputSubmit}>
-              <input style={{width: '100%'}} className="form-control border-0 rounded-0" disabled={disableInput} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={inputUrl || ''} />
+              <input style={{width: '100%'}} className="form-control border-0 rounded-0" disabled={disableInput} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={inputUrl} onChange={onInputChange} />
             </form>
           }
         </div>
