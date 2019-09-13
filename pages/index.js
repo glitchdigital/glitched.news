@@ -51,17 +51,20 @@ export default class extends React.Component {
     return (
       <Page hideInput={true}>
         <div className="container-fluid home__jumbotron">
-          <div className="home__jumbotron-background"/>
+          <div className="home__jumbotron-background bg-primary"/>
           <div className="row">
             <div className="col-sm-12 col-md-10 col-lg-8 m-auto">
-              <h1 className="display-4 text-primary">Inspect an article</h1>
-              <form className="form border rounded shadow bg-white form-inline mt-md-10 text-left mr-auto w-100" onSubmit={this.onSubmit}>  
-                <label htmlFor="url" className="mb-1">
-                  <Trans id="url_prompt">
-                    Enter a news article URL to analyze
-                  </Trans>
+              <h1 className="display-5 font-weight-light text-white">Inspect an article</h1>
+              <form className="form rounded shadow bg-white mt-md-10 text-left mr-auto w-100" onSubmit={this.onSubmit}>  
+                <label htmlFor="home-url" className="mb-1">
+                  <Trans id="url_prompt">Enter a news article URL to analyze</Trans>
                 </label>
-                <input className="rounded form-control bg-white rounded-0 w-100" placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={url} onChange={this.onChange} />
+                <div className="input-group">
+                  <input id="home-url" className="form-control bg-light border-0" placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={url} onChange={this.onChange} />
+                  <div className="input-group-append">
+                    <button type="submit" className="btn btn-primary">Inspect</button>
+                  </div>
+                </div>
                 <p>
                   <small className="text-muted">
                     <Trans id="about_prototype">
@@ -77,8 +80,8 @@ export default class extends React.Component {
           <div className="row">
             <div className="col-sm-12 col-md-10 col-lg-8 m-auto">
               { trending && trending.articles && trending.articles.length > 0 &&
-                <div id="trending" className="mb-5">
-                  <h6>Example recent news articles</h6>
+                <div id="trending" className="mb-5 border rounded p-3">
+                  <h6 className="text-muted text-uppercase">Example recent news articles</h6>
                   <Trending trending={trending} />
                 </div>
               }

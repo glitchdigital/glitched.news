@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
   const text = await fetchRes.text()
   const structuredData = unfluff(text)
 
-  const indicators = { positive: [], negative: [] }
+  const trustIndicators = { positive: [], negative: [] }
 
   const factChecks = { 'snopes': [], 'factcheck.org': [] }
   let potentiallyDisputed = false
@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
       google(`${structuredData.title} site:www.snopes.com`, (err, res) => {
         if (!err) {
           if (res.links.length === 0) {
-            indicators.positive.push({text: "No related articles Snopes"})
+            trustIndicators.positive.push({text: "No related articles Snopes"})
           } else {
             const links = []
             res.links.forEach(link => {
@@ -45,9 +45,9 @@ module.exports = async (req, res) => {
               potentiallyDisputed = true
             }
             if (links.length === 25) {
-              indicators.negative.push({text: "High number of articles related to the headline on Snopes"})
+              trustIndicators.negative.push({text: "High number of articles related to the headline on Snopes"})
             } else {
-              indicators.negative.push({text: "Some articles related to the headline on Snopes"})
+              trustIndicators.negative.push({text: "Some articles related to the headline on Snopes"})
             }
           }
         }
@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
       google(`${structuredData.title} site:www.factcheck.org`, (err, res) => {
         if (!err) {
           if (res.links.length === 0) {
-            indicators.positive.push({text: "No related articles on FactCheck.org"})
+            trustIndicators.positive.push({text: "No related articles on FactCheck.org"})
           } else {
             const links = []
             res.links.forEach(link => {
@@ -74,9 +74,9 @@ module.exports = async (req, res) => {
               potentiallyDisputed = true
             }
             if (links.length === 25) {
-              indicators.negative.push({text: "High number of articles related to the headline on FactCheck.org"})
+              trustIndicators.negative.push({text: "High number of articles related to the headline on FactCheck.org"})
             } else {
-              indicators.negative.push({text: "Some articles related to the headline on FactCheck.org"})
+              trustIndicators.negative.push({text: "Some articles related to the headline on FactCheck.org"})
             }
           }
         }
@@ -87,13 +87,13 @@ module.exports = async (req, res) => {
 
   // If not disputed then only return one positive indicator (saying there were no negatives)
   if (potentiallyDisputed === false) {
-    indicators.positive = [{text: "No related articles found on fact checking sites"}]
+    trustIndicators.positive = [{text: "No related articles found on fact checking sites"}]
   }
 
   return send(res, 200, {
     url,
     ...factChecks,
-    indicators,
+    trustIndicators,
     potentiallyDisputed
   })
 }

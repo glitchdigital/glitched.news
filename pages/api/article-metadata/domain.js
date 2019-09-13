@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  const indicators = { positive: [], negative: [] }
+  const trustIndicators = { positive: [], negative: [] }
   const urlParts = urlParser.parse(url)
   const domainParts = domainParser.parse(urlParts.hostname)
   const domain = `${domainParts.sld}.${domainParts.tld}`
@@ -22,33 +22,33 @@ module.exports = async (req, res) => {
 
   if (whois.registrantOrganization) {
     if (!whois.registrantOrganization.toLowerCase().includes('redacted')) {
-      indicators.positive.push({text: "Domain has information about the owner"})
+      trustIndicators.positive.push({text: "Domain has information about the owner"})
     } else {
-      indicators.negative.push({text: "Domain owner information redacted"})
+      trustIndicators.negative.push({text: "Domain owner information redacted"})
     }
 
     if (whois.registrantStreet && whois.registrantCity && whois.registrantCountry) {
       if (!whois.registrantStreet.toLowerCase().includes('redacted') &&
           !whois.registrantCity.toLowerCase().includes('redacted') &&
           !whois.registrantCountry.toLowerCase().includes('redacted') ) {
-        indicators.positive.push({text: "Domain owner has address listed"})
+        trustIndicators.positive.push({text: "Domain owner has address listed"})
       } else {
-        indicators.negative.push({text: "Domain owner address redacted"})
+        trustIndicators.negative.push({text: "Domain owner address redacted"})
       }
     } else {
-      indicators.negative.push({text: "Domain owner address not found"})
+      trustIndicators.negative.push({text: "Domain owner address not found"})
     }
   } else {
     if (whois.registrantStreet && whois.registrantCity && whois.registrantCountry) {
       if (!whois.registrantStreet.toLowerCase().includes('redacted') &&
           !whois.registrantCity.toLowerCase().includes('redacted') &&
           !whois.registrantCountry.toLowerCase().includes('redacted') ) {
-        indicators.positive.push({text: "Domain owner has address listed"})
+        trustIndicators.positive.push({text: "Domain owner has address listed"})
       } else {
-        indicators.negative.push({text: "Domain owner address redacted"})
+        trustIndicators.negative.push({text: "Domain owner address redacted"})
       }
     } else {
-      indicators.negative.push({text: "Unable to identify the domain owner"})
+      trustIndicators.negative.push({text: "Unable to identify the domain owner"})
     }
   }
 
@@ -57,16 +57,16 @@ module.exports = async (req, res) => {
     const dateNow = moment()
     const yearsAgo = dateNow.diff(dateRegistered, 'years')
     if (yearsAgo > 10) {
-      indicators.positive.push({text: `Domain is not new (registered ${dateRegistered.fromNow()})`})
+      trustIndicators.positive.push({text: `Domain is not new (registered ${dateRegistered.fromNow()})`})
     } else if (yearsAgo < 5) {
       if (yearsAgo > 2) {
-        indicators.negative.push({text: `Domain is quite new (registered ${dateRegistered.fromNow()})`})
+        trustIndicators.negative.push({text: `Domain is quite new (registered ${dateRegistered.fromNow()})`})
       } else {
-        indicators.negative.push({text: `Domain is very new (registered ${dateRegistered.fromNow()})`})
+        trustIndicators.negative.push({text: `Domain is very new (registered ${dateRegistered.fromNow()})`})
       }
     }
   } else {
-    indicators.negative.push({text: "Unable to identify when the domain was registered"})
+    trustIndicators.negative.push({text: "Unable to identify when the domain was registered"})
   }
 
   // SSL Certificate information is mostly useless as so few sites have detailed / accurate information
@@ -88,7 +88,7 @@ module.exports = async (req, res) => {
     domain,
     whois,
     certificate,
-    indicators
+    trustIndicators
   })
 }
 */

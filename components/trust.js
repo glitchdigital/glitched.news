@@ -2,26 +2,26 @@ import React from "react"
 
 export default class extends React.Component {
   render() {
-    const { indicators } = this.props
+    const { trustIndicators } = this.props
     return (
       <>
         <hr/>
-        <h2>Trust indicators</h2>
-        { indicators.positive.length > 0 && (
+        <h3>Trust indicators</h3>
+        { trustIndicators.positive.length > 0 && (
           <>
             <h4>Positive</h4>
             <ul>
-            { indicators.positive.map((indicator, i) => (
+            { trustIndicators.positive.map((indicator, i) => (
               <li key={`positive-indicator-${indicator.text}`}>{indicator.text}</li>
             )) }
             </ul>
           </>
         )}
-        { indicators.negative.length > 0 && (
+        { trustIndicators.negative.length > 0 && (
           <>
             <h4>Negative</h4>
             <ul>
-            { indicators.negative.map((indicator, i) => (
+            { trustIndicators.negative.map((indicator, i) => (
               <li key={`negative-indicator-${indicator.text}`}>{indicator.text}</li>
             )) }
             </ul>

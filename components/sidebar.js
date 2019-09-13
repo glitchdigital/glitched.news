@@ -18,7 +18,7 @@ export default class extends React.Component {
     const { currentSection, onClickHandler } = this.props
     return (
       <div className="sidebar-sticky">
-        <h5 className="sidebar__heading text-muted">Navigation</h5>
+        <h5 className="sidebar__heading text-secondary p-2 mt-2 text-uppercase font-weight-bold">Navigation</h5>
         <ul className="nav nav-pills flex-column">
         { Object.keys(sidebarItems).map(item => 
           <li key={`sidebar-${item}`} className="nav-item"><a onClick={onClickHandler} className={classnames('nav-link rounded-0', currentSection === item ? 'active' : 'text-dark')} href={`#${item}`}>{sidebarItems[item]}</a></li>

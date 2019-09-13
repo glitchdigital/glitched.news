@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  const indicators = { positive: [], negative: [] }
+  const trustIndicators = { positive: [], negative: [] }
   const urlParts = urlParser.parse(url)
   const domainParts = domainParser.parse(urlParts.hostname)
   const domain = `${domainParts.sld}.${domainParts.tld}`.toLowerCase()
@@ -20,29 +20,29 @@ module.exports = async (req, res) => {
   let blacklists = []
 
   blacklistChecks = await Promise.all([
-    checkDailyDot(domain, indicators, blacklists),
-    checkPolitifact(domain, indicators, blacklists)
+    checkDailyDot(domain, trustIndicators, blacklists),
+    checkPolitifact(domain, trustIndicators, blacklists)
   ])
 
   if (blacklists.length === 0) {
-    indicators.positive.push({ text: `${domain} not found on any blacklists` })
+    trustIndicators.positive.push({ text: `${domain} not found on any blacklists` })
   }
   
   return send(res, 200, {
     url,
     domain,
     blacklists,
-    indicators
+    trustIndicators
   })
 }
 
-async function checkDailyDot(domain, indicators, blacklists) {
+async function checkDailyDot(domain, trustIndicators, blacklists) {
   let foundOnBlacklist = false
   const csvData = await csvString.parse(dailydot.csv)
   csvData.forEach(row => {
     const domainListed = row[0].toLowerCase()
     if (domainListed === domain) {
-      indicators.negative.push({ text: `The Daily Dot has flagged ${domain}` })
+      trustIndicators.negative.push({ text: `The Daily Dot has flagged ${domain}` })
       foundOnBlacklist = true
     }
   })
@@ -52,7 +52,7 @@ async function checkDailyDot(domain, indicators, blacklists) {
   return Promise.resolve(foundOnBlacklist)
 }
 
-async function checkPolitifact(domain, indicators, blacklists) {
+async function checkPolitifact(domain, trustIndicators, blacklists) {
   let foundOnBlacklist = false
   const csvData = await csvString.parse(politifact.csv)
   csvData.forEach(row => {
@@ -60,9 +60,9 @@ async function checkPolitifact(domain, indicators, blacklists) {
     const reasonListed = (row[1]) ? row[1].toLowerCase() : null
     if (domainListed === domain) {
       if (reasonListed) {
-        indicators.negative.push({ text: `Politifact has flagged ${domain} as "${reasonListed}"` })
+        trustIndicators.negative.push({ text: `Politifact has flagged ${domain} as "${reasonListed}"` })
       } else {
-        indicators.negative.push({ text: `Politifact has flagged ${domain}` })
+        trustIndicators.negative.push({ text: `Politifact has flagged ${domain}` })
       }
       foundOnBlacklist = true
     }

@@ -12,10 +12,11 @@
 }
 
 .sidebar__heading {
-  font-weight: 600;
-  text-transform: uppercase;
   font-size: 0.9em;
-  margin: 10px;
+}
+
+.sidebar {
+  font-size: 0.9em;
 }
 
 .sidebar-sticky {

@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  const indicators = { positive: [], negative: [] }
+  const trustIndicators = { positive: [], negative: [] }
   const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
   const structuredData = unfluff(text, () => { console.log("unfluff callback")})
@@ -25,20 +25,20 @@ module.exports = async (req, res) => {
 
   if (metadata) {
     if (hasNewsArticleMetadata(metadata)) {
-      indicators.positive.push({text: "Page identifies as a news article"})
+      trustIndicators.positive.push({text: "Page identifies as a news article"})
     }
   }
 
   if (url.startsWith('https://')) {
-    indicators.positive.push({text: "URL is encrypted (uses HTTPS)"})
+    trustIndicators.positive.push({text: "URL is encrypted (uses HTTPS)"})
   } else {
-    indicators.negative.push({text: "URL is not encrypted (does not use HTTPS)"})
+    trustIndicators.negative.push({text: "URL is not encrypted (does not use HTTPS)"})
   }
 
   let links = []
   if (structuredData.links) {
     if (structuredData.links.length > 15) {
-      indicators.negative.push({text: "Unusually high number of links in the article"})
+      trustIndicators.negative.push({text: "Unusually high number of links in the article"})
     }
 
     links = structuredData.links.map(link => {
@@ -66,20 +66,20 @@ module.exports = async (req, res) => {
     const daysAgo = dateNow.diff(datePublished, 'days')
 
     if (daysAgo > 30) {
-      indicators.negative.push({text: `The article publication date is ${datePublished.fromNow()}`})
+      trustIndicators.negative.push({text: `The article publication date is ${datePublished.fromNow()}`})
     }
   }
 
   if (!structuredData.title) {
-    indicators.negative.push({text: `Unable to clearly identify headline`})
+    trustIndicators.negative.push({text: `Unable to clearly identify headline`})
   }
 
   if (structuredData.text) {
     if (structuredData.text.length < 500) {
-      indicators.negative.push({text: `Main text of article is unusually short`})
+      trustIndicators.negative.push({text: `Main text of article is unusually short`})
     }
   } else {
-    indicators.negative.push({text: `Unable to clearly identify main text of article`})
+    trustIndicators.negative.push({text: `Unable to clearly identify main text of article`})
   }
 
   // Parse for Quotes
@@ -92,9 +92,9 @@ module.exports = async (req, res) => {
   })  
 
   if (quotes.length > 0) {
-    indicators.positive.push({ text: `${quotes.length} quotes cited in article` })
+    trustIndicators.positive.push({ text: `${quotes.length} quotes cited in article` })
   } else {
-    indicators.negative.push({ text: `No quotes cited in article` })
+    trustIndicators.negative.push({ text: `No quotes cited in article` })
   }
 
   // Parse for Sentences
@@ -142,7 +142,7 @@ module.exports = async (req, res) => {
     quotesWithNumbers,
     sentencesWithNumbers,
     sentiment,
-    indicators,
+    trustIndicators,
   })
 
 }

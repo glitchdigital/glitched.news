@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  const indicators = { positive: [], negative: [] }
+  const trustIndicators = { positive: [], negative: [] }
   const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
   const structuredData = unfluff(text)
@@ -30,9 +30,9 @@ module.exports = async (req, res) => {
   })
 
   if (quotes.length > 0) {
-    indicators.positive.push({ text: `${quotes.length} quotes cited in article` })
+    trustIndicators.positive.push({ text: `${quotes.length} quotes cited in article` })
   } else {
-    indicators.negative.push({ text: `No quotes cited in article` })
+    trustIndicators.negative.push({ text: `No quotes cited in article` })
   }
 
   return send(res, 200, {
@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
     quotes: quotes,
     quotesWithNumbers: quotesWithNumbers,
     sentancesWithNumbers: sentancesWithNumbers,
-    indicators
+    trustIndicators
   })
 
 }

@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  const indicators = { positive: [], negative: [] }
+  const trustIndicators = { positive: [], negative: [] }
 
   const fetchRes = await fetch(url, fetchOptions)
   const text = await fetchRes.text()
@@ -48,13 +48,13 @@ module.exports = async (req, res) => {
     shareData.twitter.metadata = true
 
   if (shareData.facebook.share_count && shareData.facebook.share_count === 0) {
-    indicators.negative.push({text: "No-one has shared this URL on Facebook"})
+    trustIndicators.negative.push({text: "No-one has shared this URL on Facebook"})
   }
 
   return send(res, 200, {
     url,
     ...shareData,
-    indicators
+    trustIndicators
   })
 }
 

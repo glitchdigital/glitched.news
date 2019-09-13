@@ -27,7 +27,7 @@ const ENABLE_SERVER_SIDE_EVENTS = false
 export default class extends React.Component {
   static async getInitialProps({ query }) {
     return {
-      articleUrl: query.url
+      articleUrl: query.url,
     }
   }
 
@@ -46,12 +46,13 @@ export default class extends React.Component {
         blacklists: null,
         'structured-data': null
       },
-      indicators: {
+      trustIndicators: {
         positive: [],
         negative: []
       },
+      feedback: [],
       inProgress: false,
-      currentSection: DEFAULT_SECTION
+      currentSection: null
     }
     this.onSubmit = this.onSubmit.bind(this)
     this.onChange = this.onChange.bind(this)
@@ -62,9 +63,12 @@ export default class extends React.Component {
   async componentDidMount() {
     this.serverUrl = `${window.location.protocol}//${window.location.host}`
 
-    if (this.state.url) {
-      this.onSubmit()
-    }
+    const currentSection = window.location.hash ? window.location.hash.replace('#', '') : DEFAULT_SECTION
+    this.setState({ currentSection }, () => {
+      if (this.state.url) {
+        this.onSubmit()
+      }
+    })
 
     if (!window.hashchangeEventListenerAdded) {
       window.hashchangeEventListenerAdded = true
@@ -83,8 +87,9 @@ export default class extends React.Component {
         articleUrl = 'https://'+articleUrl
       }
 
-      this.setState({ url: articleUrl })
-      this.onSubmit()
+      this.setState({ url: articleUrl, currentSection: DEFAULT_SECTION }, () => {
+        this.onSubmit()
+      })
     }
   }
 
@@ -94,9 +99,7 @@ export default class extends React.Component {
 
   async onSubmit(e) {
     if (e) e.preventDefault()
-
     let url  = this.state.url
-
     if (!url) {
       // Reset URL browser address bar
       Router.push('/', '/', { shallow: true })
@@ -105,9 +108,15 @@ export default class extends React.Component {
       if (!url.includes('//')) {
         url = `https://${url}`
       }
-      const href = `${window.location.pathname}?url=${url}`
+      // Reset section when querying a new URL
+      const currentSection = (this.props.articleUrl == url) ? this.state.currentSection : DEFAULT_SECTION
+      const href = `${window.location.pathname}?url=${this.state.url}#${currentSection}`
       const as = href
-      Router.push(href, as, { shallow: true })
+      Router.push(href, as, { shallow: false })
+      if (document.getElementById(currentSection)) {
+        Array.prototype.slice.call(document.getElementsByTagName('section')).map(el => el.className = '')
+        document.getElementById(currentSection).className = 'd-block'
+      }
     }
 
     // Reset state
@@ -124,17 +133,13 @@ export default class extends React.Component {
         blacklists: null,
         'structured-data': null,
       },
-      indicators: {
+      trustIndicators: {
         positive: [],
         negative: []
       },
-      inProgress: (url) ? true : false,
-      currentSection: DEFAULT_SECTION
+      feedback: [],
+      inProgress: (url) ? true : false
     })
-
-    // Reset section highlighting
-    Array.prototype.slice.call(document.getElementsByTagName('section')).map(el => el.className = '')
-    document.getElementById(DEFAULT_SECTION).className = 'd-block'
 
     // If we have a URL, get article metadata
     if (url) {
@@ -146,11 +151,13 @@ export default class extends React.Component {
           const eventData = JSON.parse(event.data)
           let articleMetadata = this.state.articleMetadata
           articleMetadata[eventData.endpoint] = eventData.data
-          const indicators = this.getTrustIndicators(articleMetadata)
-          
+          const trustIndicators = this.getTrustIndicators(articleMetadata)
+          const feedback = this.getFeedback(articleMetadata)
+
           this.setState({
             articleMetadata,
-            indicators,
+            trustIndicators,
+            feedback,
             inProgress: eventData.inProgress
           })
 
@@ -168,52 +175,75 @@ export default class extends React.Component {
         // (This is really just Internet Explorer - including Edge!)
         const request = await fetch(`${this.serverUrl}/api/article-metadata?url=${url}`)
         const articleMetadata = await request.json()
-        const indicators = this.getTrustIndicators(articleMetadata)
+        const trustIndicators = this.getTrustIndicators(articleMetadata)
+        const feedback = this.getFeedback(articleMetadata)
 
         this.setState({
           articleMetadata,
-          indicators,
-          inProgress: false,
-          currentSection: DEFAULT_SECTION
+          trustIndicators,
+          feedback,
+          inProgress: false
         })
       }
     }
   }
 
   getTrustIndicators(articleMetadata) {
-    const indicators = { positive: [], negative: [] }
+    const trustIndicators = { positive: [], negative: [] }
     for (let prop in articleMetadata) {
       if (articleMetadata[prop] !== null) {
-        // Get positive and negative indicators in each section
+        // Get positive and negative trust indicators in each section
         // (Looping over like this preserves the order of them)
-        if (articleMetadata[prop].indicators) {
-          indicators.positive = indicators.positive.concat(articleMetadata[prop].indicators.positive)
-          indicators.negative = indicators.negative.concat(articleMetadata[prop].indicators.negative)
+        if (articleMetadata[prop].trustIndicators) {
+          trustIndicators.positive = trustIndicators.positive.concat(articleMetadata[prop].trustIndicators.positive)
+          trustIndicators.negative = trustIndicators.negative.concat(articleMetadata[prop].trustIndicators.negative)
         }
       }
     }
-    return indicators 
+    return trustIndicators
+  }
+
+  getFeedback(articleMetadata) {
+    const feedback = []
+    for (let prop in articleMetadata) {
+      if (articleMetadata[prop] !== null) {
+        if (articleMetadata[prop].feedback) {
+          feedback.concat(articleMetadata[prop].feedback)
+        }
+      }
+    }
+    return feedback 
   }
 
   toggleSection(e) {
     e.preventDefault()
-    const currentSection = e.target.getAttribute('href').replace('#', '')
-    Array.prototype.slice.call(document.getElementsByTagName('section')).map(el => el.className = '')
-    document.getElementById(currentSection).className = 'd-block'
-    this.setState({currentSection})
+    const currentSection = e.target.getAttribute('href').replace('#', '')    
+    if (document.getElementById(currentSection)) {
+      this.setState({currentSection})
+      Array.prototype.slice.call(document.getElementsByTagName('section')).map(el => el.className = '')
+      document.getElementById(currentSection).className = 'd-block'
+    }
+    const href = `${window.location.pathname}?url=${this.state.url}#${currentSection}`
+    const as = href
+    Router.push(href, as, { shallow: false })
+    window.scrollTo(0, 0) 
   }
 
   render() { 
-    const { currentSection, url, articleMetadata, inProgress, indicators } = this.state
-
+    const { currentSection, url, articleMetadata, inProgress, trustIndicators, feedback } = this.state
     return (
       <Page inputUrl={url} onInputSubmit={this.onSubmit} onInputChange={this.onChange} disableInput={inProgress}>
         <main role="main">
           <div className="d-none d-md-block">{ inProgress && <div className="pt-5"><Loader/></div> }</div>
           <div className="container-fluid">
             <div className="row">
-              <form className="form-inline d-md-none mb-3 pl-2 pr-2 w-100" onSubmit={this.onSubmit}>
-                <input className="form-control rounded-0 w-100" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={url} onChange={this.onChange} />
+              <form className="d-md-none mb-3 pl-2 pr-2 w-100" onSubmit={this.onSubmit}>
+                <div className="input-group">
+                  <input id="inspect-url" className="form-control bg-light border-0" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={url} onChange={this.onChange} />
+                  <div className="input-group-append">
+                    <button type="submit" className="btn btn-primary">Inspect</button>
+                  </div>
+                </div>
               </form>
               { url && !inProgress &&
                 <div className="col-md-3 col-lg-2 d-none d-md-block sidebar bg-light">
@@ -229,7 +259,7 @@ export default class extends React.Component {
                   { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
                 </section>
                 <section id="article-trust">
-                  { (indicators.positive.length > 0 || indicators.negative.length > 0) && <Trust indicators={indicators} /> }
+                  { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
                 </section>
                 <section id="article-sentiment">
                   { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }

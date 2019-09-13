@@ -19,14 +19,19 @@ export default ({ children, disableInput, inputUrl, onInputSubmit, onInputChange
       <title>glitched.news</title>
     </Head>
     <header className="container-fluid">
-      <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-primary row">
+      <nav className="navbar navbar-expand-md navbar-light fixed-top bg-white row border-bottom">
         <div className="col-md-3 col-lg-2">
-          <Link href="/"><a className="navbar-brand">Article Inspector</a></Link>
+          <Link href="/"><a className="navbar-brand text-primary">Inspect Article</a></Link>
         </div>
         <div className="col-md-9 col-lg-10 collapse navbar-collapse p-0 pr-2" id="navbarCollapse">
           {!hideInput && 
-            <form className="form-inline mt-10 mt-md-10 navbar-nav mr-auto" style={{width: '100%'}} onSubmit={onInputSubmit}>
-              <input style={{width: '100%'}} className="form-control border-0 rounded-0" disabled={disableInput} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={inputUrl} onChange={onInputChange} />
+            <form className="form-inline mt-10 mt-md-10 navbar-nav mr-auto d-block w-100" onSubmit={onInputSubmit}>
+              <div className="input-group">
+                <input className="form-control bg-light border-0" disabled={disableInput} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={inputUrl} onChange={onInputChange} />
+                <div className="input-group-append">
+                  <button type="submit" className="btn btn-primary">Inspect</button>
+                </div>
+              </div>
             </form>
           }
         </div>

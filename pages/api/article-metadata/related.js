@@ -52,28 +52,28 @@ module.exports = async (req, res) => {
     })
   })
 
-  const indicators = { positive: [], negative: [] }
+  const trustIndicators = { positive: [], negative: [] }
 
   if (domains.length > 0) {
     if (domains.length > 3) {
-      indicators.positive.push({text: "Multiple sites have similar articles"})
+      trustIndicators.positive.push({text: "Multiple sites have similar articles"})
     } else {
-      indicators.negative.push({text: "Few other sites have similar articles"})
+      trustIndicators.negative.push({text: "Few other sites have similar articles"})
     }
 
     if (articles.length > 10) {
-      indicators.positive.push({text: "Multiple related articles found"})
+      trustIndicators.positive.push({text: "Multiple related articles found"})
     } else {
-      indicators.negative.push({text: "Not many other related articles found"})
+      trustIndicators.negative.push({text: "Not many other related articles found"})
     }
   } else {
-    indicators.negative.push({text: "No other similar articles found on other sites"})
+    trustIndicators.negative.push({text: "No other similar articles found on other sites"})
   }
 
   return send(res, 200, {
     url,
     articles,
     domains,
-    indicators
+    trustIndicators
   })
 }
