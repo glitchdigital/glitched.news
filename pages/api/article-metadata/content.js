@@ -1,4 +1,6 @@
 const unfluff = require('unfluff')
+const Readability = require('readability')
+const JSDOM = require("jsdom").JSDOM
 const fetch = require('node-fetch')
 const urlParser = require('url')
 const WAE = require('web-auto-extractor').default
@@ -7,6 +9,7 @@ const tokenizer = require('sbd')
 const vader = require('vader-sentiment')
 
 const truncate = require('lib/truncate')
+const { getQuotes } = require('lib/quotes')
 const { send, queryParser } = require('lib/request-handler')
 const fetchOptions = require('lib/fetch-options')
 
@@ -19,9 +22,13 @@ module.exports = async (req, res) => {
 
   const trustIndicators = { positive: [], negative: [] }
   const fetchRes = await fetch(encodeURI(url), fetchOptions)
-  const text = await fetchRes.text()
-  const structuredData = unfluff(text, () => { console.log("unfluff callback")})
-  const metadata = WAE().parse(text)
+  const html = await fetchRes.text()
+  const structuredData = unfluff(html)
+  const metadata = WAE().parse(html)
+
+  const dom = new JSDOM(html, { url })
+  const reader = new Readability(dom.window.document)
+  const articleText = reader.parse().textContent || structuredData.text || ''
 
   if (metadata) {
     if (hasNewsArticleMetadata(metadata)) {
@@ -74,8 +81,8 @@ module.exports = async (req, res) => {
     trustIndicators.negative.push({text: `Unable to clearly identify headline`})
   }
 
-  if (structuredData.text) {
-    if (structuredData.text.length < 500) {
+  if (articleText) {
+    if (articleText.length < 500) {
       trustIndicators.negative.push({text: `Main text of article is unusually short`})
     }
   } else {
@@ -83,7 +90,7 @@ module.exports = async (req, res) => {
   }
 
   // Parse for Quotes
-  const quotes = getQuotes(structuredData.text || '')
+  const quotes = getQuotes(articleText)
   let quotesWithNumbers = []
 
   quotes.forEach(quote => {
@@ -98,7 +105,7 @@ module.exports = async (req, res) => {
   }
 
   // Parse for Sentences
-  const sentences = tokenizer.sentences(structuredData.text) || []
+  const sentences = tokenizer.sentences(articleText) || []
   let sentencesWithNumbers = []
 
   sentences.forEach(sentence => {
@@ -108,8 +115,8 @@ module.exports = async (req, res) => {
   })
 
   const headlineSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(structuredData.title)
-  const textSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(structuredData.text)
-  const overallSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(`${structuredData.title} ${structuredData.description} ${structuredData.text}`)
+  const textSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(articleText)
+  const overallSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(`${structuredData.title} ${structuredData.description} ${articleText}`)
 
   const sentiment = {
     headline: { 
@@ -136,51 +143,14 @@ module.exports = async (req, res) => {
     url,
     ...structuredData,
     links,
-    characterCount: structuredData.text.length,
-    wordCount: structuredData.text.split(' ').length,
+    characterCount: articleText.length,
+    wordCount: articleText.split(' ').length,
     quotes,
     quotesWithNumbers,
     sentencesWithNumbers,
     sentiment,
     trustIndicators,
   })
-
-}
-
-function getQuotes(text) {
-  let normalizedtext = text
-
-  // Normalize English quotation marks
-  normalizedtext = normalizedtext.replace(/[“”]/g, '"')
-
-  // Normalize German quotation marks
-  normalizedtext = normalizedtext.replace(/[„“]/g, '"')  
-
-  // Normalize French quotation marks
-  normalizedtext = normalizedtext.replace(/[«»]/g, '"')
-
-  const rawQuotes = normalizedtext.match(/(["])(\\?.)*?\1/gm) || []
-  let quotes = []
-  
-  rawQuotes.forEach(quote => {
-    const trimmedQuote = quote.replace(/( )*"( )*/, '"')
-    quotes.push(trimmedQuote)
-  })
-  
-  // quotes = getOnlyUniqueQuotes(quotes)
-  
-  return quotes
-}
-
-function getOnlyUniqueQuotes(quotes) {
-  let uniqueQuotes = {}
-
-  quotes.forEach(quote => {
-    const key = quote.toLowerCase()
-    uniqueQuotes[key] = quote
-  })
-
-  return Object.values(uniqueQuotes)
 }
 
 function removeDuplicateObjectsFromArray(array, property) {
