@@ -1,6 +1,6 @@
 {
   "name": "glitched-news",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "A prototype research tool to demonstrate how metadata and automated analysis can be combined.",
   "repository": "https://github.com/glitchdigital/glitched.news",
   "scripts": {
