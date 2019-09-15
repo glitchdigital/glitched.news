@@ -3,7 +3,7 @@ const url = require('url')
 
 googleNews.resultsPerPage = 15 // max 100
 
-const { send } = require('../../lib/request-handler')
+const { send } = require('lib/request-handler')
 
 module.exports = async (req, res) => {
   let domains = []

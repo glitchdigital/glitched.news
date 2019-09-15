@@ -1,4 +1,4 @@
-const { send, queryParser } = require('../../lib/request-handler')
+const { send, queryParser } = require('lib/request-handler')
 
 module.exports = async (req, res) => {
   const query = queryParser(req)
