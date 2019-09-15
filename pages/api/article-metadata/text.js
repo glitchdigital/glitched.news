@@ -23,7 +23,6 @@ module.exports = async (req, res) => {
 
   const articleText = reader.parse().textContent || structuredData.text || ''
 
-
   const quotes = getQuotes(articleText)
   let quotesWithNumbers = []
   quotes.forEach(quote => {
@@ -44,12 +43,28 @@ module.exports = async (req, res) => {
     trustIndicators.negative.push({ text: `No quotes cited in article` })
   }
 
+  // Highly subjective score value
+  let score = 0;
+
+  quotes.forEach(() => score++)
+  quotesWithNumbers.forEach(() => score++)
+  sentencesWithNumbers.forEach(() => score++)
+
+  if (articleText.length > 1500) {
+    score += 3
+  } else if (articleText.length > 1000) {
+    score += 2
+  } else if (articleText.length > 500) {
+    score++
+  }
+
   return send(res, 200, {
     url,
     quotes: quotes,
     quotesWithNumbers: quotesWithNumbers,
     sentencesWithNumbers: sentencesWithNumbers,
-    trustIndicators
+    trustIndicators,
+    score
   })
 
 }
