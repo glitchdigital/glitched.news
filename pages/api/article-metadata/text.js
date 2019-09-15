@@ -46,16 +46,16 @@ module.exports = async (req, res) => {
   // Highly subjective score value
   let score = 0;
 
-  quotes.forEach(() => score++)
-  quotesWithNumbers.forEach(() => score++)
-  sentencesWithNumbers.forEach(() => score++)
+  quotes.forEach(() => score += 5)
+  quotesWithNumbers.forEach(() => score += 5)
+  sentencesWithNumbers.forEach(() => score += 2)
 
   if (articleText.length > 1500) {
-    score += 3
+    score += 20
   } else if (articleText.length > 1000) {
-    score += 2
+    score += 10
   } else if (articleText.length > 500) {
-    score++
+    score += 5
   }
 
   return send(res, 200, {
