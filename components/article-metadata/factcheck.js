@@ -2,7 +2,7 @@ import React from "react"
 
 export default class extends React.Component {
   render() {
-    const { factchecks, content  } = this.props
+    const { factchecks, content, textAnalysis } = this.props
 
     if (!factchecks || !content)
       return null
@@ -14,12 +14,23 @@ export default class extends React.Component {
         <p>
           Found <strong>{ content.quotes.length } quotes</strong> in the article, <strong>{ content.quotesWithNumbers.length } quotes</strong> and <strong>{ content.sentencesWithNumbers.length } sentences</strong> cite specific dates or numbers.
         </p>
+        <p>
+          Text analysis score: {textAnalysis.score}
+        </p>
         {content.quotes.length > 0 && <h4>Quotes</h4>}
         <ol>
         {content.quotes.map((quote, i) => (
           <li key={`${quote}-${i}`}><em>{quote}</em></li>
         ))}
         </ol>
+
+        {content.sentencesWithNumbers.length > 0 && <h4>Citations of dates and numbers</h4>}
+        <ol>
+        {content.sentencesWithNumbers.map((citation, i) => (
+          <li key={`${citation}-${i}`}><em>{citation}</em></li>
+        ))}
+        </ol>
+
         {factchecks['snopes'].length > 0 && (
           <>
             <h4>Snopes</h4>

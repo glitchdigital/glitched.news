@@ -44,6 +44,7 @@ export default class extends React.Component {
         related: null,
         factchecks: null,
         blacklists: null,
+        text: null,
         'structured-data': null
       },
       trustIndicators: {
@@ -131,6 +132,7 @@ export default class extends React.Component {
         related: null,
         factchecks: null,
         blacklists: null,
+        text: null,
         'structured-data': null,
       },
       trustIndicators: {
@@ -265,7 +267,7 @@ export default class extends React.Component {
                   { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
                 </section>
                 <section id="article-factcheck"> 
-                  { articleMetadata.content && articleMetadata.factchecks && <FactCheck factchecks={articleMetadata.factchecks} content={articleMetadata.content} /> }
+                  { articleMetadata.content && articleMetadata.factchecks && articleMetadata.text && <FactCheck factchecks={articleMetadata.factchecks} content={articleMetadata.content} textAnalysis={articleMetadata.text} /> }
                 </section>
                 <section id="article-topics">
                   { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
