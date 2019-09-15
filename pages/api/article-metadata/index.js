@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
 
     endpoints.map(async (endpoint) => {
       try {
-        const fetchRequest = await fetch(`${protocol}://${server}/api/article-metadata/${endpoint}?url=${url}`)
+        const fetchRequest = await fetch(`${protocol}://${server}/api/article-metadata/${endpoint}?url=${encodeURIComponent(url)}`)
         data[endpoint] = await fetchRequest.json()
       } catch (e) {
         data[endpoint] = null
@@ -59,7 +59,7 @@ module.exports = async (req, res) => {
     // Use fetch to call each endpoint concurrently
     await Promise.all(
       endpoints.map(async (endpoint) => {
-        const fetchRequest = await fetch(`${protocol}://${server}/api/article-metadata/${endpoint}?url=${url}`)
+        const fetchRequest = await fetch(`${protocol}://${server}/api/article-metadata/${endpoint}?url=${encodeURIComponent(url)}`)
         data[endpoint] = await fetchRequest.json()
         return Promise.resolve()
       })

@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
 
   const trustIndicators = { positive: [], negative: [] }
 
-  const fetchRes = await fetch(url, fetchOptions)
+  const fetchRes = await fetch(encodeURI(url), fetchOptions)
   const text = await fetchRes.text()
   const metadata = WAE().parse(text)
 

@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
 
   const trustIndicators = { positive: [], negative: [] }
 
-  const fetchRes = await fetch(url, fetchOptions)
+  const fetchRes = await fetch(encodeURI(url), fetchOptions)
   const html = await fetchRes.text()
   const testResults = await structuredDataTestHtml(html, { presets: [ Google, SocialMedia ]})
   .then(res => res )

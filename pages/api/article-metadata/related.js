@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
     return send(res, 400, { error: 'URL parameter missing' })
 
   // Fetch page
-  const fetchRes = await fetch(url, fetchOptions)
+  const fetchRes = await fetch(encodeURI(url), fetchOptions)
   const text = await fetchRes.text()
   const structuredData = unfluff(text)
 

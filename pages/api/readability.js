@@ -12,12 +12,15 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  const fetchRes = await fetch(url, fetchOptions)
+  // Fetch URL
+  const fetchRes = await fetch(encodeURI(url), fetchOptions)
   const html = await fetchRes.text()
 
-  const doc = new JSDOM(html, { url })
-  const reader = new Readability(doc.window.document)
+  // Parse article
+  const dom = new JSDOM(html, { url })
+  const reader = new Readability(dom.window.document)
   const article = reader.parse()
+
   return send(res, 200, {
     article
   })
