@@ -264,7 +264,7 @@ export default class extends React.Component {
                   { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
                 </section>
                 <section id="article-sentiment">
-                  { articleMetadata.content && <Sentiment content={articleMetadata.content} /> }
+                  { articleMetadata.text && <Sentiment sentiment={articleMetadata.text.sentiment} /> }
                 </section>
                 <section id="article-factcheck"> 
                   { articleMetadata.content && articleMetadata.factchecks && articleMetadata.text && <FactCheck factchecks={articleMetadata.factchecks} content={articleMetadata.content} textAnalysis={articleMetadata.text} /> }
