@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const unfluff = require('unfluff')
 const Readability = require('readability')
 const JSDOM = require("jsdom").JSDOM
+const SentimentIntensityAnalyzer = require('vader-sentiment').SentimentIntensityAnalyzer
 
 const { getQuotes } = require('lib/quotes')
 const { send, queryParser } = require('lib/request-handler')
@@ -43,6 +44,25 @@ module.exports = async (req, res) => {
     trustIndicators.negative.push({ text: `No quotes cited in article` })
   }
 
+  const articleHeadlineSentiment = SentimentIntensityAnalyzer.polarity_scores(structuredData.title)
+  const articleTextSentiment = SentimentIntensityAnalyzer.polarity_scores(articleText)
+  const articleOverallSentiment = SentimentIntensityAnalyzer.polarity_scores(`${structuredData.title} ${structuredData.description} ${articleText}`)
+
+  let articleSentencesSentiment = []
+  sentences.forEach(sentence => {
+    articleSentencesSentiment.push({
+      text: sentence.replace(/\n/g, ''),
+      ...SentimentIntensityAnalyzer.polarity_scores(sentence.replace(/\n/g, ''))
+    })
+  })
+
+  const sentiment = {
+    headline: articleHeadlineSentiment,
+    text: articleTextSentiment,
+    overall: articleOverallSentiment,
+    sentences: articleSentencesSentiment,
+  }
+
   // Highly subjective score value
   let score = 0;
 
@@ -64,7 +84,8 @@ module.exports = async (req, res) => {
     quotesWithNumbers: quotesWithNumbers,
     sentencesWithNumbers: sentencesWithNumbers,
     trustIndicators,
-    score
+    score,
+    sentiment,
   })
 
 }
