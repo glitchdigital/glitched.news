@@ -25,8 +25,19 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Sentiment analysis</h3>
-        {negativeSentences > positiveSentences && <p className="sentiment__negative--highlighted">Overall, this article appears to have more negative sentences than positive sentences.</p>}
-        {positiveSentences > negativeSentences && <p className="sentiment__positive--highlighted">Overall, this article appears to have more positive sentences than negative sentences.</p>}
+    
+        {negativeSentences > positiveSentences && <p className="sentiment__negative--highlighted">More negative sentences than positive.</p>}
+        {positiveSentences > negativeSentences && <p className="sentiment__positive--highlighted">More positive sentences than negative.</p>}
+        
+        <ul>
+          <li>{Math.round(negativeSentences / sentiment.sentences.length * 100)}% of sentences appear negative.</li>
+          <li>{Math.round(neutralSentences / sentiment.sentences.length * 100)}% of sentences appear neutral.</li>
+          <li>{Math.round(positiveSentences / sentiment.sentences.length * 100)}% of sentences appear positive.</li>
+        </ul>
+        
+        <hr/>
+      
+        <h4>Text analysis</h4>
         <table className="sentiment mb-4">
           <thead>
             <tr style={{opacity: 0.5}}>
@@ -58,15 +69,7 @@ export default class extends React.Component {
           </tbody>
         </table>
 
-        <hr/>
-
-        <ul>
-          <li>Negative sentences: {negativeSentences} ({Math.round(negativeSentences / sentiment.sentences.length * 100)}%)</li>
-          <li>Neutral sentences: {neutralSentences} ({Math.round(neutralSentences / sentiment.sentences.length * 100)}%)</li>
-          <li>Positive sentences: {positiveSentences} ({Math.round(positiveSentences / sentiment.sentences.length * 100)}%)</li>
-        </ul>
-
-        {sentiment.sentences.map((sentence, i) => {
+        {/*sentiment.sentences.map((sentence, i) => {
           let className = ''
           
           if (sentence.pos > SENTIMENT_HIGHLIGHT_THRESHOLD && sentence.pos > sentence.neg) {
@@ -79,15 +82,15 @@ export default class extends React.Component {
 
           return (
             <p className={`${className} pl-1 pr-1`}>
-              {sentence.text}
+              {'X'.repeat(sentence.length)}
             </p>
           )
-        })}
+        })*/}
 
         <hr/>
 
         <p className="text-muted">
-          Sentiment analysis powered by port of the VADER sentiment analysis tool
+          Experimental sentiment analysis using VADER.
         </p>
       </>
     )

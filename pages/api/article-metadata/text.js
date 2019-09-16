@@ -51,7 +51,7 @@ module.exports = async (req, res) => {
   let articleSentencesSentiment = []
   sentences.forEach(sentence => {
     articleSentencesSentiment.push({
-      text: sentence.replace(/\n/g, ''),
+      length: sentence.replace(/\n/g, '').length,
       ...SentimentIntensityAnalyzer.polarity_scores(sentence.replace(/\n/g, ''))
     })
   })

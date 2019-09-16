@@ -24,7 +24,11 @@ export default class extends React.Component {
         ))}
         </ol>
 
-        {content.sentencesWithNumbers.length > 0 && <h4>Citations of dates and numbers</h4>}
+        {content.sentencesWithNumbers.length > 0 && <h4>Numbers and dates</h4>}
+        <p className="text-muted">
+          Numbers and dates are should be verifiable, which are verifiable and/or attributed.
+        </p>
+        
         <ol>
         {content.sentencesWithNumbers.map((citation, i) => (
           <li key={`${citation}-${i}`}><em>{citation}</em></li>
