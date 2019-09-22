@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
   const trustIndicators = { positive: [], negative: [] }
   const urlParts = urlParser.parse(url)
   const domainParts = domainParser.parse(urlParts.hostname)
-  const domain = `${domainParts.sld}.${domainParts.tld}`.toLowerCase()
+  const domain = domainParts.tld === 'localhost' ? 'localhost' : `${domainParts.sld}.${domainParts.tld}`.toLowerCase()
 
   let blacklists = []
 
