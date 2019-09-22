@@ -2,13 +2,12 @@ const unfluff = require('unfluff')
 const Readability = require('readability')
 const JSDOM = require("jsdom").JSDOM
 const fetch = require('node-fetch')
-const urlParser = require('url')
+
 const WAE = require('web-auto-extractor').default
 const moment = require('moment')
 const tokenizer = require('sbd')
 const vader = require('vader-sentiment')
 
-const truncate = require('lib/truncate')
 const { getQuotes } = require('lib/quotes')
 const { send, queryParser } = require('lib/request-handler')
 const fetchOptions = require('lib/fetch-options')
@@ -41,31 +40,6 @@ module.exports = async (req, res) => {
   } else {
     trustIndicators.negative.push({text: "URL is not encrypted (does not use HTTPS)"})
   }
-
-  let links = []
-  if (structuredData.links) {
-    if (structuredData.links.length > 15) {
-      trustIndicators.negative.push({text: "Unusually high number of links in the article"})
-    }
-
-    links = structuredData.links.map(link => {
-      if (!link.href.includes('://')) {
-        link.url = `${urlParser.parse(url).protocol}//${urlParser.parse(url).hostname}${link.href}`
-      } else {
-        link.url = link.href
-      }
-
-      link.title = truncate(link.url, 50)
-      link.domain = (link.url && urlParser.parse(link.url).host) ? urlParser.parse(link.url).host.replace(/^www./, '') : null
-
-      return {
-        url: link.url,
-        title: link.title,
-        domain: link.domain
-      }
-    })
-  }
-  links = removeDuplicateObjectsFromArray(links, 'url')
 
   if (structuredData.date) {
     const datePublished = moment.utc(structuredData.date)
@@ -142,7 +116,6 @@ module.exports = async (req, res) => {
   return send(res, 200, {
     url,
     ...structuredData,
-    links,
     characterCount: articleText.length,
     wordCount: articleText.split(' ').length,
     quotes,
@@ -151,12 +124,6 @@ module.exports = async (req, res) => {
     sentiment,
     trustIndicators,
   })
-}
-
-function removeDuplicateObjectsFromArray(array, property) {
-  let uniqueItems = {}
-  array.forEach(item => { uniqueItems[item[property]] = item })
-  return Object.values(uniqueItems)
 }
 
 function hasNewsArticleMetadata(metadata) {

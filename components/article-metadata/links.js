@@ -13,10 +13,10 @@ export default class extends React.Component {
         <hr/>
         <h3>Links from this article</h3>
         <p>
-          Found <strong>{links.length}</strong> links from this article.
+          Found <strong>{links.length || 0}</strong> links from this page.
         </p>
         <ul>
-        {links.map((link, i) => (
+        {links.links.map((link, i) => (
           <li key={`${link.url}`}>
             <Link
               href={{
@@ -24,7 +24,7 @@ export default class extends React.Component {
                 query: { url: link.url }
               }}
               as={`/inspect?url=${link.url}`}
-            ><a rel='noreferrer'>{link.title}</a></Link>
+            ><a rel='noreferrer'>{link.title || link.url}</a></Link>
             { link.domain && <small> – {' '}{link.domain}</small> }
           </li>
         ))}

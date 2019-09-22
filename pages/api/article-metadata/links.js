@@ -21,9 +21,20 @@ module.exports = async (req, res) => {
   const dom = new JSDOM(html, { url })
 
   const links = []
-  dom.window.document.querySelectorAll('a').forEach(function(node) {
+  dom.window.document.querySelectorAll('a').forEach(node => {
+    // Get URL (striping anchors)
+    let url = node.getAttribute('href').replace(/#(.*)$/, '')
+
+    // If URL does not start with HTTP or HTTPS (or //:) then append base URL so the result
+    // is an absolute link, rather than a relative one.
+    // FIXME: There are edge cases where this approach may not be correct - eg pages that use
+    // the <base> tag, but these are rarely used in practice.
+    if (!url.startsWith('http:') && !url.startsWith('https:') &&  !url.startsWith('//:')) {
+      url = `${homepage}${url}`
+    }
+
     links.push({
-      url: node.getAttribute('href'),
+      url,
       text: node.textContent.replace('\n', '').trim() || ''
     })
   })
@@ -31,6 +42,12 @@ module.exports = async (req, res) => {
   return send(res, 200, {
     domain,
     homepage,
-    links
+    links: removeDuplicates(links, 'url')
+  })
+}
+
+function removeDuplicates(myArr, prop) {
+  return myArr.filter((obj, pos, arr) => {
+    return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos
   })
 }

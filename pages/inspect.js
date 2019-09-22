@@ -45,6 +45,7 @@ export default class extends React.Component {
         factchecks: null,
         blacklists: null,
         text: null,
+        links: null,
         'structured-data': null
       },
       trustIndicators: {
@@ -120,21 +121,16 @@ export default class extends React.Component {
       }
     }
 
+    
+    const articleMetadata = {}
+    for (const prop in this.state.articleMetadata) {
+      articleMetadata[prop] = null
+    }
+
     // Reset state
     this.setState({
       url,
-      articleMetadata: {
-        domain: null,
-        hosting: null,
-        content: null,
-        social: null,
-        topics: null,
-        related: null,
-        factchecks: null,
-        blacklists: null,
-        text: null,
-        'structured-data': null,
-      },
+      articleMetadata,
       trustIndicators: {
         positive: [],
         negative: []
@@ -279,7 +275,7 @@ export default class extends React.Component {
                   { articleMetadata['structured-data'] && articleMetadata['structured-data'].testResults && <StructuredData testResults={articleMetadata['structured-data'].testResults} /> }
                 </section>
                 <section id="article-links"> 
-                  { articleMetadata.content && articleMetadata.content.links && <Links links={articleMetadata.content.links} /> }
+                  { articleMetadata.content && articleMetadata.links && <Links links={articleMetadata.links} /> }
                 </section>
                 <section id="article-related"> 
                   { articleMetadata.related && <Related related={articleMetadata.related} /> }
