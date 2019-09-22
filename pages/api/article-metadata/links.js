@@ -22,8 +22,17 @@ module.exports = async (req, res) => {
 
   const links = []
   dom.window.document.querySelectorAll('a').forEach(node => {
-    // Get URL (striping anchors)
-    let url = node.getAttribute('href').replace(/#(.*)$/, '')
+    // Get URL
+    let url = node.getAttribute('href') || ''
+
+    // Strip anchor text
+    url = url.replace(/#(.*)$/, '')
+    
+    // Strip the trailing slash from URLs (as long as they don't have query string)
+    // This is a normalizeation step that technical might cause problems but in
+    // practice is useful for de-duping links on page.
+    if (!url.includes('?'))
+      url = url.replace(/\/$/, '')
 
     // If URL does not start with HTTP or HTTPS (or //:) then append base URL so the result
     // is an absolute link, rather than a relative one.
