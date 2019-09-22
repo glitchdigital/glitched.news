@@ -44,7 +44,8 @@ module.exports = async (req, res) => {
 
     links.push({
       url,
-      text: node.textContent.replace('\n', '').trim() || ''
+      text: node.textContent.replace('\n', '').trim() || '',
+      domain: urlParts.parse(url).hostname
     })
   })
 

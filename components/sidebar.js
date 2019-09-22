@@ -9,7 +9,7 @@ const sidebarItems = {
   ['article-topics']: 'Topics & keywords',
   //['article-social']: 'Social media',
   ['article-structured-data']: 'Structured data',
-  ['article-links']: 'Links from this article',
+  ['article-links']: 'Links',
   ['article-related']: 'Related articles',
 }
 

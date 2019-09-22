@@ -8,27 +8,40 @@ export default class extends React.Component {
     if (!links)
       return null
 
+    // @TODO Refactor out of render method
+    let linksByDomain = {}
+    links.links.map((link, i) => {
+      if (!linksByDomain[link.domain])
+        linksByDomain[link.domain] = []
+
+      linksByDomain[link.domain].push(link)
+    })
+    
     return (
       <>
         <hr/>
-        <h3>Links from this article</h3>
+        <h3>Links from this page</h3>
         <p>
-          Found <strong>{links.length || 0}</strong> links from this page.
+          Found <strong>{links.links.length || 0}</strong> links on this page to <strong>{Object.keys(linksByDomain).length}</strong> domains.
         </p>
-        <ul>
-        {links.links.map((link, i) => (
-          <li key={`${link.url}`}>
-            <Link
-              href={{
-                pathname: '/inspect',
-                query: { url: link.url }
-              }}
-              as={`/inspect?url=${link.url}`}
-            ><a rel='noreferrer'>{link.title || link.url}</a></Link>
-            { link.domain && <small> – {' '}{link.domain}</small> }
-          </li>
+        {Object.keys(linksByDomain).map(domain => (
+          <>
+            <h5>{domain}</h5>
+            <ul>
+            {linksByDomain[domain].map((link, i) => (
+              <li key={`${link.url}`}>
+                <Link
+                  href={{
+                    pathname: '/inspect',
+                    query: { url: link.url }
+                  }}
+                  as={`/inspect?url=${link.url}`}
+                ><a rel='noreferrer'>{link.title || link.url}</a></Link>
+              </li>
+            ))}
+            </ul>
+          </>
         ))}
-        </ul>
       </>
     )
   }
