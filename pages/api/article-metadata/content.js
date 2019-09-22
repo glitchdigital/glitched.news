@@ -27,7 +27,8 @@ module.exports = async (req, res) => {
 
   const dom = new JSDOM(html, { url })
   const reader = new Readability(dom.window.document)
-  const articleText = reader.parse().textContent || structuredData.text || ''
+  const parsedArticle = reader.parse()
+  const articleText = parsedArticle ? parsedArticle.textContent || structuredData.text || '' : ''
 
   if (metadata) {
     if (hasNewsArticleMetadata(metadata)) {

@@ -21,8 +21,8 @@ module.exports = async (req, res) => {
   const structuredData = unfluff(html)
   const dom = new JSDOM(html, { url })
   const reader = new Readability(dom.window.document)
-
-  const articleText = reader.parse().textContent || structuredData.text || ''
+  const parsedArticle = reader.parse()
+  const articleText = parsedArticle ? parsedArticle.textContent || structuredData.text || '' : ''
 
   const quotes = getQuotes(articleText)
   let quotesWithNumbers = []
