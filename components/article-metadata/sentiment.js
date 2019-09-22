@@ -21,13 +21,23 @@ export default class extends React.Component {
       }
     })
 
+    // @TODO Refactor into component
+    let sentimentClassName = ''
+    let sentimentText = 'The article contains mostly neutral sentences.'
+    if (positiveSentences > neutralSentences && positiveSentences > negativeSentences) {
+      sentimentClassName = 'sentiment__positive--highlighted'
+      sentimentText = 'The article contains mostly positive sentences.'
+    } else if (negativeSentences > neutralSentences && negativeSentences > positiveSentences) { 
+      sentimentClassName = 'sentiment__negative--highlighted'
+      sentimentText = 'The article contains mostly negative sentences.'
+    }
+
     return (
       <>
         <hr/>
         <h3>Sentiment analysis</h3>
-    
-        {negativeSentences > positiveSentences && <p className="sentiment__negative--highlighted">More negative sentences than positive.</p>}
-        {positiveSentences > negativeSentences && <p className="sentiment__positive--highlighted">More positive sentences than negative.</p>}
+
+        <p className={sentimentClassName}>{sentimentText}</p>
         
         <ul>
           <li>{Math.round(negativeSentences / sentiment.sentences.length * 100)}% of sentences appear negative.</li>
@@ -37,7 +47,6 @@ export default class extends React.Component {
         
         <hr/>
       
-        <h4>Text analysis</h4>
         <table className="sentiment mb-4">
           <thead>
             <tr style={{opacity: 0.5}}>
