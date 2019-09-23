@@ -251,7 +251,7 @@ export default class extends React.Component {
               </form>
               { url && !inProgress &&
                 <div className="col-md-3 col-lg-2 d-none d-md-block sidebar bg-light">
-                  <Sidebar currentSection={currentSection} onClickHandler={this.toggleSection} />
+                  <Sidebar currentSection={currentSection} onClickHandler={this.toggleSection} rootUrl={articleMetadata.links ? articleMetadata.links.domain : null}/>
                 </div>
               }
               <div className="col-md-9 col-lg-10 ml-sm-auto article">

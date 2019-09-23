@@ -12,6 +12,7 @@ module.exports = async (req, res) => {
     return send(res, 400, { error: 'URL parameter missing' })
 
   const urlParts = urlParser.parse(url)
+  const path = urlParts.path
   const domain = urlParts.hostname
   const homepage = `${urlParts.protocol}//${urlParts.host}`
 
@@ -51,6 +52,7 @@ module.exports = async (req, res) => {
 
   return send(res, 200, {
     domain,
+    path,
     homepage,
     links: removeDuplicates(links, 'url')
   })

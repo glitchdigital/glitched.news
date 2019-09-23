@@ -80,7 +80,7 @@ export default class extends React.Component {
         <main className="container-fluid pt-0 mt-5 mb-5">
           <div className="row">
             <div className="col-sm-12 col-md-10 col-lg-8 m-auto">
-            <h2 className="text-primary text-center mt-5 mb-5">
+              <h2 className="text-primary text-center mt-5 mb-5">
                 <Trans id="about_prototype">
                   A prototype research tool that combines article metadata and automated analysis
                 </Trans>
