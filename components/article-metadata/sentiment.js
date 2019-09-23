@@ -21,14 +21,10 @@ export default class extends React.Component {
       }
     })
 
-    // @TODO Refactor into component
-    let sentimentClassName = ''
     let sentimentText = 'The article contains mostly neutral sentences.'
     if (positiveSentences > neutralSentences && positiveSentences > negativeSentences) {
-      sentimentClassName = 'sentiment__positive--highlighted'
       sentimentText = 'The article contains mostly positive sentences.'
     } else if (negativeSentences > neutralSentences && negativeSentences > positiveSentences) { 
-      sentimentClassName = 'sentiment__negative--highlighted'
       sentimentText = 'The article contains mostly negative sentences.'
     }
 
@@ -36,17 +32,18 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Sentiment analysis</h3>
-
-        <p className={sentimentClassName}>{sentimentText}</p>
-        
+        <h4>Sentance analysis</h4>
+        <p>{sentimentText}</p>
         <ul>
           <li>{Math.round(negativeSentences / sentiment.sentences.length * 100)}% of sentences appear negative.</li>
           <li>{Math.round(neutralSentences / sentiment.sentences.length * 100)}% of sentences appear neutral.</li>
           <li>{Math.round(positiveSentences / sentiment.sentences.length * 100)}% of sentences appear positive.</li>
         </ul>
-        
         <hr/>
-      
+        <h4>Text analysis</h4>
+        <p>
+          Sentiment of the article text as a whole may differ from sentance analysis (which looks at sentence sentiment in isolation).
+        </p>
         <table className="sentiment mb-4">
           <thead>
             <tr style={{opacity: 0.5}}>
@@ -77,27 +74,7 @@ export default class extends React.Component {
             </tr>
           </tbody>
         </table>
-
-        {/*sentiment.sentences.map((sentence, i) => {
-          let className = ''
-          
-          if (sentence.pos > SENTIMENT_HIGHLIGHT_THRESHOLD && sentence.pos > sentence.neg) {
-            className = 'sentiment__positive--highlighted'
-          }
-
-          if (sentence.neg > SENTIMENT_HIGHLIGHT_THRESHOLD && sentence.neg > sentence.pos) {
-            className = 'sentiment__negative--highlighted'
-          }
-
-          return (
-            <p className={`${className} pl-1 pr-1`}>
-              {'X'.repeat(sentence.length)}
-            </p>
-          )
-        })*/}
-
         <hr/>
-
         <p className="text-muted">
           Experimental sentiment analysis using VADER.
         </p>
