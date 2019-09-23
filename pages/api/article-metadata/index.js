@@ -14,6 +14,7 @@ module.exports = async (req, res) => {
     'related',
     // 'social', // Removing social check as is redundant (and doesn't check accurately!)
     'text',
+    'homepage',
     'links',
     'topics',
     'structured-data'

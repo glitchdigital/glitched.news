@@ -22,13 +22,33 @@ module.exports = async (req, res) => {
 
   const links = []
   dom.window.document.querySelectorAll('a').forEach(function(node) {
-    const href = node.getAttribute('href')
-    if (href.startsWith('javascript:'))
+    // Get URL
+    let url = node.getAttribute('href') || ''
+
+    if (url.startsWith('javascript:'))
       return
 
+    // Strip anchor text
+    url = url.replace(/#(.*)$/, '')
+    
+    // Strip the trailing slash from URLs (as long as they don't have query string)
+    // This is a normalizeation step that technical might cause problems but in
+    // practice is useful for de-duping links on page.
+    if (!url.includes('?'))
+      url = url.replace(/\/$/, '')
+
+    // If URL does not start with HTTP or HTTPS (or //:) then append base URL so the result
+    // is an absolute link, rather than a relative one.
+    // FIXME: There are edge cases where this approach may not be correct - eg pages that use
+    // the <base> tag, but these are rarely used in practice.
+    if (!url.startsWith('http:') && !url.startsWith('https:') &&  !url.startsWith('//:')) {
+      url = `${homepage}${url}`
+    }
+
     links.push({
-      url: href,
-      text: node.textContent.replace('\n', '').trim() || ''
+      url,
+      text: node.textContent.replace('\n', '').trim() || '',
+      domain: urlParts.parse(url).hostname
     })
   })
 

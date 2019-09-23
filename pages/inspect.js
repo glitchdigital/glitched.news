@@ -5,6 +5,7 @@ import Page from 'components/page'
 import Sidebar from 'components/sidebar'
 import Loader from 'components/loader'
 import Trust from 'components/trust'
+import Homepage from 'components/homepage'
 import Headline from 'components/article-metadata/headline'
 import Content from 'components/article-metadata/content'
 import Website from 'components/article-metadata/website'
@@ -45,6 +46,7 @@ export default class extends React.Component {
         factchecks: null,
         blacklists: null,
         text: null,
+        homepage: null,
         links: null,
         'structured-data': null
       },
@@ -261,6 +263,9 @@ export default class extends React.Component {
                   { articleMetadata.content && <Content content={articleMetadata.content} /> } 
                   { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
                   { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
+                </section>
+                <section id="homepage">
+                  { articleMetadata.homepage && <Homepage homepage={articleMetadata.homepage} /> }
                 </section>
                 <section id="article-trust">
                   { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }

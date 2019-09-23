@@ -25,6 +25,9 @@ module.exports = async (req, res) => {
   dom.window.document.querySelectorAll('a').forEach(node => {
     // Get URL
     let url = node.getAttribute('href') || ''
+    
+    if (url.startsWith('javascript:'))
+      return
 
     // Strip anchor text
     url = url.replace(/#(.*)$/, '')
