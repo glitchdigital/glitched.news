@@ -30,7 +30,7 @@ export default class extends React.Component {
                   }}
                   as={`/inspect?url=${article.url}`}
                 ><a rel='noreferrer'>{article.title}</a></Link>
-                <small> – {article.domain}</small>
+                <small className="text-muted"> – {article.domain}</small>
               </li>
             ))}
             </ul>

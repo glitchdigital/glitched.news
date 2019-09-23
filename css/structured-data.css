@@ -15,11 +15,11 @@
 }
 
 .structured-data__test-icon {
-  margin-right: 10px;
+  display: inline-block;
+  width: 2em;
   font-weight: 800;
 }
 
 .structured-data__test-value {
-  padding-left: 30px;
-  opacity: 0.5;
+  padding-left: 2.5em;
 }

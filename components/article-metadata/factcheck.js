@@ -15,7 +15,13 @@ export default class extends React.Component {
           Found <strong>{ content.quotes.length } quotes</strong> in the article, <strong>{ content.quotesWithNumbers.length } quotes</strong> and <strong>{ content.sentencesWithNumbers.length } sentences</strong> cite specific dates or numbers.
         </p>
         <p>
-          Text analysis score: {textAnalysis.score}
+          Numbers and dates should be attributable to a source and verifiable.
+        </p>
+        <p>
+          Score: <strong>{textAnalysis.score}</strong>
+        </p>
+        <p className="text-muted font-italic">
+          Note: Score is a highly experimental attempt at a metric to quantify the likely veracity of an article, based on metadata. Scores are always positive. Higher is better. There is no upper limit. Biased towards longer articles. The score for an article may vary over time as the mechanism is refined.
         </p>
         {content.quotes.length > 0 && <h4>Quotes</h4>}
         <ol>
@@ -25,10 +31,7 @@ export default class extends React.Component {
         </ol>
 
         {content.sentencesWithNumbers.length > 0 && <h4>Numbers and dates</h4>}
-        <p className="text-muted">
-          Numbers and dates are should be verifiable, which are verifiable and/or attributed.
-        </p>
-        
+  
         <ol>
         {content.sentencesWithNumbers.map((citation, i) => (
           <li key={`${citation}-${i}`}><em>{citation}</em></li>
