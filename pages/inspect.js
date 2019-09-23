@@ -264,9 +264,6 @@ export default class extends React.Component {
                   { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
                   { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
                 </section>
-                <section id="homepage">
-                  { articleMetadata.homepage && <Homepage homepage={articleMetadata.homepage} /> }
-                </section>
                 <section id="article-trust">
                   { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
                 </section>
@@ -290,7 +287,10 @@ export default class extends React.Component {
                 </section>
                 <section id="article-related"> 
                   { articleMetadata.related && <Related related={articleMetadata.related} /> }
-                </section> 
+                </section>
+                <section id="homepage">
+                  { articleMetadata.homepage && <Homepage homepage={articleMetadata.homepage} /> }
+                </section>
               </div>
             </div>
           </div>

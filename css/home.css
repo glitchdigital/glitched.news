@@ -1,10 +1,10 @@
 .home__jumbotron {
   margin-top: 55px;
-  margin-bottom: 9em;
-  padding-top: 9em;
+  margin-bottom: 5em;
+  padding-top: 5em;
   position: relative;
   .home__jumbotron-background-image {
-    height: 500px !important;
+    height: 500px;
     width: 100%;
     background-image: url(/static/undraw_site_content_ihgn.svg);
     background-repeat: no-repeat;
@@ -17,7 +17,7 @@
     margin: 0;
     top: 0;
     left: 0;
-    height: 30em;
+    height: 22em;
     width: 100%;
     overflow: hidden;
   }
@@ -26,6 +26,11 @@
     padding: 1em;
   }
   @media (min-width: 768px) {
+    margin-bottom: 9em;
+    padding-top: 9em;
+    .home__jumbotron-background {
+      height: 30em;
+    }
     form {
       padding: 2em;
     }
