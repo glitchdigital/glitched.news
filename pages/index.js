@@ -53,7 +53,7 @@ export default class extends React.Component {
     const { url, trending } = this.state
     return (
       <Page hideInput={true}>
-        <div className="container-fluid home__jumbotron">         
+        <div className="container-fluid home__jumbotron">
           <div className="home__jumbotron-background bg-primary">
             <div className="home__jumbotron-background-image"/>
           </div>
@@ -73,7 +73,6 @@ export default class extends React.Component {
                   </div>
                 </div>
               </form>
-               <SVG className="w-100" style={{position: 'absolute', top: -10000}} src={'../static/undraw_site_content_ihgn.svg'}/>
             </div>
           </div>
         </div>
