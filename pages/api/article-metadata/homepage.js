@@ -1,6 +1,7 @@
 const urlParser = require('url')
 const JSDOM = require("jsdom").JSDOM
- 
+const fetch = require('node-fetch')
+
 const { send, queryParser } = require('lib/request-handler')
 const fetchOptions = require('lib/fetch-options')
 

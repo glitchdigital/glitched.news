@@ -1,6 +1,7 @@
 const urlParser = require('url')
 const JSDOM = require("jsdom").JSDOM
- 
+const fetch = require('node-fetch')
+
 const { send, queryParser } = require('lib/request-handler')
 const fetchOptions = require('lib/fetch-options')
 
@@ -25,7 +26,7 @@ module.exports = async (req, res) => {
   dom.window.document.querySelectorAll('a').forEach(node => {
     // Get URL
     let url = node.getAttribute('href') || ''
-    
+
     if (url.startsWith('javascript:'))
       return
 
