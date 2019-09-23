@@ -18,3 +18,8 @@
   margin-right: 10px;
   font-weight: 800;
 }
+
+.structured-data__test-value {
+  padding-left: 30px;
+  opacity: 0.5;
+}

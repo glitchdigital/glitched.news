@@ -60,6 +60,7 @@ class TestResult extends React.Component {
         <span className='structured-data__test-summary'>
           <span className='structured-data__test-icon'>{icon} </span>
           <span className='structured-data__test-description'>{description || test}</span><br/>
+          {value && String(value) !== '[object Object]' && <span className='structured-data__test-value'>└─ {String(value)}</span> }
         </span>
       </li>
     )
