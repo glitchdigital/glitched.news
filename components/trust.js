@@ -12,7 +12,7 @@ export default class extends React.Component {
             <h4>Positive</h4>
             <ul>
             { trustIndicators.positive.map((indicator, i) => (
-              <li key={`positive-indicator-${indicator.text}`}>{indicator.text}</li>
+              <li key={`positive-indicator-${indicator.text}-${i}`}>{indicator.text}</li>
             )) }
             </ul>
           </>
@@ -22,7 +22,7 @@ export default class extends React.Component {
             <h4>Negative</h4>
             <ul>
             { trustIndicators.negative.map((indicator, i) => (
-              <li key={`negative-indicator-${indicator.text}`}>{indicator.text}</li>
+              <li key={`negative-indicator-${indicator.text}-${i}`}>{indicator.text}</li>
             )) }
             </ul>
           </>
