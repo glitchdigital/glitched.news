@@ -3,6 +3,8 @@ import Head from 'next/head'
 import Router from 'next/router'
 import Link from 'next/link'
 import NProgress from 'nprogress'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome } from '@fortawesome/free-solid-svg-icons'
 
 import '../css/index.css'
 
@@ -21,7 +23,7 @@ export default ({ children, disableInput, inputUrl, onInputSubmit, onInputChange
     <header className="container-fluid">
       <nav className="navbar navbar-expand-md navbar-light fixed-top bg-white row border-bottom">
         <div className="col-md-3 col-lg-2">
-          <Link href="/"><a className="navbar-brand text-primary">Inspect Article</a></Link>
+          <Link href="/"><a className="navbar-brand text-primary"> <FontAwesomeIcon border icon={faHome} style={{height: '1em'}} className='mr-1'/> Article Inspector</a></Link>
         </div>
         <div className="col-md-9 col-lg-10 collapse navbar-collapse p-0 pr-2" id="navbarCollapse">
           {!hideInput && 

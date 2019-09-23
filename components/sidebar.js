@@ -1,5 +1,7 @@
-import React from "react"
-import classnames from "classnames"
+import React from 'react'
+import classnames from 'classnames'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGlobe, faFileAlt } from '@fortawesome/free-solid-svg-icons'
 
 const sidebarItems = {
   ['article-summary']: 'Summary' ,
@@ -17,12 +19,16 @@ export default class extends React.Component {
   render() {
     const { rootUrl, currentSection, onClickHandler } = this.props
     return (
-      <div className="sidebar-sticky">
-        <a className={classnames('d-block sidebar__heading p-2 mt-2 text-white text-uppercase font-weight-bold text-decoration-none', currentSection === 'homepage' ? 'bg-primary' : 'bg-secondary')} onClick={onClickHandler} href='#homepage'>{rootUrl || 'Navigation' }</a>
-        <h5 className="sidebar__heading text-secondary p-2 mt-2 text-uppercase font-weight-bold">Article analysis</h5>
-        <ul className="nav nav-pills flex-column">
+      <div className='sidebar-sticky'>
+        <a className={classnames('d-block sidebar__heading p-2 mt-2 border-bottom border-top text-uppercase font-weight-bold text-decoration-none', currentSection === 'homepage' ? 'bg-primary text-white' : 'bg-white text-primary border-right')} onClick={onClickHandler} href='#homepage'>
+          <FontAwesomeIcon border icon={faGlobe} style={{height: '1em'}} className='mr-1'/> {rootUrl || 'Navigation' }
+        </a>
+        <h5 className='sidebar__heading text-muted p-2 mt-2 text-uppercase font-weight-bold'>
+          <FontAwesomeIcon border icon={faFileAlt} style={{height: '1em'}} className='mr-1'/> Article analysis
+        </h5>
+        <ul className='nav nav-pills flex-column'>
         { Object.keys(sidebarItems).map(item => 
-          <li key={`sidebar-${item}`} className="nav-item"><a onClick={onClickHandler} className={classnames('nav-link rounded-0', currentSection === item ? 'active' : 'text-dark')} href={`#${item}`}>{sidebarItems[item]}</a></li>
+          <li key={`sidebar-${item}`} className='nav-item'><a onClick={onClickHandler} className={classnames('nav-link rounded-0', currentSection === item ? 'active' : 'text-dark')} href={`#${item}`}>{sidebarItems[item]}</a></li>
         )}
         </ul>
       </div>

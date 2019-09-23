@@ -1,6 +1,6 @@
 {
   "name": "glitched-news",
-  "version": "4.8.0",
+  "version": "5.0.0",
   "description": "A prototype research tool to demonstrate how metadata and automated analysis can be combined.",
   "repository": "https://github.com/glitchdigital/glitched.news",
   "scripts": {
@@ -16,6 +16,10 @@
   "author": "Iain Collins <iain@glitch.digital>",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.24",
+    "@fortawesome/free-regular-svg-icons": "^5.11.1",
+    "@fortawesome/free-solid-svg-icons": "^5.11.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "@lingui/react": "^2.8.3",
     "@zeit/next-css": "^1.0.1",
     "bootstrap": "^4.3.1",
