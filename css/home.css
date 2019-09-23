@@ -1,13 +1,25 @@
 .home__jumbotron {
   margin-top: 55px;
-  padding-top: 3em;
+  margin-bottom: 9em;
+  padding-top: 9em;
   position: relative;
+  .home__jumbotron-background-image {
+    height: 500px !important;
+    width: 100%;
+    background-image: url(/static/undraw_site_content_ihgn.svg);
+    background-repeat: no-repeat;
+    background-position: center -9em;
+    position: absolute;
+    opacity: 0.4;
+  }
   .home__jumbotron-background {
     position: absolute;
+    margin: 0;
     top: 0;
     left: 0;
-    height: 200px;
+    height: 30em;
     width: 100%;
+    overflow: hidden;
   }
   form {
     margin: 1em 0;

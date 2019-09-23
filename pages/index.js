@@ -1,6 +1,7 @@
 import React from 'react'
 import Router from 'next/router'
 import { Trans } from '@lingui/macro'
+import SVG from 'react-inlinesvg'
 
 import Package from 'package'
 import Page from 'components/page'
@@ -23,9 +24,11 @@ export default class extends React.Component {
 
   async componentDidMount() {
     this.serverUrl = `${window.location.protocol}//${window.location.host}`
+    /*
     const request = await fetch(`${this.serverUrl}/api/trending`)
     const trending = await request.json()
     this.setState({ trending })
+    */
   }
 
   onChange(event) {
@@ -50,11 +53,15 @@ export default class extends React.Component {
     const { url, trending } = this.state
     return (
       <Page hideInput={true}>
-        <div className="container-fluid home__jumbotron">
-          <div className="home__jumbotron-background bg-primary"/>
+        <div className="container-fluid home__jumbotron">         
+          <div className="home__jumbotron-background bg-primary">
+            <div className="home__jumbotron-background-image"/>
+          </div>
           <div className="row">
             <div className="col-sm-12 col-md-10 col-lg-8 m-auto">
-              <h1 className="display-5 font-weight-light text-white">Inspect an article</h1>
+              <h1 className="display-5 font-weight-light text-white">
+                <Trans id="inspect_article">Inspect an article</Trans>
+              </h1>
               <form className="form rounded shadow bg-white mt-md-10 text-left mr-auto w-100" onSubmit={this.onSubmit}>  
                 <label htmlFor="home-url" className="mb-1">
                   <Trans id="url_prompt">Enter a news article URL to analyze</Trans>
@@ -65,26 +72,27 @@ export default class extends React.Component {
                     <button type="submit" className="btn btn-primary">Inspect</button>
                   </div>
                 </div>
-                <p>
-                  <small className="text-muted">
-                    <Trans id="about_prototype">
-                      A prototype research tool to demonstrate how metadata and automated analysis can be combined.
-                    </Trans>
-                  </small>
-                </p>
               </form>
+               <SVG className="w-100" style={{position: 'absolute', top: -10000}} src={'../static/undraw_site_content_ihgn.svg'}/>
             </div>
           </div>
         </div>
         <main className="container-fluid pt-0 mt-5 mb-5">
           <div className="row">
             <div className="col-sm-12 col-md-10 col-lg-8 m-auto">
+            <h2 className="text-primary text-center mt-5 mb-5">
+                <Trans id="about_prototype">
+                  A prototype research tool that combines article metadata and automated analysis
+                </Trans>
+              </h2>
+              {/*
               { trending && trending.articles && trending.articles.length > 0 &&
                 <div id="trending" className="mb-5 border rounded p-3">
                   <h6 className="text-muted text-uppercase">Example recent news articles</h6>
                   <Trending trending={trending} />
                 </div>
               }
+              */}
               <footer className="text-center text-muted">
                 <p className="mb-1">
                   <a target='_blank' rel='noreferrer' href='https://glitched.news'>glitched.news</a> &copy; <a target='_blank' rel='noreferrer' href='https://glitch.digital'>GLITCH.DIGITAL LIMITED</a>, {new Date().getFullYear()}

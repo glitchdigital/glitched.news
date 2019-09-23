@@ -47,6 +47,7 @@
     "promise.allsettled": "^1.0.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
+    "react-inlinesvg": "^1.1.6",
     "readability": "git+https://github.com/mozilla/readability.git",
     "request": "^2.88.0",
     "sbd": "^1.0.14",

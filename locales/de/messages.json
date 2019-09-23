@@ -1,6 +1,7 @@
 {
   "_locale": "de",
-  "about_prototype": "Ein Prototyp-Recherchetool, das zeigt, wie Metadaten und automatisierte Analysen kombiniert werden können.",
-  "recent_articles": "",
+  "about_prototype": "Ein Prototyp-Recherchetool, das Artikelmetadaten und automatisierte Analysen kombiniert",
+  "inspect_article": "Artikel untersuchen",
+  "recent_articles": "Aktuelle Nachrichtenartikel",
   "url_prompt": "Geben Sie eine URL für den zu analysierenden Artikel ein"
 }
