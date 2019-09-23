@@ -65,7 +65,7 @@ export default class extends React.Component {
   async componentDidMount() {
     this.serverUrl = `${window.location.protocol}//${window.location.host}`
 
-    const currentSection = window.location.hash ? window.location.hash.replace('#', '') : DEFAULT_SECTION
+    const currentSection = this.getCurrentSectionFromLocation()
     this.setState({ currentSection }, () => {
       if (this.state.url) {
         this.onSubmit()
@@ -74,10 +74,15 @@ export default class extends React.Component {
 
     if (!window.hashchangeEventListenerAdded) {
       window.hashchangeEventListenerAdded = true
-      window.addEventListener("hashchange", function () {
+      window.addEventListener('hashchange', () => {
         window.scrollTo(window.scrollX, window.scrollY - 40)
+        this.toggleSection()
       })
     }
+  }
+
+  getCurrentSectionFromLocation() {
+    return window.location.hash ? window.location.hash.replace('#', '') : DEFAULT_SECTION
   }
 
   componentDidUpdate(prevProps) {
@@ -114,14 +119,13 @@ export default class extends React.Component {
       const currentSection = (this.props.articleUrl == url) ? this.state.currentSection : DEFAULT_SECTION
       const href = `${window.location.pathname}?url=${this.state.url}#${currentSection}`
       const as = href
-      Router.push(href, as, { shallow: false })
+      Router.push(href, as)
       if (document.getElementById(currentSection)) {
         Array.prototype.slice.call(document.getElementsByTagName('section')).map(el => el.className = '')
         document.getElementById(currentSection).className = 'd-block'
       }
     }
 
-    
     const articleMetadata = {}
     for (const prop in this.state.articleMetadata) {
       articleMetadata[prop] = null
@@ -214,8 +218,10 @@ export default class extends React.Component {
   }
 
   toggleSection(e) {
-    e.preventDefault()
-    const currentSection = e.target.getAttribute('href').replace('#', '')    
+    // Get section from target element of link (if no target element, then get it from current URL)
+    // Note: getCurrentSectionFromLocation() returns the default section specified if none in URL
+    if (e) e.preventDefault()
+    const currentSection = e ? e.target.getAttribute('href').replace('#', '') : this.getCurrentSectionFromLocation()
     if (document.getElementById(currentSection)) {
       this.setState({currentSection})
       Array.prototype.slice.call(document.getElementsByTagName('section')).map(el => el.className = '')
@@ -223,7 +229,7 @@ export default class extends React.Component {
     }
     const href = `${window.location.pathname}?url=${this.state.url}#${currentSection}`
     const as = href
-    Router.push(href, as, { shallow: false })
+    Router.push(href, as)
     window.scrollTo(0, 0) 
   }
 
