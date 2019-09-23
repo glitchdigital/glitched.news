@@ -1,5 +1,4 @@
 {
   "version": 2,
-  "name": "glitched-news",
-  "alias": [ "glitched.news", "en.glitched.news", "de.glitched.news" ]
+  "name": "glitched-news"
 }
