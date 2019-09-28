@@ -54,9 +54,11 @@
       .ct-chart {
         height: 12em;
         font-weight: bold;
-        text.ct-label {
-          fill: #fff !important;
-          font: 1.5em sans-serif;
+        text {
+          &.ct-label {
+            fill: #fff !important;
+            font-size: 1em;
+          }
         }
       }
       .sentiment__piechart--negative {

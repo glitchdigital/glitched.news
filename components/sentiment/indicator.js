@@ -17,9 +17,9 @@ export default ({label, data, options}) => {
     <div className='sentiment__chart'>
       <div className='sentiment__needle' style={{transform: `rotate(${needleRotate})`}}/>
       <div className='sentiment__piechart'>
-      <ChartistGraph type={'Pie'} data={data} options={options} />
+        <ChartistGraph type={'Pie'} data={data} options={options} />
       </div>
-      <div className='sentiment__barchart ml-auto mr-auto'>
+      <div className='sentiment__barchart ml-auto mr-auto d-none'>
         {neg > 0 && <div className='d-inline-block sentiment__barchart--negative' style={{width: `${neg}%`}}/>}
         <div className='d-inline-block sentiment__barchart--neutral' style={{width: `${neu}%`}}/>
         {pos > 0 && <div className='d-inline-block sentiment__barchart--positive' style={{width: `${pos}%`}}/>}
