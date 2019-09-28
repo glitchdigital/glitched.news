@@ -18,15 +18,24 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Homepage</h3>
-        <p>
+        <p className='lead'>
           Found <strong>{homepage.links.length || 0}</strong> links on the homepage to <strong>{Object.keys(linksByDomain).length}</strong> domains.
         </p>
+        <h4>Links by domain</h4>
+        <ul>
+          {Object.keys(linksByDomain).map((domain, i) => (
+            <li key={`homepage-link-domain-${i}-${domain}`}>
+              <strong>{domain}</strong> ({linksByDomain[domain].length})
+            </li>
+          ))}
+        </ul>
+        <hr/>
         {Object.keys(linksByDomain).map(domain => (
           <>
             <h5>{domain}</h5>
             <ul>
             {linksByDomain[domain].map((link, i) => (
-              <li key={`${link.url}`}>
+              <li key={`homepage-link-url-${i}-${link.url}`}>
                 <Link
                   href={{
                     pathname: '/article',
