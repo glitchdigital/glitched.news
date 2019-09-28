@@ -1,13 +1,17 @@
-.sentiment__positive,
 .sentiment__negative,
-.sentiment__neutral {
+.sentiment__neutral,
+.sentiment__positive {
   opacity: .5;
 }
 
-.sentiment__positive--highlighted,
 .sentiment__negative--highlighted,
-.sentiment__neutral--highlighted {
+.sentiment__neutral--highlighted,
+.sentiment__positive--highlighted {
   font-weight: 600;
+}
+
+.sentiment__negative--highlighted {
+  color: #ff5e5e;
 }
 
 .sentiment__neutral--highlighted {
@@ -18,9 +22,49 @@
   color: #87ba72;
 }
 
-.sentiment__negative--highlighted {
-  color: #ff5e5e;
+.sentiment__piechart {
+  height: 6em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  .ct-chart {
+    height: 12em;
+    font-weight: bold;
+  }
+  .sentiment__piechart--negative {
+    stroke: #ff5e5e;
+    fill: #ff5e5e;
+  }
+  .sentiment__piechart--neutral {
+    stroke: #ddd;
+    fill: #ddd;
+  }
+  .sentiment__piechart--positive {
+    stroke: #87ba72;
+    fill: #87ba72;
+  }
 }
+
+.sentiment__barchart {
+  max-width: 12em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+
+  .sentiment__barchart--negative {
+    background-color: #ff5e5e;
+    height: 2em;
+  }
+
+  .sentiment__barchart--neutral {
+    background-color: #ddd;
+    height: 2em;
+  }
+
+  .sentiment__barchart--positive {
+    background-color: #87ba72;
+    height: 2em;
+  }
+}
+
 
 table.sentiment {
   border: 0;

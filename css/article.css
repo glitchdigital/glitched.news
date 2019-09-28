@@ -1,3 +1,5 @@
+@import "../node_modules/chartist/dist/chartist.css";
+
 .article__headline {
   a:link,
   a:visited,
