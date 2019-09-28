@@ -17,7 +17,7 @@ export default class extends React.Component {
         showLabel: true
       },
       data: {
-        labels: [ '-', ' ', '+' ],
+        labels: [ ' ', ' ', ' ' ],
         series: [{
           value: 0,
           name: 'Neg',
@@ -61,7 +61,7 @@ export default class extends React.Component {
       }
     })
     pieCharts.sentence.data.series[0].value = Math.round(negativeSentences / sentiment.sentences.length * 100)
-    pieCharts.sentence.data.series[1].value = Math.round(neutralSentences / sentiment.sentences.length * 100)
+    pieCharts.sentence.data.series[1].value = 100 - (Math.round(negativeSentences / sentiment.sentences.length * 100) + Math.round(positiveSentences / sentiment.sentences.length * 100))
     pieCharts.sentence.data.series[2].value = Math.round(positiveSentences / sentiment.sentences.length * 100)
 
     let sentimentText = 'This article contains mostly neutral sentences.'
@@ -75,7 +75,7 @@ export default class extends React.Component {
       if (sentiment[chart]) {
         pieCharts[chart].options.total = (Math.round(sentiment[chart].neg * 100) + Math.round(sentiment[chart].neu * 100) + Math.round(sentiment[chart].pos * 100)) * 2
         pieCharts[chart].data.series[0].value = Math.round(sentiment[chart].neg * 100)
-        pieCharts[chart].data.series[1].value = Math.round(sentiment[chart].neu * 100) 
+        pieCharts[chart].data.series[1].value = 100 - (Math.round(sentiment[chart].neg * 100) + Math.round(sentiment[chart].pos * 100))
         pieCharts[chart].data.series[2].value = Math.round(sentiment[chart].pos * 100)
       } else {
         pieCharts[chart].options.total = 200
@@ -90,6 +90,9 @@ export default class extends React.Component {
         <hr/>
         <h3>Sentiment analysis</h3>
         <h4>Overall impression</h4>
+        <p className='lead'>
+          Sentiment analysis of the headline and article text for English language articles.
+        </p>
         <div className='row'>
           <div className='col-sm-4'>
             <div className='sentiment__piechart'>
@@ -157,15 +160,18 @@ export default class extends React.Component {
         </div>
         <hr/>
         <h4>Sentence analysis</h4>
+        <p className='lead'>
+          Sentence analysis looks at the sentiment of each sentence in isolation.
+        </p>
         <div className='row mt-3'>
           <div className='col-sm-4'>
             <div className='sentiment__piechart'>
               <ChartistGraph type={'Pie'} {...pieCharts.sentence} />
             </div>
             <div className='sentiment__barchart ml-auto mr-auto'>
-              <div className='d-inline-block sentiment__barchart--negative' style={{width: Math.round(negativeSentences / sentiment.sentences.length * 100)+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--neutral' style={{width: Math.round(neutralSentences / sentiment.sentences.length * 100)+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--positive' style={{width: Math.round(positiveSentences / sentiment.sentences.length * 100)+'%'}}/>
+              <div className='d-inline-block sentiment__barchart--negative' style={{width: pieCharts.sentence.data.series[0].value+'%'}}/>
+              <div className='d-inline-block sentiment__barchart--neutral' style={{width: pieCharts.sentence.data.series[1].value+'%'}}/>
+              <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.sentence.data.series[2].value+'%'}}/>
             </div>
             <h5 className='text-center text-uppercase'>Sentence Sentiment</h5>
             <p className='text-center text-muted mb-0'>
@@ -186,9 +192,6 @@ export default class extends React.Component {
               <li>{pieCharts.sentence.data.series[1].value}% of sentences appear neutral.</li>
               <li>{pieCharts.sentence.data.series[2].value}% of sentences appear positive.</li>
             </ul>
-            <p className='text-muted'>
-              Sentence sentiment analysis looks at each sentence in isolation.
-            </p>
           </div>
         </div>
       </div>
