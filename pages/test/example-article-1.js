@@ -18,10 +18,10 @@ export default () => (
       This is an example article.
     </p>
     <p>
-      This sentence is contains words like happy and is positive.
+      This sentence contains the word happy and is positive.
     </p>
     <p>
-      This sentence is contains words like sad and is negative.
+      This sentence contains the word sad and is negative.
     </p>
     <script type="application/ld+json" dangerouslySetInnerHTML={{
       __html: JSON.stringify({

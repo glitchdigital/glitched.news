@@ -12,9 +12,9 @@ export default class extends React.Component {
     let negativeSentences = 0
     let neutralSentences = 0
     sentiment.sentences.map(sentence => {
-      if (sentence.pos > SENTIMENT_HIGHLIGHT_THRESHOLD && sentence.pos > sentence.neg) {
+      if (sentence.pos > sentence.neg) {
         positiveSentences++
-      } else if (sentence.neg > SENTIMENT_HIGHLIGHT_THRESHOLD && sentence.neg > sentence.pos) {
+      } else if (sentence.neg > sentence.pos) {
         negativeSentences++
       } else {
         neutralSentences++

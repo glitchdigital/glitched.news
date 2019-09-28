@@ -1,5 +1,6 @@
 const fetch = require('node-fetch')
 const unfluff = require('unfluff')
+const sbdTokenizer = require('sbd')
 const Readability = require('readability')
 const JSDOM = require("jsdom").JSDOM
 const SentimentIntensityAnalyzer = require('vader-sentiment').SentimentIntensityAnalyzer
@@ -31,7 +32,8 @@ module.exports = async (req, res) => {
       quotesWithNumbers.push(quote)
   })
 
-  const sentences = articleText.split(/(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s/gm) || []
+  const sentences = sbdTokenizer.sentences(articleText, { newline_boundaries: true })
+  
   let sentencesWithNumbers = []
   sentences.forEach(sentence => {
     if (sentence.match(/[0-9]/))
