@@ -10,10 +10,10 @@ export default class extends React.Component {
           <p key={article.url} className="mb-0">
             <Link
               href={{
-                pathname: '/inspect',
+                pathname: '/article',
                 query: { url: article.url }
               }}
-              as={`/inspect?url=${article.url}`}
+              as={`/article?url=${article.url}`}
             ><a rel='noreferrer'>{article.title}</a></Link>
             <small className="text-muted"> – {article.domain}</small>
           </p>

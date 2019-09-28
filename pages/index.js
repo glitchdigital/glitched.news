@@ -43,7 +43,7 @@ export default class extends React.Component {
     if (!url || url.trim() === '') {
       return;
     } else {
-      const href = `/inspect?url=${url}`
+      const href = `/article?url=${url}`
       const as = href
       Router.push(href, as)
     }

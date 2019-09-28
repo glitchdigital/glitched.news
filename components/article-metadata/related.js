@@ -25,10 +25,10 @@ export default class extends React.Component {
               <li key={article.url}>
                 <Link
                   href={{
-                    pathname: '/inspect',
+                    pathname: '/article',
                     query: { url: article.url }
                   }}
-                  as={`/inspect?url=${article.url}`}
+                  as={`/article?url=${article.url}`}
                 ><a rel='noreferrer'>{article.title}</a></Link>
                 <small className="text-muted"> – {article.domain}</small>
               </li>
