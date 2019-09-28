@@ -8,9 +8,9 @@ export default ({label, data, options}) => {
   let needleRotate = '0deg'
   const total = neg + pos + neu
   if (neg > pos) {
-    needleRotate = `-${Math.round((neg * 100) / total)}deg`
+    needleRotate = `-${Math.round((neg * 100) / 115)}deg`
   } else if (pos > neg) {
-    needleRotate = `${Math.round((pos * 100) / total)}deg`
+    needleRotate = `${Math.round((pos * 100) / 115)}deg`
   }
 
   return (

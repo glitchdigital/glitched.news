@@ -1,4 +1,5 @@
 import React from "react"
+import TrustIndicator from 'components/trust/indicator'
 
 export default class extends React.Component {
   render() {
@@ -7,26 +8,37 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Trust indicators</h3>
-        { trustIndicators.positive.length > 0 && (
-          <>
-            <h4>Positive</h4>
-            <ul>
-            { trustIndicators.positive.map((indicator, i) => (
-              <li key={`positive-indicator-${indicator.text}-${i}`}>{indicator.text}</li>
-            )) }
-            </ul>
-          </>
-        )}
-        { trustIndicators.negative.length > 0 && (
-          <>
-            <h4>Negative</h4>
-            <ul>
-            { trustIndicators.negative.map((indicator, i) => (
-              <li key={`negative-indicator-${indicator.text}-${i}`}>{indicator.text}</li>
-            )) }
-            </ul>
-          </>
-          )}
+        <div className='row'>
+          <div className='col-sm-4 sentiment'>
+            <TrustIndicator
+              label='Trust indicators'
+              pos={trustIndicators.positive.length}
+              neg={trustIndicators.negative.length}
+            />
+          </div>
+          <div className='col-sm-8'>
+            { trustIndicators.positive.length > 0 && (
+              <>
+                <h4>Positive</h4>
+                <ul>
+                { trustIndicators.positive.map((indicator, i) => (
+                  <li key={`positive-indicator-${indicator.text}-${i}`}>{indicator.text}</li>
+                )) }
+                </ul>
+              </>
+            )}
+            { trustIndicators.negative.length > 0 && (
+              <>
+                <h4>Negative</h4>
+                <ul>
+                { trustIndicators.negative.map((indicator, i) => (
+                  <li key={`negative-indicator-${indicator.text}-${i}`}>{indicator.text}</li>
+                )) }
+                </ul>
+              </>
+              )}
+          </div>
+        </div>
       </>
     )
   }
