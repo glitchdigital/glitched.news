@@ -4,6 +4,7 @@ const fetch = require('node-fetch')
 
 const { send, queryParser } = require('lib/request-handler')
 const fetchOptions = require('lib/fetch-options')
+const normalizeUrl = require('lib/normalize-url')
 
 // Given a URL, wil return the domain, homepage and a list of links on the page
 module.exports = async (req, res) => {
@@ -24,28 +25,12 @@ module.exports = async (req, res) => {
 
   let links = []
   dom.window.document.querySelectorAll('a').forEach(node => {
-    // Get URL
     let url = node.getAttribute('href') || ''
 
     if (url.startsWith('javascript:'))
       return
 
-    // Strip anchor text
-    url = url.replace(/#(.*)$/, '')
-    
-    // Strip the trailing slash from URLs (as long as they don't have query string)
-    // This is a normalization step that technical might cause problems but in
-    // practice is useful for de-duping links on page.
-    if (!url.includes('?'))
-      url = url.replace(/\/$/, '')
-
-    // If URL does not start with a protocol (or //:) then append base URL so the result
-    // is an absolute link, rather than a relative one.
-    // FIXME: There are edge cases where this approach may not be correct - eg pages that use
-    // the <base> tag, but these are rarely used in practice.
-    if (!url.match(/[A-z]:/) && !url.startsWith('//:')) {
-      url = `${homepage}${url}`
-    }
+    url = normalizeUrl(url, homepage)
 
     links.push({
       url,
@@ -53,18 +38,13 @@ module.exports = async (req, res) => {
       domain: urlParts.parse(url).hostname
     })
   })
-  links = removeDuplicates(links, 'url')
+  // Remove duplicate URLs
+  links = links.filter((obj, pos, arr) => arr.map(mapObj => mapObj['url']).indexOf(obj['url']) === pos)
 
   return send(res, 200, {
     domain,
     path,
     homepage,
     links,
-  })
-}
-
-function removeDuplicates(myArr, prop) {
-  return myArr.filter((obj, pos, arr) => {
-    return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos
   })
 }
