@@ -21,6 +21,9 @@
 
 @media (min-width: 768px) {
   .article {
+    .article__sections {
+      max-width: 1140px;
+    }
     section {
       display: none;
       hr:first-child {

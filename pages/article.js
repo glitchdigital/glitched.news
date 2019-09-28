@@ -247,7 +247,7 @@ export default class extends React.Component {
                 <div className="input-group">
                   <input id="inspect-url" className="form-control bg-light border-0" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={url} onChange={this.onChange} />
                   <div className="input-group-append">
-                    <button type="submit" className="btn btn-primary">Inspect</button>
+                    <button type="submit" disabled={inProgress} className="btn btn-primary">Inspect</button>
                   </div>
                 </div>
               </form>
@@ -258,39 +258,41 @@ export default class extends React.Component {
               }
               <div className="col-md-9 col-lg-10 ml-sm-auto article">
                 <div className="d-block d-md-none">{ inProgress && <Loader/> }</div>
-                <section id="article-summary">
-                  { article.content && <Headline content={article.content} /> }
-                  { article.content && <Content content={article.content} /> } 
-                  { article.blacklists && <Blacklists content={article.blacklists} /> }
-                  { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
-                </section>
-                <section id="article-trust">
-                  { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
-                </section>
-                <section id="article-sentiment">
-                  { article.text && <Sentiment sentiment={article.text.sentiment} /> }
-                </section>
-                <section id="article-factcheck"> 
-                  { article.content && article.factchecks && article.text && <FactCheck factchecks={article.factchecks} textAnalysis={article.text} /> }
-                </section>
-                <section id="article-topics">
-                  { article.topics && <Topics topics={article.topics} /> }
-                </section>
-                <section id="article-social"> 
-                  { article.social && article.social.facebook && <Social social={article.social} /> }
-                </section>
-                <section id="article-structured-data"> 
-                  { article['structured-data'] && article['structured-data'].testResults && <StructuredData testResults={article['structured-data'].testResults} /> }
-                </section>
-                <section id="article-links"> 
-                  { article.content && article.links && <Links links={article.links} /> }
-                </section>
-                <section id="article-related"> 
-                  { article.related && <Related related={article.related} /> }
-                </section>
-                <section id="homepage">
-                  { article.homepage && <Homepage homepage={article.homepage} /> }
-                </section>
+                <div className="article__sections">
+                  <section id="article-summary">
+                    { article.content && <Headline content={article.content} /> }
+                    { article.content && <Content content={article.content} /> } 
+                    { article.blacklists && <Blacklists content={article.blacklists} /> }
+                    { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
+                  </section>
+                  <section id="article-trust">
+                    { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
+                  </section>
+                  <section id="article-sentiment">
+                    { article.text && <Sentiment sentiment={article.text.sentiment} /> }
+                  </section>
+                  <section id="article-factcheck"> 
+                    { article.content && article.factchecks && article.text && <FactCheck factchecks={article.factchecks} textAnalysis={article.text} /> }
+                  </section>
+                  <section id="article-topics">
+                    { article.topics && <Topics topics={article.topics} /> }
+                  </section>
+                  <section id="article-social"> 
+                    { article.social && article.social.facebook && <Social social={article.social} /> }
+                  </section>
+                  <section id="article-structured-data"> 
+                    { article['structured-data'] && article['structured-data'].testResults && <StructuredData testResults={article['structured-data'].testResults} /> }
+                  </section>
+                  <section id="article-links"> 
+                    { article.content && article.links && <Links links={article.links} /> }
+                  </section>
+                  <section id="article-related"> 
+                    { article.related && <Related related={article.related} /> }
+                  </section>
+                  <section id="homepage">
+                    { article.homepage && <Homepage homepage={article.homepage} /> }
+                  </section>
+                </div>
               </div>
             </div>
           </div>
