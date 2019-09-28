@@ -67,7 +67,7 @@ export default class extends React.Component {
                   <Trans id="url_prompt">Enter a news article URL to analyze</Trans>
                 </label>
                 <div className="input-group">
-                  <input id="home-url" className="form-control bg-light border-0" placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={url} onChange={this.onChange} />
+                  <input id="home-url" autoFocus="true" className="form-control bg-light border-0" placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={url} onChange={this.onChange} />
                   <div className="input-group-append">
                     <button type="submit" className="btn btn-primary">Inspect</button>
                   </div>
@@ -78,7 +78,7 @@ export default class extends React.Component {
         </div>
         <main className="container-fluid pt-0 mt-5 mb-5">
           <div className="row">
-            <div className="col-sm-12 col-md-10 col-lg-8 m-auto">
+            <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
               <h3 className="text-primary text-center mt-5 mb-5">
                 <Trans id="about_prototype">
                   A prototype research tool that combines article metadata and automated analysis
@@ -94,12 +94,11 @@ export default class extends React.Component {
               */}
               <footer className="text-center text-muted">
                 <p className="mb-1">
-                  <a target='_blank' rel='noreferrer' href='https://glitched.news'>glitched.news</a> &copy; <a target='_blank' rel='noreferrer' href='https://glitch.digital'>GLITCH.DIGITAL LIMITED</a>, {new Date().getFullYear()}
+                  <a className="text-muted" target='_blank' rel='noreferrer' href='https://glitch.digital'>&copy; GLITCH.DIGITAL LIMITED, {new Date().getFullYear()}</a>
                 </p>
                 <p>
-                  Version {Package.version}.
-                  {' '}
-                  <a target='_blank' rel='noreferrer' href='https://github.com/glitchdigital/glitched.news'>
+                  <a className="text-muted" target='_blank' rel='noreferrer' href='https://github.com/glitchdigital/glitched.news'>
+                    Version {Package.version}.
                     Open source (ISC License)  
                   </a>
                 </p>

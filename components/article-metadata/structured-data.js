@@ -59,9 +59,13 @@ class TestResult extends React.Component {
       <li className={className}>
         <span className='structured-data__test-summary'>
           <span className='structured-data__test-icon'>{icon} </span>
-          <span className='structured-data__test-description'>{description || test}</span><br/>
-          {value && String(value) && String(value) !== '[object Object]' && <span className='text-nowrap text-muted structured-data__test-value'>
-            └─ <span className='d-inline badge badge-secondary'>{String(value)}</span>
+          <span className='structured-data__test-description'>{description || test}</span>
+          <br/>
+          {value && String(value) && String(value) !== '[object Object]' && <span className='text-muted structured-data__test-value'>
+            <div className='row'>
+              <div className='col-sm-1 d-none d-sm-block text-right border-right'>└</div>
+              <div className='col-sm-11'><small>{String(value)}</small></div>
+            </div>
           </span> }
         </span>
       </li>

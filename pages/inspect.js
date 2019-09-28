@@ -271,7 +271,7 @@ export default class extends React.Component {
                   { articleMetadata.text && <Sentiment sentiment={articleMetadata.text.sentiment} /> }
                 </section>
                 <section id="article-factcheck"> 
-                  { articleMetadata.content && articleMetadata.factchecks && articleMetadata.text && <FactCheck factchecks={articleMetadata.factchecks} content={articleMetadata.content} textAnalysis={articleMetadata.text} /> }
+                  { articleMetadata.content && articleMetadata.factchecks && articleMetadata.text && <FactCheck factchecks={articleMetadata.factchecks} textAnalysis={articleMetadata.text} /> }
                 </section>
                 <section id="article-topics">
                   { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }

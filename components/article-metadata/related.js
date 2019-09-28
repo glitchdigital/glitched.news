@@ -12,7 +12,7 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Related articles</h3>
-        <p>
+        <p className="lead">
           Found <strong>{related.domains.length}</strong> other sites with articles that might be related.
         </p>
         { related.articles.length > 0 && (

@@ -32,8 +32,8 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Sentiment analysis</h3>
-        <h4>Sentance analysis</h4>
-        <p>{sentimentText}</p>
+        <h4>Sentence analysis</h4>
+        <p className="lead">{sentimentText}</p>
         <ul>
           <li>{Math.round(negativeSentences / sentiment.sentences.length * 100)}% of sentences appear negative.</li>
           <li>{Math.round(neutralSentences / sentiment.sentences.length * 100)}% of sentences appear neutral.</li>
@@ -42,7 +42,7 @@ export default class extends React.Component {
         <hr/>
         <h4>Text analysis</h4>
         <p>
-          Sentiment of the article text as a whole may differ from sentance analysis (which looks at sentence sentiment in isolation).
+          Sentiment of the article text as a whole may differ from sentence analysis (the latter looks at sentence sentiment in isolation).
         </p>
         <table className="sentiment mb-4">
           <thead>

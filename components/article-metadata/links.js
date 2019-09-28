@@ -21,7 +21,7 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Links from this page</h3>
-        <p>
+        <p className="lead">
           Found <strong>{links.links.length || 0}</strong> links on this page to <strong>{Object.keys(linksByDomain).length}</strong> domains.
         </p>
         {Object.keys(linksByDomain).map(domain => (

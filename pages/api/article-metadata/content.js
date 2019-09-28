@@ -8,7 +8,6 @@ const moment = require('moment')
 const tokenizer = require('sbd')
 const vader = require('vader-sentiment')
 
-const { getQuotes } = require('lib/quotes')
 const { send, queryParser } = require('lib/request-handler')
 const fetchOptions = require('lib/fetch-options')
 
@@ -64,23 +63,8 @@ module.exports = async (req, res) => {
     trustIndicators.negative.push({text: `Unable to clearly identify main text of article`})
   }
 
-  // Parse for Quotes
-  const quotes = getQuotes(articleText)
-  let quotesWithNumbers = []
-
-  quotes.forEach(quote => {
-    if (quote.match(/[0-9]/))
-      quotesWithNumbers.push(quote)
-  })  
-
-  if (quotes.length > 0) {
-    trustIndicators.positive.push({ text: `${quotes.length} quotes cited in article` })
-  } else {
-    trustIndicators.negative.push({ text: `No quotes cited in article` })
-  }
-
   // Parse for Sentences
-  const sentences = tokenizer.sentences(articleText) || []
+  const sentences = tokenizer.sentences(articleText, { newline_boundaries: true }) || []
   let sentencesWithNumbers = []
 
   sentences.forEach(sentence => {
@@ -119,8 +103,6 @@ module.exports = async (req, res) => {
     ...structuredData,
     characterCount: articleText.length,
     wordCount: articleText.split(' ').length,
-    quotes,
-    quotesWithNumbers,
     sentencesWithNumbers,
     sentiment,
     trustIndicators,

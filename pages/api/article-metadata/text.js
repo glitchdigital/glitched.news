@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
   let sentencesWithNumbers = []
   sentences.forEach(sentence => {
     if (sentence.match(/[0-9]/))
-      sentencesWithNumbers.push(sentence.replace(/\n/g, ''))
+      sentencesWithNumbers.push(sentence.replace(/\n/g, ' '))
   })
 
   if (quotes.length > 0) {
@@ -51,8 +51,8 @@ module.exports = async (req, res) => {
   let articleSentencesSentiment = []
   sentences.forEach(sentence => {
     articleSentencesSentiment.push({
-      length: sentence.replace(/\n/g, '').length,
-      ...SentimentIntensityAnalyzer.polarity_scores(sentence.replace(/\n/g, ''))
+      length: sentence.replace(/\n/g, ' ').length,
+      ...SentimentIntensityAnalyzer.polarity_scores(sentence.replace(/\n/g, ' '))
     })
   })
 

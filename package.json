@@ -18,8 +18,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.24",
     "@fortawesome/free-regular-svg-icons": "^5.11.1",
-    "@fortawesome/free-solid-svg-icons": "^5.11.1",
-    "@fortawesome/react-fontawesome": "^0.1.4",
     "@lingui/react": "^2.8.3",
     "@zeit/next-css": "^1.0.1",
     "bootstrap": "^4.3.1",
@@ -52,6 +50,7 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-inlinesvg": "^1.1.6",
+    "react-simple-charts": "0.0.19",
     "readability": "git+https://github.com/mozilla/readability.git",
     "request": "^2.88.0",
     "sbd": "^1.0.14",

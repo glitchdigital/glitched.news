@@ -6,7 +6,8 @@
 @import "structured-data";
 
 main {
-  padding-top: 70px;
+  margin-top: 57px;
+  padding-top: .5em;
 }
 
 footer {

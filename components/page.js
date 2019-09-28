@@ -3,8 +3,6 @@ import Head from 'next/head'
 import Router from 'next/router'
 import Link from 'next/link'
 import NProgress from 'nprogress'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome } from '@fortawesome/free-solid-svg-icons'
 
 import '../css/index.css'
 
@@ -18,12 +16,12 @@ export default ({ children, disableInput, inputUrl, onInputSubmit, onInputChange
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta charSet="utf-8" />
       <link rel="shortcut icon" href="/static/favicon.ico" />
-      <title>glitched.news</title>
+      <title>Article Inspector</title>
     </Head>
     <header className="container-fluid">
       <nav className="navbar navbar-expand-md navbar-light fixed-top bg-white row border-bottom">
         <div className="col-md-3 col-lg-2">
-          <Link href="/"><a className="navbar-brand text-primary"> <FontAwesomeIcon border icon={faHome} style={{height: '1em'}} className='mr-1'/> Article Inspector</a></Link>
+          <Link href="/"><a className="navbar-brand text-primary">Article Inspector</a></Link>
         </div>
         <div className="col-md-9 col-lg-10 collapse navbar-collapse p-0 pr-2" id="navbarCollapse">
           {!hideInput && 
@@ -31,7 +29,7 @@ export default ({ children, disableInput, inputUrl, onInputSubmit, onInputChange
               <div className="input-group">
                 <input className="form-control bg-light border-0" disabled={disableInput} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={inputUrl} onChange={onInputChange} />
                 <div className="input-group-append">
-                  <button type="submit" className="btn btn-primary">Inspect</button>
+                  <button type="submit" disabled={disableInput} className="btn btn-primary">Inspect</button>
                 </div>
               </div>
             </form>

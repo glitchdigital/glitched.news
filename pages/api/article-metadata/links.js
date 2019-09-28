@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
 
   const dom = new JSDOM(html, { url })
 
-  const links = []
+  let links = []
   dom.window.document.querySelectorAll('a').forEach(node => {
     // Get URL
     let url = node.getAttribute('href') || ''
@@ -34,16 +34,16 @@ module.exports = async (req, res) => {
     url = url.replace(/#(.*)$/, '')
     
     // Strip the trailing slash from URLs (as long as they don't have query string)
-    // This is a normalizeation step that technical might cause problems but in
+    // This is a normalization step that technical might cause problems but in
     // practice is useful for de-duping links on page.
     if (!url.includes('?'))
       url = url.replace(/\/$/, '')
 
-    // If URL does not start with HTTP or HTTPS (or //:) then append base URL so the result
+    // If URL does not start with a protocol (or //:) then append base URL so the result
     // is an absolute link, rather than a relative one.
     // FIXME: There are edge cases where this approach may not be correct - eg pages that use
     // the <base> tag, but these are rarely used in practice.
-    if (!url.startsWith('http:') && !url.startsWith('https:') &&  !url.startsWith('//:')) {
+    if (!url.match(/[A-z]:/) && !url.startsWith('//:')) {
       url = `${homepage}${url}`
     }
 
@@ -53,12 +53,13 @@ module.exports = async (req, res) => {
       domain: urlParts.parse(url).hostname
     })
   })
+  links = removeDuplicates(links, 'url')
 
   return send(res, 200, {
     domain,
     path,
     homepage,
-    links: removeDuplicates(links, 'url')
+    links,
   })
 }
 

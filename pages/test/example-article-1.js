@@ -17,6 +17,12 @@ export default () => (
     <p>
       This is an example article.
     </p>
+    <p>
+      This sentence is contains words like happy and is positive.
+    </p>
+    <p>
+      This sentence is contains words like sad and is negative.
+    </p>
     <script type="application/ld+json" dangerouslySetInnerHTML={{
       __html: JSON.stringify({
         "@context": "http://schema.org",

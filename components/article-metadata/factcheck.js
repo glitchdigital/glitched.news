@@ -2,44 +2,52 @@ import React from "react"
 
 export default class extends React.Component {
   render() {
-    const { factchecks, content, textAnalysis } = this.props
+    const { factchecks, textAnalysis } = this.props
 
-    if (!factchecks || !content)
+    if (!factchecks || !textAnalysis)
       return null
 
     return (
       <>
         <hr/>
         <h3>Facts, figures &amp; quotes</h3>
-        <p>
-          Found <strong>{ content.quotes.length } quotes</strong> in the article, <strong>{ content.quotesWithNumbers.length } quotes</strong> and <strong>{ content.sentencesWithNumbers.length } sentences</strong> cite specific dates or numbers.
+        <p className="lead">
+          Found <strong>{ textAnalysis.quotes.length } quotes</strong> in the article.
         </p>
-        <p>
-          Numbers and dates should be attributable to a source and verifiable.
-        </p>
-        <p>
-          Score: <strong>{textAnalysis.score}</strong>
+        <p className="lead">
+          <strong>{ textAnalysis.quotesWithNumbers.length } quotes</strong> and <strong>{ textAnalysis.sentencesWithNumbers.length } sentences</strong> cite specific dates or numbers.
         </p>
         <p className="text-muted font-italic">
-          Note: Score is a highly experimental attempt at a metric to quantify the likely veracity of an article, based on metadata. Scores are always positive. Higher is better. There is no upper limit. Biased towards longer articles. The score for an article may vary over time as the mechanism is refined.
+          Numbers and dates should be attributable to a source and verifiable.
         </p>
-        {content.quotes.length > 0 && <h4>Quotes</h4>}
-        <ol>
-        {content.quotes.map((quote, i) => (
-          <li key={`${quote}-${i}`}><em>{quote}</em></li>
-        ))}
-        </ol>
-
-        {content.sentencesWithNumbers.length > 0 && <h4>Numbers and dates</h4>}
-  
-        <ol>
-        {content.sentencesWithNumbers.map((citation, i) => (
-          <li key={`${citation}-${i}`}><em>{citation}</em></li>
-        ))}
-        </ol>
-
+        <hr/>
+        <p className="lead">
+          Veracity score: <strong>{textAnalysis.score}</strong>
+        </p>
+        <p className="text-muted font-italic">
+          Veracity score is a highly experimental attempt at a metric to quantify the likely veracity of an article, based on the text of the article. Scores are always positive. Higher is better. There is no upper limit. Biased towards longer articles. The score for an article may vary over time as the mechanism is refined.
+        </p>
+        {textAnalysis.quotes.length > 0 && <>
+          <hr/>
+          <h4>Quotes</h4> 
+          <ol>
+          {textAnalysis.quotes.map((quote, i) => (
+            <li key={`${quote}-${i}`}><em>{quote}</em></li>
+          ))}
+          </ol>
+        </>}
+        {textAnalysis.sentencesWithNumbers.length > 0 && <>
+          <hr/>
+          <h4>Numbers and dates</h4>
+          <ol>
+          {textAnalysis.sentencesWithNumbers.map((citation, i) => (
+            <li key={`${citation}-${i}`}><em>{citation}</em></li>
+          ))}
+          </ol>
+        </>}
         {factchecks['snopes'].length > 0 && (
           <>
+            <hr/>
             <h4>Snopes</h4>
             <p>
               Fact checks from <a target='_blank' href='https://www.snopes.com' rel='noreferrer'>Snopes</a> that might be related
@@ -54,6 +62,7 @@ export default class extends React.Component {
         )}
         {factchecks['factcheck.org'].length > 0 && (
           <>
+            <hr/>
             <h4>FactCheck.org</h4>
             <p>
               Fact checks from <a target='_blank' href='https://www.factcheck.org' rel='noreferrer'>FactCheck.org</a> that might be related

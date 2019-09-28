@@ -22,7 +22,6 @@ class Locale extends React.Component {
 
     // Get locale from element
     const locale = e.target.value
-    console.log(locale)
 
     // Fetch locale catalog from server
     const server = `${window.location.protocol}//${window.location.host}`
