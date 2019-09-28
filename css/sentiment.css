@@ -46,7 +46,7 @@
   .sentiment__barchart {
     max-width: 12em;
     margin-top: 1em;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 
     .sentiment__barchart--negative {
       background-color: var(--sentiment-negative-color);

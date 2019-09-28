@@ -13,7 +13,7 @@ export default class extends React.Component {
         donutWidth: 40,
         donutSolid: true,
         startAngle: 270,
-        total: 100,
+        total: 200,
         showLabel: true
       },
       data: {
@@ -60,10 +60,9 @@ export default class extends React.Component {
         neutralSentences++
       }
     })
-    pieCharts.sentence.options.total = (negativeSentences + positiveSentences + neutralSentences) * 2
-    pieCharts.sentence.data.series[0].value = negativeSentences
-    pieCharts.sentence.data.series[1].value = neutralSentences
-    pieCharts.sentence.data.series[2].value = positiveSentences
+    pieCharts.sentence.data.series[0].value = Math.round(negativeSentences / sentiment.sentences.length * 100)
+    pieCharts.sentence.data.series[1].value = Math.round(neutralSentences / sentiment.sentences.length * 100)
+    pieCharts.sentence.data.series[2].value = Math.round(positiveSentences / sentiment.sentences.length * 100)
 
     let sentimentText = 'This article contains mostly neutral sentences.'
     if (positiveSentences > neutralSentences && positiveSentences > negativeSentences) {
@@ -102,11 +101,14 @@ export default class extends React.Component {
               <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.headline.data.series[2].value+'%'}}/>
             </div>
             <h5 className='text-center text-uppercase'>Headline</h5>
+            <p className='text-center text-muted mb-0'>
+              <small>Negative / Neutral / Positive</small>
+            </p>
             <p className='text-center'>
               <span className='sentiment__negative--highlighted'>{pieCharts.headline.data.series[0].value}%</span>
-              <span className='text-muted ml-1 mr-1'>/</span>
+              <span className='text-muted ml-2 mr-2'>/</span>
               <span className='sentiment__neutral--highlighted'>{pieCharts.headline.data.series[1].value}%</span>
-              <span className='text-muted ml-1 mr-1'>/</span>
+              <span className='text-muted ml-2 mr-2'>/</span>
               <span className='sentiment__positive--highlighted'>{pieCharts.headline.data.series[2].value}%</span>
             </p>
           </div>
@@ -120,11 +122,14 @@ export default class extends React.Component {
               <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.text.data.series[2].value+'%'}}/>
             </div>
             <h5 className='text-center text-uppercase'>Article Text</h5>
+            <p className='text-center text-muted mb-0'>
+              <small>Negative / Neutral / Positive</small>
+            </p>
             <p className='text-center'>
               <span className='sentiment__negative--highlighted'>{pieCharts.text.data.series[0].value}%</span>
-              <span className='text-muted ml-1 mr-1'>/</span>
+              <span className='text-muted ml-2 mr-2'>/</span>
               <span className='sentiment__neutral--highlighted'>{pieCharts.text.data.series[1].value}%</span>
-              <span className='text-muted ml-1 mr-1'>/</span>
+              <span className='text-muted ml-2 mr-2'>/</span>
               <span className='sentiment__positive--highlighted'>{pieCharts.text.data.series[2].value}%</span>
             </p>
           </div>
@@ -138,11 +143,14 @@ export default class extends React.Component {
               <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.overall.data.series[2].value+'%'}}/>
             </div>
             <h5 className='text-center text-uppercase'>Headline &amp; text</h5>
+            <p className='text-center text-muted mb-0'>
+              <small>Negative / Neutral / Positive</small>
+            </p>
             <p className='text-center'>
               <span className='sentiment__negative--highlighted'>{pieCharts.overall.data.series[0].value}%</span>
-              <span className='text-muted ml-1 mr-1'>/</span>
+              <span className='text-muted ml-2 mr-2'>/</span>
               <span className='sentiment__neutral--highlighted'>{pieCharts.overall.data.series[1].value}%</span>
-              <span className='text-muted ml-1 mr-1'>/</span>
+              <span className='text-muted ml-2 mr-2'>/</span>
               <span className='sentiment__positive--highlighted'>{pieCharts.overall.data.series[2].value}%</span>
             </p>
           </div>
@@ -160,20 +168,23 @@ export default class extends React.Component {
               <div className='d-inline-block sentiment__barchart--positive' style={{width: Math.round(positiveSentences / sentiment.sentences.length * 100)+'%'}}/>
             </div>
             <h5 className='text-center text-uppercase'>Sentence Sentiment</h5>
+            <p className='text-center text-muted mb-0'>
+              <small>Negative / Neutral / Positive</small>
+            </p>
             <p className='text-center'>
               <span className='sentiment__negative--highlighted'>{pieCharts.sentence.data.series[0].value}%</span>
-              <span className='text-muted ml-1 mr-1'>/</span>
+              <span className='text-muted ml-2 mr-2'>/</span>
               <span className='sentiment__neutral--highlighted'>{pieCharts.sentence.data.series[1].value}%</span>
-              <span className='text-muted ml-1 mr-1'>/</span>
+              <span className='text-muted ml-2 mr-2'>/</span>
               <span className='sentiment__positive--highlighted'>{pieCharts.sentence.data.series[2].value}%</span>
             </p>
           </div>
           <div className='col-sm-8 pt-3'>
             <p className='font-weight-bold'>{sentimentText}</p>
             <ul>
-              <li>{Math.round(negativeSentences / sentiment.sentences.length * 100)}% of sentences appear negative.</li>
-              <li>{Math.round(neutralSentences / sentiment.sentences.length * 100)}% of sentences appear neutral.</li>
-              <li>{Math.round(positiveSentences / sentiment.sentences.length * 100)}% of sentences appear positive.</li>
+              <li>{pieCharts.sentence.data.series[0].value}% of sentences appear negative.</li>
+              <li>{pieCharts.sentence.data.series[1].value}% of sentences appear neutral.</li>
+              <li>{pieCharts.sentence.data.series[2].value}% of sentences appear positive.</li>
             </ul>
             <p className='text-muted'>
               Sentence sentiment analysis looks at each sentence in isolation.
