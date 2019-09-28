@@ -4,7 +4,7 @@
   padding-top: 5em;
   position: relative;
   .home__jumbotron-background-image {
-    height: 100vh;
+    height: 100%;
     width: 100%;
     background-image: url(/static/undraw_site_content_ihgn.svg);
     background-repeat: no-repeat;
@@ -26,14 +26,6 @@
     padding: 1em;
   }
   @media (min-width: 768px) {
-    margin-bottom: 6em;
-    padding-top: 6em;
-    .home__jumbotron-background {
-      height: 26em;
-    }
-    .home__jumbotron-background-image {
-      background-position: center -150px;
-    }
     form {
       padding: 2em;
     }
