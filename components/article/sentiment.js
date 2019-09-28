@@ -65,11 +65,11 @@ export default class extends React.Component {
     pieCharts.sentence.data.series[1].value = neutralSentences
     pieCharts.sentence.data.series[2].value = positiveSentences
 
-    let sentimentText = 'The article contains mostly neutral sentences.'
+    let sentimentText = 'This article contains mostly neutral sentences.'
     if (positiveSentences > neutralSentences && positiveSentences > negativeSentences) {
-      sentimentText = 'The article contains mostly positive sentences.'
+      sentimentText = 'This article contains mostly positive sentences.'
     } else if (negativeSentences > neutralSentences && negativeSentences > positiveSentences) { 
-      sentimentText = 'The article contains mostly negative sentences.'
+      sentimentText = 'This article contains mostly negative sentences.'
     }
 
     ['headline', 'text', 'overall'].forEach(chart => {
@@ -87,9 +87,10 @@ export default class extends React.Component {
     })
 
     return (
-      <>
+      <div className='sentiment'>
         <hr/>
         <h3>Sentiment analysis</h3>
+        <h4>Overall impression</h4>
         <div className='row'>
           <div className='col-sm-4'>
             <div className='sentiment__piechart'>
@@ -136,7 +137,7 @@ export default class extends React.Component {
               <div className='d-inline-block sentiment__barchart--neutral' style={{width: pieCharts.overall.data.series[1].value+'%'}}/>
               <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.overall.data.series[2].value+'%'}}/>
             </div>
-            <h5 className='text-center text-uppercase'>Overall</h5>
+            <h5 className='text-center text-uppercase'>Headline &amp; text</h5>
             <p className='text-center'>
               <span className='sentiment__negative--highlighted'>{pieCharts.overall.data.series[0].value}%</span>
               <span className='text-muted ml-1 mr-1'>/</span>
@@ -147,7 +148,7 @@ export default class extends React.Component {
           </div>
         </div>
         <hr/>
-        <h4>Sentence sentiment analysis</h4>
+        <h4>Sentence analysis</h4>
         <div className='row mt-3'>
           <div className='col-sm-4'>
             <div className='sentiment__piechart'>
@@ -167,19 +168,19 @@ export default class extends React.Component {
               <span className='sentiment__positive--highlighted'>{pieCharts.sentence.data.series[2].value}%</span>
             </p>
           </div>
-          <div className='col-sm-8 pt-2'>
-            <p>
-              Sentance sentiment analysis looks at each sentence in the article in isolation.
-            </p>
+          <div className='col-sm-8 pt-3'>
             <p className='font-weight-bold'>{sentimentText}</p>
             <ul>
               <li>{Math.round(negativeSentences / sentiment.sentences.length * 100)}% of sentences appear negative.</li>
               <li>{Math.round(neutralSentences / sentiment.sentences.length * 100)}% of sentences appear neutral.</li>
               <li>{Math.round(positiveSentences / sentiment.sentences.length * 100)}% of sentences appear positive.</li>
             </ul>
+            <p className='text-muted'>
+              Sentence sentiment analysis looks at each sentence in isolation.
+            </p>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }

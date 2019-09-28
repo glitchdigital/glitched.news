@@ -1,101 +1,66 @@
-.sentiment__negative,
-.sentiment__neutral,
-.sentiment__positive {
-  opacity: .5;
-}
+.sentiment {
+  --sentiment-negative-color: #ff5e5e;
+  --sentiment-neutral-color: #eee;
+  --sentiment-positive-color: #87ba72;
 
-.sentiment__negative--highlighted,
-.sentiment__neutral--highlighted,
-.sentiment__positive--highlighted {
-  font-weight: 600;
-}
-
-.sentiment__negative--highlighted {
-  color: #ff5e5e;
-}
-
-.sentiment__neutral--highlighted {
-  color: #666;
-}
-
-.sentiment__positive--highlighted {
-  color: #87ba72;
-}
-
-.sentiment__piechart {
-  height: 6em;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  .ct-chart {
-    height: 12em;
-    font-weight: bold;
-  }
-  .sentiment__piechart--negative {
-    stroke: #ff5e5e;
-    fill: #ff5e5e;
-  }
-  .sentiment__piechart--neutral {
-    stroke: #ddd;
-    fill: #ddd;
-  }
-  .sentiment__piechart--positive {
-    stroke: #87ba72;
-    fill: #87ba72;
-  }
-}
-
-.sentiment__barchart {
-  max-width: 12em;
-  margin-top: 1em;
-  margin-bottom: 1em;
-
-  .sentiment__barchart--negative {
-    background-color: #ff5e5e;
-    height: 2em;
+  .sentiment__negative--highlighted,
+  .sentiment__neutral--highlighted,
+  .sentiment__positive--highlighted {
+    font-weight: 600;
   }
 
-  .sentiment__barchart--neutral {
-    background-color: #ddd;
-    height: 2em;
+  .sentiment__negative--highlighted {
+    color: var(--sentiment-negative-color);
   }
 
-  .sentiment__barchart--positive {
-    background-color: #87ba72;
-    height: 2em;
-  }
-}
-
-
-table.sentiment {
-  border: 0;
-  width: 100%;
-
-  td,
-  tr {
-    border: 0;
+  .sentiment__neutral--highlighted {
+    color: #666;
   }
 
-  thead {
-    tr {
-      th {
-        text-align: center;
-        &:first-child {
-          border: 0;
-        }
-      }
+  .sentiment__positive--highlighted {
+    color: var(--sentiment-positive-color);
+  }
+
+  .sentiment__piechart {
+    height: 6em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    .ct-chart {
+      height: 12em;
+      font-weight: bold;
+    }
+    .sentiment__piechart--negative {
+      stroke: var(--sentiment-negative-color);
+      fill: var(--sentiment-negative-color);
+    }
+    .sentiment__piechart--neutral {
+      stroke: var(--sentiment-neutral-color);
+      fill: var(--sentiment-neutral-color);
+    }
+    .sentiment__piechart--positive {
+      stroke: var(--sentiment-positive-color);
+      fill: var(--sentiment-positive-color);
     }
   }
-  tbody {
-    tr {
-      th {
-        padding-right: 1em;
-        border: 0;
-        text-align: right;
-        opacity: .5;
-      }
-      td {
-        text-align: center;
-      }
+
+  .sentiment__barchart {
+    max-width: 12em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+
+    .sentiment__barchart--negative {
+      background-color: var(--sentiment-negative-color);
+      height: 2em;
+    }
+
+    .sentiment__barchart--neutral {
+      background-color: var(--sentiment-neutral-color);
+      height: 2em;
+    }
+
+    .sentiment__barchart--positive {
+      background-color: var(--sentiment-positive-color);
+      height: 2em;
     }
   }
 }
