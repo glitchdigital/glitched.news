@@ -1,5 +1,5 @@
 import React from "react"
-import TrustIndicator from 'components/trust/indicator'
+import TrustIndicator from 'components/indicator/pie'
 
 export default class extends React.Component {
   render() {
@@ -9,14 +9,14 @@ export default class extends React.Component {
         <hr/>
         <h3>Trust indicators</h3>
         <div className='row'>
-          <div className='col-sm-4 sentiment'>
+          <div className='col-md-4'>
             <TrustIndicator
               label='Trust indicators'
               pos={trustIndicators.positive.length}
               neg={trustIndicators.negative.length}
             />
           </div>
-          <div className='col-sm-8'>
+          <div className='col-md-8'>
             { trustIndicators.positive.length > 0 && (
               <>
                 <h4>Positive</h4>

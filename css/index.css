@@ -1,7 +1,7 @@
 /*@import "../node_modules/bootstrap-material-design/dist/css/bootstrap-material-design.css";*/
 @import "../node_modules/bootstrap/dist/css/bootstrap.css";
 @import "article";
-@import "sentiment";
+@import "indicator";
 @import "sidebar";
 @import "structured-data";
 

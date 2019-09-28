@@ -1,0 +1,109 @@
+@import "../node_modules/chartist/dist/chartist.css";
+
+.indicator {
+  --indicator-negative-color: #f03030;
+  --indicator-neutral-color: #eee;
+  --indicator-positive-color: #3ccf32;
+  --indicator-needle-color: #666;
+  --indicator-bar-height: 1.5em;
+
+  .indicator__negative--highlighted,
+  .indicator__neutral--highlighted,
+  .indicator__positive--highlighted {
+    font-weight: 600;
+  }
+
+  .indicator__negative--highlighted {
+    color: var(--indicator-negative-color);
+  }
+
+  .indicator__neutral--highlighted {
+    color: #666;
+  }
+
+  .indicator__positive--highlighted {
+    color: var(--indicator-positive-color);
+  }
+
+  .indicator__chart {
+    .indicator__needle {
+      position: absolute;
+      width: 5px;
+      height: 100px;
+      background-color: var(--indicator-needle-color);
+      margin: auto;
+      left: 50%;
+      transform: rotate(0deg);
+      transform-origin: center bottom;
+      border-radius: 1em;
+      outline: 4px solid rgba(255,255,255,0.8);
+      &:after {
+        background-color: var(--indicator-needle-color);
+        border-radius: 1em;
+        position: absolute;
+        bottom: -0.6em;
+        left: -0.35em;      
+        height: 1em;
+        width: 1em;
+        display: block;
+        content: '';
+      }
+    }
+    .indicator__piechart {
+      height: 12em;
+      margin-top: 1em;
+      margin-bottom: 1.5em;
+      .ct-chart {
+        height: 12em;
+        font-weight: bold;
+        text {
+          &.ct-label {
+            fill: #fff !important;
+            font-size: 1em;
+          }
+        }
+      }
+      &.indicator__piechart--gauge {
+        height: 6em;
+      }
+      .indicator__piechart--negative {
+        stroke: var(--indicator-negative-color);
+        fill: var(--indicator-negative-color);
+      }
+      .indicator__piechart--neutral {
+        stroke: var(--indicator-neutral-color);
+        fill: var(--indicator-neutral-color);
+      }
+      .indicator__piechart--positive {
+        stroke: var(--indicator-positive-color);
+        fill: var(--indicator-positive-color);
+      }
+    }
+
+    .indicator__barchart {
+      max-width: 12em;
+      margin-top: 0em;
+      margin-bottom: 1em;
+      :first-child {
+        border-top-left-radius: 1em;
+        border-bottom-left-radius: 1em;
+      }
+      :last-child {
+        border-top-right-radius: 1em;
+        border-bottom-right-radius: 1em;
+      }
+      .indicator__barchart--negative {
+        background-color: var(--indicator-negative-color);
+        height: var(--indicator-bar-height);
+      }
+      .indicator__barchart--neutral {
+        background-color: var(--indicator-neutral-color);
+        height: var(--indicator-bar-height);
+      }
+      .indicator__barchart--positive {
+        background-color: var(--indicator-positive-color);
+        height: var(--indicator-bar-height);
+      }
+    }
+  }
+}

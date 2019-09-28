@@ -1,10 +1,9 @@
 import React from 'react'
 
 import cloneObject from 'lib/clone-object'
-import SentimentIndicator from 'components/sentiment/indicator'
+import SentimentIndicator from 'components/indicator/gauge'
 
 export default class extends React.Component {
-
   constructor(props) {
     super(props)
     this.pieChartDefaults = {
@@ -20,17 +19,17 @@ export default class extends React.Component {
         series: [{
           value: 0,
           name: 'Neg',
-          className: 'sentiment__piechart--negative'
+          className: 'indicator__piechart--negative'
         },
         {
           value: 0,
           name: 'Neu',
-          className: 'sentiment__piechart--neutral'
+          className: 'indicator__piechart--neutral'
         },
         {
           value: 0,
           name: 'Pos',
-          className: 'sentiment__piechart--positive'
+          className: 'indicator__piechart--positive'
         }]
       }
     }
@@ -95,7 +94,7 @@ export default class extends React.Component {
     })
 
     return (
-      <div className='sentiment'>
+      <>
         <hr/>
         <h3>Sentiment analysis</h3>
         <h4>Overall impression</h4>
@@ -143,7 +142,7 @@ export default class extends React.Component {
             </ul>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 }
