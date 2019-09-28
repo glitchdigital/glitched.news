@@ -5,7 +5,6 @@ const fetch = require('node-fetch')
 
 const WAE = require('web-auto-extractor').default
 const moment = require('moment')
-const tokenizer = require('sbd')
 const vader = require('vader-sentiment')
 
 const { send, queryParser } = require('lib/request-handler')
@@ -63,15 +62,6 @@ module.exports = async (req, res) => {
     trustIndicators.negative.push({text: `Unable to clearly identify main text of article`})
   }
 
-  // Parse for Sentences
-  const sentences = tokenizer.sentences(articleText, { newline_boundaries: true }) || []
-  let sentencesWithNumbers = []
-
-  sentences.forEach(sentence => {
-    if (sentence.match(/[0-9]/)) {
-      sentencesWithNumbers.push(sentence)
-    }
-  })
 
   const headlineSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(structuredData.title)
   const textSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(articleText)
@@ -103,7 +93,6 @@ module.exports = async (req, res) => {
     ...structuredData,
     characterCount: articleText.length,
     wordCount: articleText.split(' ').length,
-    sentencesWithNumbers,
     sentiment,
     trustIndicators,
   })

@@ -81,8 +81,8 @@ module.exports = async (req, res) => {
   return send(res, 200, {
     url,
     quotes: quotes,
-    quotesWithNumbers: quotesWithNumbers,
-    sentencesWithNumbers: sentencesWithNumbers,
+    quotesWithNumbers,
+    sentencesWithNumbers,
     trustIndicators,
     score,
     sentiment,
