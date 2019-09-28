@@ -6,17 +6,17 @@ import Sidebar from 'components/sidebar'
 import Loader from 'components/loader'
 import Trust from 'components/trust'
 import Homepage from 'components/homepage'
-import Headline from 'components/article-metadata/headline'
-import Content from 'components/article-metadata/content'
-import Website from 'components/article-metadata/website'
-import FactCheck from 'components/article-metadata/factcheck'
-import Social from 'components/article-metadata/social'
-import Sentiment from 'components/article-metadata/sentiment'
-import Topics from 'components/article-metadata/topics'
-import Related from 'components/article-metadata/related'
-import Links from 'components/article-metadata/links'
-import Blacklists from 'components/article-metadata/blacklists'
-import StructuredData from 'components/article-metadata/structured-data'
+import Headline from 'components/article/headline'
+import Content from 'components/article/content'
+import Website from 'components/article/website'
+import FactCheck from 'components/article/factcheck'
+import Social from 'components/article/social'
+import Sentiment from 'components/article/sentiment'
+import Topics from 'components/article/topics'
+import Related from 'components/article/related'
+import Links from 'components/article/links'
+import Blacklists from 'components/article/blacklists'
+import StructuredData from 'components/article/structured-data'
 
 const DEFAULT_SECTION = 'article-summary'
 // Server Side Events are an experimental feature for now
@@ -36,7 +36,7 @@ export default class extends React.Component {
     super(props)
     this.state = {
       url: props.articleUrl || '',
-      articleMetadata: {
+      article: {
         domain: null,
         hosting: null,
         content: null,
@@ -128,15 +128,15 @@ export default class extends React.Component {
       }
     }
 
-    const articleMetadata = {}
-    for (const prop in this.state.articleMetadata) {
-      articleMetadata[prop] = null
+    const article = {}
+    for (const prop in this.state.article) {
+      article[prop] = null
     }
 
     // Reset state
     this.setState({
       url,
-      articleMetadata,
+      article,
       trustIndicators: {
         positive: [],
         negative: []
@@ -149,17 +149,17 @@ export default class extends React.Component {
     if (url) {
       if (ENABLE_SERVER_SIDE_EVENTS && typeof(EventSource) !== 'undefined') {
         // Use Server Side Events (EventSource) if the browser supports them
-        this.eventSource = new EventSource(`${this.serverUrl}/api/article-metadata?url=${url}&stream=true`)
+        this.eventSource = new EventSource(`${this.serverUrl}/api/article?url=${url}&stream=true`)
         this.eventSource.addEventListener('message', event => {
           // Update state with latest data
           const eventData = JSON.parse(event.data)
-          let articleMetadata = this.state.articleMetadata
-          articleMetadata[eventData.endpoint] = eventData.data
-          const trustIndicators = this.getTrustIndicators(articleMetadata)
-          const feedback = this.getFeedback(articleMetadata)
+          let article = this.state.article
+          article[eventData.endpoint] = eventData.data
+          const trustIndicators = this.getTrustIndicators(article)
+          const feedback = this.getFeedback(article)
 
           this.setState({
-            articleMetadata,
+            article,
             trustIndicators,
             feedback,
             inProgress: eventData.inProgress
@@ -177,13 +177,13 @@ export default class extends React.Component {
       } else {
         // If the browser doesn't support EventSource (Server Side Events) use REST API
         // (This is really just Internet Explorer - including Edge!)
-        const request = await fetch(`${this.serverUrl}/api/article-metadata?url=${url}`)
-        const articleMetadata = await request.json()
-        const trustIndicators = this.getTrustIndicators(articleMetadata)
-        const feedback = this.getFeedback(articleMetadata)
+        const request = await fetch(`${this.serverUrl}/api/article?url=${url}`)
+        const article = await request.json()
+        const trustIndicators = this.getTrustIndicators(article)
+        const feedback = this.getFeedback(article)
 
         this.setState({
-          articleMetadata,
+          article,
           trustIndicators,
           feedback,
           inProgress: false
@@ -192,27 +192,27 @@ export default class extends React.Component {
     }
   }
 
-  getTrustIndicators(articleMetadata) {
+  getTrustIndicators(article) {
     const trustIndicators = { positive: [], negative: [] }
-    for (let prop in articleMetadata) {
-      if (articleMetadata[prop] !== null) {
+    for (let prop in article) {
+      if (article[prop] !== null) {
         // Get positive and negative trust indicators in each section
         // (Looping over like this preserves the order of them)
-        if (articleMetadata[prop].trustIndicators) {
-          trustIndicators.positive = trustIndicators.positive.concat(articleMetadata[prop].trustIndicators.positive)
-          trustIndicators.negative = trustIndicators.negative.concat(articleMetadata[prop].trustIndicators.negative)
+        if (article[prop].trustIndicators) {
+          trustIndicators.positive = trustIndicators.positive.concat(article[prop].trustIndicators.positive)
+          trustIndicators.negative = trustIndicators.negative.concat(article[prop].trustIndicators.negative)
         }
       }
     }
     return trustIndicators
   }
 
-  getFeedback(articleMetadata) {
+  getFeedback(article) {
     const feedback = []
-    for (let prop in articleMetadata) {
-      if (articleMetadata[prop] !== null) {
-        if (articleMetadata[prop].feedback) {
-          feedback.concat(articleMetadata[prop].feedback)
+    for (let prop in article) {
+      if (article[prop] !== null) {
+        if (article[prop].feedback) {
+          feedback.concat(article[prop].feedback)
         }
       }
     }
@@ -236,7 +236,7 @@ export default class extends React.Component {
   }
 
   render() { 
-    const { currentSection, url, articleMetadata, inProgress, trustIndicators, feedback } = this.state
+    const { currentSection, url, article, inProgress, trustIndicators, feedback } = this.state
     return (
       <Page inputUrl={url} onInputSubmit={this.onSubmit} onInputChange={this.onChange} disableInput={inProgress}>
         <main role="main">
@@ -253,43 +253,43 @@ export default class extends React.Component {
               </form>
               { url && !inProgress &&
                 <div className="col-md-3 col-lg-2 d-none d-md-block sidebar bg-light">
-                  <Sidebar currentSection={currentSection} onClickHandler={this.toggleSection} rootUrl={articleMetadata.links ? articleMetadata.links.domain : null}/>
+                  <Sidebar currentSection={currentSection} onClickHandler={this.toggleSection} rootUrl={article.links ? article.links.domain : null}/>
                 </div>
               }
               <div className="col-md-9 col-lg-10 ml-sm-auto article">
                 <div className="d-block d-md-none">{ inProgress && <Loader/> }</div>
                 <section id="article-summary">
-                  { articleMetadata.content && <Headline content={articleMetadata.content} /> }
-                  { articleMetadata.content && <Content content={articleMetadata.content} /> } 
-                  { articleMetadata.blacklists && <Blacklists content={articleMetadata.blacklists} /> }
-                  { articleMetadata.hosting && articleMetadata.domain && <Website hosting={articleMetadata.hosting} domain={articleMetadata.domain} /> }
+                  { article.content && <Headline content={article.content} /> }
+                  { article.content && <Content content={article.content} /> } 
+                  { article.blacklists && <Blacklists content={article.blacklists} /> }
+                  { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
                 </section>
                 <section id="article-trust">
                   { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
                 </section>
                 <section id="article-sentiment">
-                  { articleMetadata.text && <Sentiment sentiment={articleMetadata.text.sentiment} /> }
+                  { article.text && <Sentiment sentiment={article.text.sentiment} /> }
                 </section>
                 <section id="article-factcheck"> 
-                  { articleMetadata.content && articleMetadata.factchecks && articleMetadata.text && <FactCheck factchecks={articleMetadata.factchecks} textAnalysis={articleMetadata.text} /> }
+                  { article.content && article.factchecks && article.text && <FactCheck factchecks={article.factchecks} textAnalysis={article.text} /> }
                 </section>
                 <section id="article-topics">
-                  { articleMetadata.topics && <Topics topics={articleMetadata.topics} /> }
+                  { article.topics && <Topics topics={article.topics} /> }
                 </section>
                 <section id="article-social"> 
-                  { articleMetadata.social && articleMetadata.social.facebook && <Social social={articleMetadata.social} /> }
+                  { article.social && article.social.facebook && <Social social={article.social} /> }
                 </section>
                 <section id="article-structured-data"> 
-                  { articleMetadata['structured-data'] && articleMetadata['structured-data'].testResults && <StructuredData testResults={articleMetadata['structured-data'].testResults} /> }
+                  { article['structured-data'] && article['structured-data'].testResults && <StructuredData testResults={article['structured-data'].testResults} /> }
                 </section>
                 <section id="article-links"> 
-                  { articleMetadata.content && articleMetadata.links && <Links links={articleMetadata.links} /> }
+                  { article.content && article.links && <Links links={article.links} /> }
                 </section>
                 <section id="article-related"> 
-                  { articleMetadata.related && <Related related={articleMetadata.related} /> }
+                  { article.related && <Related related={article.related} /> }
                 </section>
                 <section id="homepage">
-                  { articleMetadata.homepage && <Homepage homepage={articleMetadata.homepage} /> }
+                  { article.homepage && <Homepage homepage={article.homepage} /> }
                 </section>
               </div>
             </div>
