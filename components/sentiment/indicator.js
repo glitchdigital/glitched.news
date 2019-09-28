@@ -20,9 +20,9 @@ export default ({label, data, options}) => {
       <ChartistGraph type={'Pie'} data={data} options={options} />
       </div>
       <div className='sentiment__barchart ml-auto mr-auto'>
-        <div className='d-inline-block sentiment__barchart--negative' style={{width: `${neg}%`}}/>
+        {neg > 0 && <div className='d-inline-block sentiment__barchart--negative' style={{width: `${neg}%`}}/>}
         <div className='d-inline-block sentiment__barchart--neutral' style={{width: `${neu}%`}}/>
-        <div className='d-inline-block sentiment__barchart--positive' style={{width: `${pos}%`}}/>
+        {pos > 0 && <div className='d-inline-block sentiment__barchart--positive' style={{width: `${pos}%`}}/>}
       </div>
       <h5 className='text-center text-uppercase'>{label}</h5>
       <p className='text-center text-muted mb-0'>

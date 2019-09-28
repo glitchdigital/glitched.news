@@ -115,9 +115,6 @@ export default class extends React.Component {
         </div>
         <hr/>
         <h4>Sentence analysis</h4>
-        <p className='lead'>
-          Sentence analysis looks at the sentiment of each sentence in isolation.
-        </p>
         <div className='row mt-3'>
           <div className='col-sm-4'>
             <SentimentIndicator
@@ -126,11 +123,14 @@ export default class extends React.Component {
             />
           </div>
           <div className='col-sm-8 pt-3'>
+            <p className='lead'>
+              Sentence analysis looks at the sentiment of each sentence in isolation.
+            </p>
             <p className='font-weight-bold'>{sentimentText}</p>
             <ul>
-              <li>{pieCharts.sentence.data.series[0].value}% of sentences appear negative.</li>
-              <li>{pieCharts.sentence.data.series[1].value}% of sentences appear neutral.</li>
-              <li>{pieCharts.sentence.data.series[2].value}% of sentences appear positive.</li>
+              <li>{pieCharts.sentence.data.series[0].value}% of sentences appear negative</li>
+              <li>{pieCharts.sentence.data.series[1].value}% of sentences appear neutral</li>
+              <li>{pieCharts.sentence.data.series[2].value}% of sentences appear positive</li>
             </ul>
           </div>
         </div>

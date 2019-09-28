@@ -2,6 +2,7 @@
   --sentiment-negative-color: #f03030;
   --sentiment-neutral-color: #eee;
   --sentiment-positive-color: #3ccf32;
+  --sentiment-needle-color: #666;
   --sentiment-bar-height: 1.5em;
 
   .sentiment__negative--highlighted,
@@ -27,14 +28,15 @@
       position: absolute;
       width: 5px;
       height: 100px;
-      background: #666;
+      background-color: var(--sentiment-needle-color);
       margin: auto;
       left: 50%;
       transform: rotate(0deg);
       transform-origin: center bottom;
       border-radius: 1em;
+      outline: 4px solid rgba(255,255,255,0.8);
       &:after {
-        background-color: #666;
+        background-color: var(--sentiment-needle-color);
         border-radius: 1em;
         position: absolute;
         bottom: -0.6em;
@@ -48,7 +50,7 @@
     .sentiment__piechart {
       height: 6em;
       margin-top: 1em;
-      margin-bottom: 2em;
+      margin-bottom: 1.5em;
       .ct-chart {
         height: 12em;
         font-weight: bold;
@@ -73,26 +75,27 @@
 
     .sentiment__barchart {
       max-width: 12em;
-      margin-top: 1em;
+      margin-top: 0em;
       margin-bottom: 1em;
-    
-      .sentiment__barchart--negative {
-        background-color: var(--sentiment-negative-color);
-        height: var(--sentiment-bar-height);
+      :first-child {
         border-top-left-radius: 1em;
         border-bottom-left-radius: 1em;
       }
-
+      :last-child {
+        border-top-right-radius: 1em;
+        border-bottom-right-radius: 1em;
+      }
+      .sentiment__barchart--negative {
+        background-color: var(--sentiment-negative-color);
+        height: var(--sentiment-bar-height);
+      }
       .sentiment__barchart--neutral {
         background-color: var(--sentiment-neutral-color);
         height: var(--sentiment-bar-height);
       }
-
       .sentiment__barchart--positive {
         background-color: var(--sentiment-positive-color);
         height: var(--sentiment-bar-height);
-        border-top-right-radius: 1em;
-        border-bottom-right-radius: 1em;
       }
     }
   }
