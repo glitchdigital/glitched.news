@@ -1,7 +1,7 @@
 import React from 'react'
-import ChartistGraph from 'react-chartist'
 
 import cloneObject from 'lib/clone-object'
+import SentimentIndicator from 'components/sentiment/indicator'
 
 export default class extends React.Component {
 
@@ -95,67 +95,22 @@ export default class extends React.Component {
         </p>
         <div className='row'>
           <div className='col-sm-4'>
-            <div className='sentiment__piechart'>
-              <ChartistGraph type={'Pie'} {...pieCharts.headline} />
-            </div>
-            <div className='sentiment__barchart ml-auto mr-auto'>
-              <div className='d-inline-block sentiment__barchart--negative' style={{width: pieCharts.headline.data.series[0].value+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--neutral' style={{width: pieCharts.headline.data.series[1].value+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.headline.data.series[2].value+'%'}}/>
-            </div>
-            <h5 className='text-center text-uppercase'>Headline</h5>
-            <p className='text-center text-muted mb-0'>
-              <small>Negative / Neutral / Positive</small>
-            </p>
-            <p className='text-center'>
-              <span className='sentiment__negative--highlighted'>{pieCharts.headline.data.series[0].value}%</span>
-              <span className='text-muted ml-2 mr-2'>/</span>
-              <span className='sentiment__neutral--highlighted'>{pieCharts.headline.data.series[1].value}%</span>
-              <span className='text-muted ml-2 mr-2'>/</span>
-              <span className='sentiment__positive--highlighted'>{pieCharts.headline.data.series[2].value}%</span>
-            </p>
+            <SentimentIndicator
+              label='Headline'
+              {...pieCharts.headline}
+            />
           </div>
           <div className='col-sm-4'>
-            <div className='sentiment__piechart'>
-              <ChartistGraph type={'Pie'} {...pieCharts.text} />
-            </div>
-            <div className='sentiment__barchart ml-auto mr-auto'>
-              <div className='d-inline-block sentiment__barchart--negative' style={{width: pieCharts.text.data.series[0].value+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--neutral' style={{width: pieCharts.text.data.series[1].value+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.text.data.series[2].value+'%'}}/>
-            </div>
-            <h5 className='text-center text-uppercase'>Article Text</h5>
-            <p className='text-center text-muted mb-0'>
-              <small>Negative / Neutral / Positive</small>
-            </p>
-            <p className='text-center'>
-              <span className='sentiment__negative--highlighted'>{pieCharts.text.data.series[0].value}%</span>
-              <span className='text-muted ml-2 mr-2'>/</span>
-              <span className='sentiment__neutral--highlighted'>{pieCharts.text.data.series[1].value}%</span>
-              <span className='text-muted ml-2 mr-2'>/</span>
-              <span className='sentiment__positive--highlighted'>{pieCharts.text.data.series[2].value}%</span>
-            </p>
+            <SentimentIndicator
+              label='Article text'
+              {...pieCharts.text}
+            />
           </div>
           <div className='col-sm-4'>
-            <div className='sentiment__piechart'>
-              <ChartistGraph type={'Pie'} {...pieCharts.overall} />
-            </div>
-            <div className='sentiment__barchart ml-auto mr-auto'>
-              <div className='d-inline-block sentiment__barchart--negative' style={{width: pieCharts.overall.data.series[0].value+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--neutral' style={{width: pieCharts.overall.data.series[1].value+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.overall.data.series[2].value+'%'}}/>
-            </div>
-            <h5 className='text-center text-uppercase'>Headline &amp; text</h5>
-            <p className='text-center text-muted mb-0'>
-              <small>Negative / Neutral / Positive</small>
-            </p>
-            <p className='text-center'>
-              <span className='sentiment__negative--highlighted'>{pieCharts.overall.data.series[0].value}%</span>
-              <span className='text-muted ml-2 mr-2'>/</span>
-              <span className='sentiment__neutral--highlighted'>{pieCharts.overall.data.series[1].value}%</span>
-              <span className='text-muted ml-2 mr-2'>/</span>
-              <span className='sentiment__positive--highlighted'>{pieCharts.overall.data.series[2].value}%</span>
-            </p>
+            <SentimentIndicator
+              label='Headline and text'
+              {...pieCharts.overall}
+            />
           </div>
         </div>
         <hr/>
@@ -165,25 +120,10 @@ export default class extends React.Component {
         </p>
         <div className='row mt-3'>
           <div className='col-sm-4'>
-            <div className='sentiment__piechart'>
-              <ChartistGraph type={'Pie'} {...pieCharts.sentence} />
-            </div>
-            <div className='sentiment__barchart ml-auto mr-auto'>
-              <div className='d-inline-block sentiment__barchart--negative' style={{width: pieCharts.sentence.data.series[0].value+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--neutral' style={{width: pieCharts.sentence.data.series[1].value+'%'}}/>
-              <div className='d-inline-block sentiment__barchart--positive' style={{width: pieCharts.sentence.data.series[2].value+'%'}}/>
-            </div>
-            <h5 className='text-center text-uppercase'>Sentence Sentiment</h5>
-            <p className='text-center text-muted mb-0'>
-              <small>Negative / Neutral / Positive</small>
-            </p>
-            <p className='text-center'>
-              <span className='sentiment__negative--highlighted'>{pieCharts.sentence.data.series[0].value}%</span>
-              <span className='text-muted ml-2 mr-2'>/</span>
-              <span className='sentiment__neutral--highlighted'>{pieCharts.sentence.data.series[1].value}%</span>
-              <span className='text-muted ml-2 mr-2'>/</span>
-              <span className='sentiment__positive--highlighted'>{pieCharts.sentence.data.series[2].value}%</span>
-            </p>
+            <SentimentIndicator
+              label='Sentence sentiment'
+              {...pieCharts.sentence}
+            />
           </div>
           <div className='col-sm-8 pt-3'>
             <p className='font-weight-bold'>{sentimentText}</p>

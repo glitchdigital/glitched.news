@@ -1,7 +1,8 @@
 .sentiment {
-  --sentiment-negative-color: #ff5e5e;
+  --sentiment-negative-color: #f03030;
   --sentiment-neutral-color: #eee;
-  --sentiment-positive-color: #87ba72;
+  --sentiment-positive-color: #3ccf32;
+  --sentiment-bar-height: 1.5em;
 
   .sentiment__negative--highlighted,
   .sentiment__neutral--highlighted,
@@ -21,50 +22,78 @@
     color: var(--sentiment-positive-color);
   }
 
-  .sentiment__piechart {
-    height: 6em;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    .ct-chart {
-      height: 12em;
-      font-weight: bold;
-      text.ct-label {
-        fill: #fff !important;
-        font: 1.5em sans-serif;
+  .sentiment__chart {
+    .sentiment__needle {
+      position: absolute;
+      width: 5px;
+      height: 100px;
+      background: #666;
+      margin: auto;
+      left: 50%;
+      transform: rotate(0deg);
+      transform-origin: center bottom;
+      border-radius: 1em;
+      &:after {
+        background-color: #666;
+        border-radius: 1em;
+        position: absolute;
+        bottom: -0.6em;
+        left: -0.35em;      
+        height: 1em;
+        width: 1em;
+        display: block;
+        content: '';
       }
     }
-    .sentiment__piechart--negative {
-      stroke: var(--sentiment-negative-color);
-      fill: var(--sentiment-negative-color);
-    }
-    .sentiment__piechart--neutral {
-      stroke: var(--sentiment-neutral-color);
-      fill: var(--sentiment-neutral-color);
-    }
-    .sentiment__piechart--positive {
-      stroke: var(--sentiment-positive-color);
-      fill: var(--sentiment-positive-color);
-    }
-  }
-
-  .sentiment__barchart {
-    max-width: 12em;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-
-    .sentiment__barchart--negative {
-      background-color: var(--sentiment-negative-color);
-      height: 2em;
-    }
-
-    .sentiment__barchart--neutral {
-      background-color: var(--sentiment-neutral-color);
-      height: 2em;
+    .sentiment__piechart {
+      height: 6em;
+      margin-top: 1em;
+      margin-bottom: 2em;
+      .ct-chart {
+        height: 12em;
+        font-weight: bold;
+        text.ct-label {
+          fill: #fff !important;
+          font: 1.5em sans-serif;
+        }
+      }
+      .sentiment__piechart--negative {
+        stroke: var(--sentiment-negative-color);
+        fill: var(--sentiment-negative-color);
+      }
+      .sentiment__piechart--neutral {
+        stroke: var(--sentiment-neutral-color);
+        fill: var(--sentiment-neutral-color);
+      }
+      .sentiment__piechart--positive {
+        stroke: var(--sentiment-positive-color);
+        fill: var(--sentiment-positive-color);
+      }
     }
 
-    .sentiment__barchart--positive {
-      background-color: var(--sentiment-positive-color);
-      height: 2em;
+    .sentiment__barchart {
+      max-width: 12em;
+      margin-top: 1em;
+      margin-bottom: 1em;
+    
+      .sentiment__barchart--negative {
+        background-color: var(--sentiment-negative-color);
+        height: var(--sentiment-bar-height);
+        border-top-left-radius: 1em;
+        border-bottom-left-radius: 1em;
+      }
+
+      .sentiment__barchart--neutral {
+        background-color: var(--sentiment-neutral-color);
+        height: var(--sentiment-bar-height);
+      }
+
+      .sentiment__barchart--positive {
+        background-color: var(--sentiment-positive-color);
+        height: var(--sentiment-bar-height);
+        border-top-right-radius: 1em;
+        border-bottom-right-radius: 1em;
+      }
     }
   }
 }
