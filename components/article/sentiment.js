@@ -103,7 +103,7 @@ export default class extends React.Component {
         </p>
         <h4>Overall impression</h4>
         <p className='lead'>
-          Sentiment analysis of the headline and article text
+          Sentiment analysis of the headline and article text.
         </p>
         <div className='row'>
           <div className='col-sm-4'>
@@ -127,6 +127,9 @@ export default class extends React.Component {
         </div>
         <hr/>
         <h4>Sentence analysis</h4>
+        <p className='lead'>
+          Sentence analysis looks at the sentiment of each sentence in isolation.
+        </p>
         <div className='row mt-3'>
           <div className='col-sm-4'>
             <Indicator
@@ -135,15 +138,15 @@ export default class extends React.Component {
             />
           </div>
           <div className='col-sm-8 pt-3'>
-            <p className='lead'>
-              Sentence analysis looks at the sentiment of each sentence in isolation.
-            </p>
             <p className='font-weight-bold'>{sentimentText}</p>
             <ul>
               <li><strong>{pieCharts.sentence.data.series[0].value}%</strong> of sentences appear negative</li>
               <li><strong>{pieCharts.sentence.data.series[1].value}%</strong> of sentences appear neutral</li>
               <li><strong>{pieCharts.sentence.data.series[2].value}%</strong> of sentences appear positive</li>
             </ul>
+            <p className='text-muted'>
+              Results of sentiment analysis on each sentence in isolation may yield different results to overall analysis of the text of an article.
+            </p>
           </div>
         </div>
       </>

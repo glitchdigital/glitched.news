@@ -18,6 +18,8 @@ import Links from 'components/article/links'
 import Blacklists from 'components/article/blacklists'
 import StructuredData from 'components/article/structured-data'
 
+import StucturedDataSummary from 'components/structured-data/summary'
+
 const DEFAULT_SECTION = 'article-summary'
 // Server Side Events are an experimental feature for now
 // as it's proving slightly slower than just using REST
@@ -264,6 +266,8 @@ export default class extends React.Component {
                     { article.content && <Content content={article.content} /> } 
                     { article.blacklists && <Blacklists content={article.blacklists} /> }
                     { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
+                    { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
+                    { article['structured-data'] && article['structured-data'].testResults && <><hr/><h3>Structured data</h3><StucturedDataSummary testResults={article['structured-data'].testResults}/></> }
                   </section>
                   <section id="article-trust">
                     { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }

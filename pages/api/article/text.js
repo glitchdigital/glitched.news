@@ -40,8 +40,10 @@ module.exports = async (req, res) => {
       sentencesWithNumbers.push(sentence.replace(/\n/g, ' '))
   })
 
-  if (quotes.length > 0) {
-    trustIndicators.positive.push({ text: `${quotes.length} quotes cited in article` })
+  if (quotes.length === 1) {
+    trustIndicators.positive.push({ text: `One quotes cited in article` })
+  } else if (quotes.length > 1) {
+    trustIndicators.positive.push({ text: `Multiple quotes (${quotes.length}) cited in article` })
   } else {
     trustIndicators.negative.push({ text: `No quotes cited in article` })
   }
@@ -78,6 +80,10 @@ module.exports = async (req, res) => {
     score += 10
   } else if (articleText.length > 500) {
     score += 5
+  }
+
+  if (score > 50) {
+    trustIndicators.positive.push({text: "Article includes multiple quotes and data points"})
   }
 
   return send(res, 200, {

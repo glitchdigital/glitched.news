@@ -11,7 +11,6 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h3>About article</h3>
         <ul>
         { content.publisher && (
           <li>
@@ -20,7 +19,7 @@ export default class extends React.Component {
         ) }
         { content.author && content.author != '' && content.author != 0 && (
           <li>
-            Byline is credited to <strong>{content.author}</strong>
+            Byline is credited to <strong>{truncate(content.author, 128)}</strong>
           </li>
         ) }
         { content.date && (

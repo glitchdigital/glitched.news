@@ -30,7 +30,12 @@ module.exports = async (req, res) => {
 
   if (metadata) {
     if (hasNewsArticleMetadata(metadata)) {
-      trustIndicators.positive.push({text: "Page identifies as a news article"})
+      trustIndicators.positive.push({text: "Page identifies itself as a news article"})
+    } else {
+      trustIndicators.negative.push({text: "Page does not identify itself as a news article"})
+    }
+    if (isOpinionArticle(metadata)) {
+      trustIndicators.negative.push({text: "Page identifies as an opinion article"})
     }
   }
 
@@ -54,14 +59,16 @@ module.exports = async (req, res) => {
     trustIndicators.negative.push({text: `Unable to clearly identify headline`})
   }
 
+  const wordCount = articleText.split(' ').length;
   if (articleText) {
-    if (articleText.length < 500) {
-      trustIndicators.negative.push({text: `Main text of article is unusually short`})
+    if (wordCount < 500) {
+      trustIndicators.negative.push({text: `Article text is short`})
+    } else if (wordCount > 500) {
+      trustIndicators.positive.push({text: `Article length is at least 500 words`})
     }
   } else {
     trustIndicators.negative.push({text: `Unable to clearly identify main text of article`})
   }
-
 
   const headlineSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(structuredData.title)
   const textSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(articleText)
@@ -92,17 +99,19 @@ module.exports = async (req, res) => {
     url,
     ...structuredData,
     characterCount: articleText.length,
-    wordCount: articleText.split(' ').length,
+    wordCount,
     sentiment,
     trustIndicators,
   })
 }
 
 function hasNewsArticleMetadata(metadata) {
-  // @TODO Support checks for different type of news article metadata
   if (metadata.microdata) {
     if (metadata.microdata.Article ||
         metadata.microdata.NewsArticle ||
+        metadata.microdata.AnalysisNewsArticle ||
+        metadata.microdata.BackgroundNewsArticle ||
+        metadata.microdata.ReviewNewsArticle ||
         metadata.microdata.ReportageNewsArticle) {
         return true
     }
@@ -110,8 +119,25 @@ function hasNewsArticleMetadata(metadata) {
   if (metadata.jsonld) {
     if (metadata.jsonld.Article ||
         metadata.jsonld.NewsArticle ||
+        metadata.jsonld.AnalysisNewsArticle ||
+        metadata.jsonld.BackgroundNewsArticle ||
+        metadata.jsonld.ReviewNewsArticle ||
         metadata.jsonld.ReportageNewsArticle) {
           return true
+    }
+  }
+  return false
+}
+
+function isOpinionArticle(metadata) {
+  if (metadata.microdata) {
+    if (metadata.microdata.OpinionNewsArticle) {
+      return true
+    }
+  }
+  if (metadata.jsonld) {
+    if (metadata.jsonld.OpinionNewsArticle) {
+      return true
     }
   }
   return false
