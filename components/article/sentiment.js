@@ -1,7 +1,7 @@
 import React from 'react'
 
 import cloneObject from 'lib/clone-object'
-import SentimentIndicator from 'components/indicator/gauge'
+import Indicator from 'components/indicator/gauge'
 
 export default class extends React.Component {
   constructor(props) {
@@ -34,6 +34,7 @@ export default class extends React.Component {
       }
     }
   }
+  
   render() {
     const { sentiment } = this.props
 
@@ -103,19 +104,19 @@ export default class extends React.Component {
         </p>
         <div className='row'>
           <div className='col-sm-4'>
-            <SentimentIndicator
+            <Indicator
               label='Headline'
               {...pieCharts.headline}
             />
           </div>
           <div className='col-sm-4'>
-            <SentimentIndicator
+            <Indicator
               label='Article text'
               {...pieCharts.text}
             />
           </div>
           <div className='col-sm-4'>
-            <SentimentIndicator
+            <Indicator
               label='Headline and text'
               {...pieCharts.overall}
             />
@@ -125,7 +126,7 @@ export default class extends React.Component {
         <h4>Sentence analysis</h4>
         <div className='row mt-3'>
           <div className='col-sm-4'>
-            <SentimentIndicator
+            <Indicator
               label='Sentence sentiment'
               {...pieCharts.sentence}
             />

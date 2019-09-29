@@ -3,6 +3,7 @@
 .indicator {
   --indicator-negative-color: #f03030;
   --indicator-neutral-color: #eee;
+  --indicator-warning-color: orange;
   --indicator-positive-color: #3ccf32;
   --indicator-needle-color: #666;
   --indicator-bar-height: 1.5em;
@@ -42,7 +43,7 @@
         border-radius: 1em;
         position: absolute;
         bottom: -0.6em;
-        left: -0.35em;      
+        left: -0.35em;
         height: 1em;
         width: 1em;
         display: block;
@@ -73,6 +74,10 @@
       .indicator__piechart--neutral {
         stroke: var(--indicator-neutral-color);
         fill: var(--indicator-neutral-color);
+      }
+      .indicator__piechart--warning {
+        stroke: var(--indicator-warning-color);
+        fill: var(--indicator-warning-color);
       }
       .indicator__piechart--positive {
         stroke: var(--indicator-positive-color);
