@@ -75,9 +75,25 @@ export default class extends React.Component {
           </div>
         </div>
         <hr/>
-        <p className='lead'>Structured data found:</p>
-        <ul>
-          {Object.keys(testResults.groups).map(group => <li><h5>{group}</h5></li>)}
+        <h4>Structured data summary</h4>
+        <ul className='mt-4'>
+          {Object.keys(testResults.groups).map(group => <li>
+            <h5>
+              {group}
+              {testResults.groups[group].failed.length > 0 &&
+                <small className='badge badge-danger ml-1'>
+                  { testResults.groups[group].failed.length}
+                  { testResults.groups[group].failed.length === 1 ? ' error' : ' errors'}
+                </small>
+              }
+              {testResults.groups[group].warnings.length > 0 &&
+                <small className='badge badge-warning ml-1'>
+                  { testResults.groups[group].warnings.length}
+                  { testResults.groups[group].warnings.length === 1 ? ' warning' : ' warnings'}
+                </small>
+              }
+            </h5> 
+          </li>)}
         </ul>
         <hr/>
         <table className='table w-100'>

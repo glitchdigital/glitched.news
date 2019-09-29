@@ -98,9 +98,12 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Sentiment analysis</h3>
+        <p className='text-muted'>
+          Sentiment analysis for English language articles.
+        </p>
         <h4>Overall impression</h4>
         <p className='lead'>
-          Sentiment analysis of the headline and article text for English language articles.
+          Sentiment analysis of the headline and article text
         </p>
         <div className='row'>
           <div className='col-sm-4'>
@@ -137,9 +140,9 @@ export default class extends React.Component {
             </p>
             <p className='font-weight-bold'>{sentimentText}</p>
             <ul>
-              <li>{pieCharts.sentence.data.series[0].value}% of sentences appear negative</li>
-              <li>{pieCharts.sentence.data.series[1].value}% of sentences appear neutral</li>
-              <li>{pieCharts.sentence.data.series[2].value}% of sentences appear positive</li>
+              <li><strong>{pieCharts.sentence.data.series[0].value}%</strong> of sentences appear negative</li>
+              <li><strong>{pieCharts.sentence.data.series[1].value}%</strong> of sentences appear neutral</li>
+              <li><strong>{pieCharts.sentence.data.series[2].value}%</strong> of sentences appear positive</li>
             </ul>
           </div>
         </div>
