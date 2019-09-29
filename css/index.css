@@ -46,8 +46,10 @@ footer {
   text-align: center;
 }
 
-
 ul {
   list-style-type: square;
 }
 
+table {
+  font-size: 0.9em;
+}

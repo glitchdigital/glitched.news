@@ -1,6 +1,8 @@
 import React from 'react'
 
-import StucturedDataSummary from 'components/structured-data/summary'
+import StructuredDataSummary from 'components/structured-data/summary'
+import StructuredDataErrorsAndWarnings from 'components/structured-data/errors-and-warnings'
+import TestResult from 'components/structured-data/test-result'
 
 export default class extends React.Component {
   render() {
@@ -13,30 +15,15 @@ export default class extends React.Component {
       <>
         <hr/>
         <h3>Structured data</h3>
-          <StucturedDataSummary testResults={testResults}/>
+        <StructuredDataSummary testResults={testResults}/>
         <hr/>
-        <h4>Structured data summary</h4>
-        <ul className='mt-4'>
-          {Object.keys(testResults.groups).map(group => <li>
-            <h5>
-              {group}
-              {testResults.groups[group].failed.length > 0 &&
-                <small className='badge badge-danger ml-1'>
-                  { testResults.groups[group].failed.length}
-                  { testResults.groups[group].failed.length === 1 ? ' error' : ' errors'}
-                </small>
-              }
-              {testResults.groups[group].warnings.length > 0 &&
-                <small className='badge badge-warning ml-1'>
-                  { testResults.groups[group].warnings.length}
-                  { testResults.groups[group].warnings.length === 1 ? ' warning' : ' warnings'}
-                </small>
-              }
-            </h5> 
-          </li>)}
-        </ul>
+        <StructuredDataErrorsAndWarnings testResults={testResults}/>
         <hr/>
-        <table className='table w-100'>
+        <h4>Detailed information</h4>
+        <p className='lead'>
+          Detailed test results for review and debugging.
+        </p>
+        <table className='table table-sm w-100'>
           <tbody>
             {Object.keys(testResults.groups).map(group => {
               return (
@@ -52,36 +39,6 @@ export default class extends React.Component {
           </tbody>
         </table>
       </>
-    )
-  }
-}
-
-class TestResult extends React.Component {
-  render() {
-    const { group, test, description, value, passed, warning, info } = this.props
-    let icon = '✕'
-    let className = 'structured-data__test--fail'
-    if (passed) {
-      if (info) {
-        icon = 'ⓘ'
-        className = 'structured-data__test--info'
-      } else {
-        icon = '✓'
-        className = 'structured-data__test--pass'
-      }
-    } else if (warning) {
-      icon = '⚠'
-      className = 'structured-data__test--warn'
-    }
-    //structured-data__test-summary
-    return(
-      <tr className={className}>
-        <td className='structured-data__test-icon font-weight-bold text-right'>{icon}</td>
-        <td className='structured-data__test-description font-weight-bold'>{description || test}</td>
-        <td className='structured-data__test-value text-muted'>
-          {value && String(value) && String(value) !== '[object Object]' && String(value) }
-        </td>
-      </tr>
     )
   }
 }

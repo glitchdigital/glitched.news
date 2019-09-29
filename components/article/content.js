@@ -32,9 +32,6 @@ export default class extends React.Component {
             Copyright <strong>{truncate(content.copyright, 128)}</strong>
           </li>
         ) }
-          <li>
-          <strong>{content.wordCount}</strong> words ({content.characterCount} characters)
-          </li>
         </ul>
       </>
     )

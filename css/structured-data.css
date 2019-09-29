@@ -1,8 +1,8 @@
 :root {
-  --fail-color: #f03030;
+  --fail-color: var(--danger-color);
   --info-color: #666;
-  --warning-color: orange;
-  --pass-color: #3ccf32;
+  --warning-color: var(--warning-color);
+  --pass-color: var(--success-color);
 }
 
 .structured-data__test--pass {
