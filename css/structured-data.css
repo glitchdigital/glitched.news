@@ -1,21 +1,34 @@
-.structured-data__test--pass .structured-data__test-icon {
-  color: #87ba72;
+:root {
+  --fail-color: #f03030;
+  --info-color: #666;
+  --warning-color: orange;
+  --pass-color: #3ccf32;
 }
 
-.structured-data__test--info .structured-data__test-icon {
-  color: #3682c9;
+.structured-data__test--pass {
+  color: var(--pass-color);
+  .structured-data__test-icon {
+    color: var(--pass-color);
+  }
 }
 
-.structured-data__test--warn .structured-data__test-icon {
-  color:#d4b148;
+.structured-data__test--info {
+  color: var(--info-color);
+  .structured-data__test-icon {
+    color: var(--info-color);
+  }
 }
 
-.structured-data__test--fail .structured-data__test-icon {
-  color: #ff5e5e;
+.structured-data__test--warn {
+  color: var(--warning-color);
+  .structured-data__test-icon {
+   color: var(--warning-color);
+  }
 }
 
-.structured-data__test-icon {
-  display: inline-block;
-  width: 2em;
-  font-weight: 800;
+.structured-data__test--fail {
+  color: var(--fail-color);
+  .structured-data__test-icon {
+    color: var(--fail-color);
+  }
 }

@@ -44,12 +44,13 @@ export default class extends React.Component {
     const pieChart = cloneObject(this.pieChartDefaults)
 
     const total = testResults.passed + testResults.warnings + testResults.failed
-    pieChart.data.series[0].value = Math.round(testResults.passed / total * 100)
+    pieChart.data.series[0].value = Math.round(testResults.failed / total * 100)
     pieChart.data.series[1].value = 100 - (Math.round(testResults.passed / total * 100) + Math.round(testResults.failed / total * 100))
-    pieChart.data.series[2].value = Math.round(testResults.failed / total * 100)
-    pieChart.data.labels[0] = testResults.passed
-    pieChart.data.labels[1] = testResults.warnings
-    pieChart.data.labels[2] = testResults.failed
+    pieChart.data.series[2].value = Math.round(testResults.passed / total * 100)
+    
+    if (testResults.failed > 0) pieChart.data.labels[0] = testResults.failed
+    if (testResults.warnings > 0) pieChart.data.labels[1] = testResults.warnings
+    if (testResults.passed > 0) pieChart.data.labels[2] = testResults.passed    
 
     return (
       <>
@@ -57,7 +58,7 @@ export default class extends React.Component {
         <h3>Structured data</h3>
         <div className='row'>
           <div className='col-sm-4'>
-            <Indicator label='Structured data test' {...pieChart} />
+            <Indicator label='Structured data test' {...pieChart} description='Failed / Warnings / Passed'/>
           </div>
           <div className='col-sm-8'>
             <p className='lead'>Structured data refers to metadata found on web pages. </p>
@@ -68,31 +69,32 @@ export default class extends React.Component {
             <p>Pages with good structured data are more likely to be read.</p>
             <ul>
               <li><strong>{testResults.passed}</strong> tests passed</li>
-              <li><strong>{testResults.warnings}</strong> warnings</li>
               <li><strong>{testResults.failed}</strong> tests failed</li>
+              <li><strong>{testResults.warnings}</strong> warnings</li>
             </ul>
           </div>
         </div>
         <hr/>
-        <h4>Structured data test results</h4>
+        <p className='lead'>Structured data found:</p>
         <ul>
-        {Object.keys(testResults.groups).map(group => {
-          if (group === 'Metatags')
-            return
-
-          return (
-            <li key={`test-group-${group}`} className='mt-3'>
-              <h5>{group}</h5>
-              <ul style={{listStyle: 'none'}}>
-              { testResults.groups[group].passed.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
-              { /* testResults.groups[group].info.map(test => <TestResult key={JSON.stringify(test)} {...test} />) */ }
-              { testResults.groups[group].warnings.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
-              { testResults.groups[group].failed.map(test => <TestResult key={JSON.stringify(test)} {...test} />) }
-              </ul>
-            </li>
-          )
-        })}
+          {Object.keys(testResults.groups).map(group => <li><h5>{group}</h5></li>)}
         </ul>
+        <hr/>
+        <table className='table w-100'>
+          <tbody>
+            {Object.keys(testResults.groups).map(group => {
+              return (
+                <>
+                  <tr><td colSpan='3' className='font-weight-bold bg-light text-muted'>{group}</td></tr>
+                  { testResults.groups[group].passed.map(test => <TestResult group={group} key={JSON.stringify(test)} {...test} />) }
+                  { testResults.groups[group].info.map(test => <TestResult group={group} key={JSON.stringify(test)} {...test} />) }
+                  { testResults.groups[group].warnings.map(test => <TestResult group={group} key={JSON.stringify(test)} {...test} />) }
+                  { testResults.groups[group].failed.map(test => <TestResult group={group} key={JSON.stringify(test)} {...test} />) }
+                </>
+              )
+            })}
+          </tbody>
+        </table>
       </>
     )
   }
@@ -100,7 +102,7 @@ export default class extends React.Component {
 
 class TestResult extends React.Component {
   render() {
-    const { test, description, value, passed, warning, info } = this.props
+    const { group, test, description, value, passed, warning, info } = this.props
     let icon = '✕'
     let className = 'structured-data__test--fail'
     if (passed) {
@@ -115,20 +117,15 @@ class TestResult extends React.Component {
       icon = '⚠'
       className = 'structured-data__test--warn'
     }
+    //structured-data__test-summary
     return(
-      <li className={className}>
-        <span className='structured-data__test-summary'>
-          <span className='structured-data__test-icon'>{icon} </span>
-          <span className='structured-data__test-description'>{description || test}</span>
-          <br/>
-          {value && String(value) && String(value) !== '[object Object]' && <span className='text-muted structured-data__test-value'>
-            <div className='row'>
-              <div className='col-sm-1 d-none d-sm-block text-right border-right'>└</div>
-              <div className='col-sm-11'><small>{String(value)}</small></div>
-            </div>
-          </span> }
-        </span>
-      </li>
+      <tr className={className}>
+        <td className='structured-data__test-icon font-weight-bold text-right'>{icon}</td>
+        <td className='structured-data__test-description font-weight-bold'>{description || test}</td>
+        <td className='structured-data__test-value text-muted'>
+          {value && String(value) && String(value) !== '[object Object]' && String(value) }
+        </td>
+      </tr>
     )
   }
 }

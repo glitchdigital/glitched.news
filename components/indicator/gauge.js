@@ -1,6 +1,9 @@
 import ChartistGraph from 'react-chartist'
 
-export default ({label, data, options}) => {
+export default ({label, data, options, description}) => {
+
+  if (!description) description = 'Negative / Neutral / Positive'
+
   const neg = data.series[0].value
   const neu = data.series[1].value
   const pos = data.series[2].value
@@ -56,7 +59,7 @@ export default ({label, data, options}) => {
         </div>
         <h5 className='text-center text-uppercase'>{label}</h5>
         <p className='text-center text-muted mb-0'>
-          <small>Negative / Neutral / Positive</small>
+          <small>{description}</small>
         </p>
         <p className='text-center'>
           <span className='indicator__negative--highlighted'>{neg}%</span>
