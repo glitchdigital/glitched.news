@@ -5,15 +5,10 @@ export default ({label, neg: negInput, pos: posInput}) => {
   const neg = Math.round((negInput * 100) / total)
   const pos = Math.round((posInput * 100) / total)
 
-  const options = {
-    donut: true,
-    donutWidth: 60,
-    donutSolid: true,  
-    total: 100
-  }
+  const options = {}
 
   const data = {
-    labels: [ `${pos}%`, `${neg}%`],
+    labels: [ ' ', ' ' ],
     series: [{
         value: pos,
         name: 'Pos',
@@ -34,12 +29,12 @@ export default ({label, neg: negInput, pos: posInput}) => {
         </div>
         <h5 className='text-center text-uppercase'>{label}</h5>
         <p className='text-center text-muted mb-0'>
-          <small>Negative / Positive</small>
+          <small>Positive / Negative</small>
         </p>
         <p className='text-center'>
-          <span className='indicator__negative--highlighted'>{neg}%</span>
-          <span className='text-muted ml-2 mr-2'>/</span>
           <span className='indicator__positive--highlighted'>{pos}%</span>
+          <span className='text-muted ml-2 mr-2'>/</span>
+          <span className='indicator__negative--highlighted'>{neg}%</span>
         </p>
       </div>
     </div>

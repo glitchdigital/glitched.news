@@ -1,10 +1,10 @@
 @import "../node_modules/chartist/dist/chartist.css";
 
 .indicator {
-  --indicator-negative-color: #f03030;
+  --indicator-negative-color: var(--danger-color);
   --indicator-neutral-color: #eee;
-  --indicator-warning-color: orange;
-  --indicator-positive-color: #3ccf32;
+  --indicator-warning-color: var(--warning-color);
+  --indicator-positive-color: var(--success-color);
   --indicator-needle-color: #666;
   --indicator-bar-height: 1.5em;
 
@@ -29,7 +29,7 @@
   .indicator__chart {
     .indicator__needle {
       position: absolute;
-      width: 5px;
+      width: 4px;
       height: 100px;
       background-color: var(--indicator-needle-color);
       margin: auto;
@@ -37,9 +37,10 @@
       transform: rotate(0deg);
       transform-origin: center bottom;
       border-radius: 1em;
-      outline: 4px solid rgba(255,255,255,0.8);
+      outline: 2px solid rgba(255,255,255,0.8);
       &:after {
-        background-color: var(--indicator-needle-color);
+        background-color: #fff;
+        border-color: 2px solid var(--indicator-needle-color);
         border-radius: 1em;
         position: absolute;
         bottom: -0.6em;
@@ -60,7 +61,7 @@
         text {
           &.ct-label {
             fill: #fff !important;
-            font-size: 1em;
+            font-size: 0.8em;
           }
         }
       }

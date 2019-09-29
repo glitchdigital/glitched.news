@@ -5,6 +5,27 @@
 @import "sidebar";
 @import "structured-data";
 
+:root {
+  --danger-color: rgba(226,43,40);
+  --warning-color: rgba(249,175,12);
+  --success-color: rgba(45,155,65);
+}
+
+.badge-danger {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+.badge-warning {
+  background-color: var(--warning-color);
+  color: #fff;
+}
+
+.badge-success {
+  background-color: var(--success-color);
+  color: #fff;
+}
+
 main {
   margin-top: 57px;
   padding-top: .5em;
@@ -25,18 +46,8 @@ footer {
   text-align: center;
 }
 
-ol, ul {
-  padding-left: 20px;
-}
 
 ul {
   list-style-type: square;
 }
 
-li {
-  line-height: 1.8;
-}
-
-th, td {
-  padding: 5px;
-}
