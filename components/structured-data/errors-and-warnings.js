@@ -38,7 +38,7 @@ export default ({testResults}) => (
 
       return (
         <>
-          <h5 className=''>{group}</h5>
+          <h5 className=''>{group.replace(/^Google > /, '').replace(/ > (.*)$/, '')}</h5>
           <ul className='list-unstyled mb-3 pl-3'>
             { testResults.groups[group].warnings.map(test => <TestResult group={group} key={JSON.stringify(test)} {...test} />) }
             { testResults.groups[group].failed.map(test => <TestResult group={group} key={JSON.stringify(test)} {...test} />) }
