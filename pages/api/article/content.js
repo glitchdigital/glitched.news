@@ -30,7 +30,10 @@ module.exports = async (req, res) => {
 
   if (metadata) {
     if (hasNewsArticleMetadata(metadata)) {
-      trustIndicators.positive.push({text: "Page identifies itself as a news article"})
+      trustIndicators.positive.push({
+        text: "Page identifies itself as a news article",
+        description: ""
+      })
     } else {
       trustIndicators.negative.push({text: "Page does not identify itself as a news article"})
     }

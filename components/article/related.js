@@ -13,12 +13,12 @@ export default class extends React.Component {
         <hr/>
         <h3>Related articles</h3>
         <p className="lead">
-          Found <strong>{related.domains.length}</strong> other sites with articles that might be related.
+          Found <span className='badge badge-pill badge-info'>{related.domains.length}</span> other sites with articles that might be related.
         </p>
         { related.articles.length > 0 && (
           <>
             <p>
-            Found <strong>{related.articles.length}</strong> articles that might be related.
+            Found <span className='badge badge-pill badge-info'>{related.articles.length}</span> articles that might be related.
             </p>
             <ul>
             {related.articles.map(article => (

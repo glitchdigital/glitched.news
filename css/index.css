@@ -8,8 +8,24 @@
 :root {
   --danger-color: rgba(226,43,40);
   --warning-color: rgba(249,175,12);
-  --success-color: rgba(45,155,65);
+  --success-color: rgb(40,167,69);
   --info-color: rgb(77, 139, 255);
+}
+
+.text-danger {
+  color: var(--danger-color) !important;
+}
+
+.text-warning {
+  color: var(--warning-color) !important;
+}
+
+.text-success {
+  color: var(--success-color) !important;
+}
+
+.text-info {
+  color: var(--info-color) !important;
 }
 
 .badge-danger {
@@ -58,4 +74,27 @@ ul {
 
 table {
   font-size: 0.9em;
+}
+
+.lead {
+  font-size: 1.25em;
+}
+
+h2 {
+  font-size: 3em;
+  font-weight: 300;
+}
+
+h3 {
+  font-weight: 300;
+  font-size: 2.5em;
+  line-height: 1.75em;
+  text-transform: capitalize;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: 1.5em;
+  line-height: 1.25em;
+  text-transform: capitalize;
 }

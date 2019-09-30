@@ -12,17 +12,18 @@ export default class extends React.Component {
         <hr/>
         <h3>Topics &amp; keywords</h3>
         <p className='lead'>
-          Found <strong>{topics.keywords.length} keywords</strong> and identified <strong>{topics.topics.length} topics</strong> that may be related to the article.
+          Found <span className='badge badge-pill badge-info'>{topics.keywords.length} keywords</span> and identified <span className='badge badge-pill badge-info'>{topics.topics.length} topics</span> that may be related to the article.
         </p>
         <div className='row'>
           <div className='col-md-6'>
             <h4>Keywords</h4>
+            <hr/>
             {(!topics.keywords || topics.keywords.length === 0) && <p className='text-muted'>No keywords found.</p>}
             <ul className='list-unstyled'>
             {topics.keywords.map((keyword, i) => (
               <li key={`keyword-${i}`}>
                 <p>
-                  <span className='lead'><span className='badge badge-pill badge-primary'>{keyword.name}</span></span> <strong>{keyword.count || 1}</strong> mentions of this keyword
+                  <span className='lead'><span className='badge badge-pill badge-primary mr-1'>{keyword.name}</span></span> <strong>{keyword.count || 1}</strong> mentions of this keyword
                   {keyword.url && (
                     <>
                       {' '}<br/><small><a target='_blank' href={keyword.url} rel='noreferrer'>{keyword.name} on Wikipedia</a></small>
@@ -35,12 +36,13 @@ export default class extends React.Component {
           </div>
           <div className='col-md-6'>
             <h4>Topics</h4>
+            <hr/>
             {(!topics.topics || topics.topics.length === 0) && <p className='text-muted'>No topics identified.</p>}
             <ul className='list-unstyled'>
             {topics.topics.map((topic, i) => (
               <li key={`topic-${i}`}>
                 <p>
-                  <span className='lead'><span className='badge badge-pill badge-primary'>{topic.name}</span></span> <strong>{topic.count || 1}</strong> possible references to this topic
+                  <span className='lead'><span className='badge badge-pill badge-primary mr-1'>{topic.name}</span></span> <strong>{topic.count || 1}</strong> possible references to this topic
                   {topic.url && (
                     <>
                       {' '}<br/><small><a target='_blank' href={topic.url} rel='noreferrer'>{topic.name} on Wikipedia</a></small>

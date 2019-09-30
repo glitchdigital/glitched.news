@@ -60,12 +60,7 @@ export default class extends React.Component {
             Structured data is used by search engines and social media sites to help machines 'read' articles,
             which allows people to more easily discover and share them.
           </p>
-          <p>Pages with good structured data are more likely to be read.</p>
-          <ul>
-            <li><strong>{testResults.passed}</strong> tests passed</li>
-            <li><strong>{testResults.failed}</strong> tests failed</li>
-            <li><strong>{testResults.warnings}</strong> warnings</li>
-          </ul>
+          <p>Pages with good structured data are more likely to be read and shared.</p>
         </div>
       </div>
     )

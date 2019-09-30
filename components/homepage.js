@@ -19,7 +19,7 @@ export default class extends React.Component {
         <hr/>
         <h3>Homepage</h3>
         <p className='lead'>
-          Found <strong>{homepage.links.length || 0}</strong> links on the homepage to <strong>{Object.keys(linksByDomain).length}</strong> domains.
+          Found <span className='badge badge-pill badge-info'>{homepage.links.length || 0}</span> links on the homepage to <span className='badge badge-pill badge-info'>{Object.keys(linksByDomain).length}</span> domains.
         </p>
         { homepage.links.length > 0 && 
           <>
@@ -27,7 +27,7 @@ export default class extends React.Component {
             <ul>
               {Object.keys(linksByDomain).map((domain, i) => (
                 <li key={`homepage-link-domain-${i}-${domain}`}>
-                  <strong>{domain}</strong> ({linksByDomain[domain].length})
+                  <strong>{domain}</strong> <span className='badge badge-pill badge-info'>{linksByDomain[domain].length}</span>
                 </li>
               ))}
             </ul>
