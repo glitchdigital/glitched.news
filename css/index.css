@@ -9,6 +9,7 @@
   --danger-color: rgba(226,43,40);
   --warning-color: rgba(249,175,12);
   --success-color: rgba(45,155,65);
+  --info-color: rgb(77, 139, 255);
 }
 
 .badge-danger {
@@ -23,6 +24,11 @@
 
 .badge-success {
   background-color: var(--success-color);
+  color: #fff;
+}
+
+.badge-info {
+  background-color: var(--info-color);
   color: #fff;
 }
 

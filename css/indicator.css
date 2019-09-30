@@ -39,8 +39,7 @@
       border-radius: 1em;
       outline: 2px solid rgba(255,255,255,0.8);
       &:after {
-        background-color: #fff;
-        border-color: 2px solid var(--indicator-needle-color);
+        background-color: var(--indicator-needle-color);
         border-radius: 1em;
         position: absolute;
         bottom: -0.6em;

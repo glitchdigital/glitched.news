@@ -1,24 +1,28 @@
-export default ({ group, test, description, value, passed, warning, info }) => {
+export default ({ test, description, value, passed, warning, info }) => {
   let icon = '✕'
-  let className = 'structured-data__test--fail'
+  let className = 'badge badge-pill badge-danger'
 
   if (passed) {
     if (info) {
       icon = 'ⓘ'
-      className = 'structured-data__test--info'
+      className = 'badge badge-pill badge-info'
     } else {
       icon = '✓'
-      className = 'structured-data__test--pass'
+      className = 'badge badge-pill badge-success'
     }
   } else if (warning) {
     icon = '⚠'
-    className = 'structured-data__test--warn'
+    className = ' badge badge-pill badge-warning'
   }
 
   return(
-    <tr className={className}>
-      <td className='structured-data__test-icon font-weight-bold text-right'>{icon}</td>
-      <td className='structured-data__test-description font-weight-bold'>{description || test}</td>
+    <tr>
+      <td className='structured-data__test-icon font-weight-bold text-right'>
+        <span className={className}>
+          <span className='structured-data__test-icon font-weight-bold text-right'>{icon}</span>
+        </span>
+      </td>
+      <td className='structured-data__test-descriptio'>{description || test}</td>
       <td className='structured-data__test-value text-muted text-break'>
         {value && String(value) && String(value) !== '[object Object]' && String(value) }
       </td>
