@@ -78,12 +78,12 @@ export default class extends React.Component {
         </div>
         <main className="container-fluid pt-0 mt-5 mb-5">
           <div className="row">
-            <div className="col-sm-12 col-md-9 col-lg-6 m-auto">
-              <h3 className="text-primary text-center mt-5 mb-5">
+            <div className="col-xs-12 col-sm-7 col-md-6 col-lg-12 m-auto">
+              <p className="text-primary text-center lead mt-5 mb-5">
                 <Trans id="about_prototype">
                   A prototype research tool that combines article metadata and automated analysis
                 </Trans>
-              </h3>
+              </p>
               {/*
               { trending && trending.articles && trending.articles.length > 0 &&
                 <div id="trending" className="mb-5 border rounded p-3">
