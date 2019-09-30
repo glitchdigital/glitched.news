@@ -59,8 +59,7 @@
         font-weight: bold;
         text {
           &.ct-label {
-            fill: #fff !important;
-            font-size: 0.8em;
+            display: none;
           }
         }
       }

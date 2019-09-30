@@ -8,7 +8,7 @@ export default ({label, neg: negInput, pos: posInput}) => {
   const options = {}
 
   const data = {
-    labels: [ ' ', ' ' ],
+    labels: [ posInput, negInput ],
     series: [{
         value: pos,
         name: 'Pos',
@@ -32,9 +32,9 @@ export default ({label, neg: negInput, pos: posInput}) => {
           <small>Positive / Negative</small>
         </p>
         <p className='text-center'>
-          <span className='indicator__positive--highlighted'>{pos}%</span>
+          <span className='indicator__positive--highlighted'>{data.labels[0]}</span>
           <span className='text-muted ml-2 mr-2'>/</span>
-          <span className='indicator__negative--highlighted'>{neg}%</span>
+          <span className='indicator__negative--highlighted'>{data.labels[1]}</span>
         </p>
       </div>
     </div>

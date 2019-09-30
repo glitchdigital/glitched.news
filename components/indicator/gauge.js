@@ -62,11 +62,11 @@ export default ({label, data, options, description}) => {
           <small>{description}</small>
         </p>
         <p className='text-center'>
-          <span className='indicator__negative--highlighted'>{neg}%</span>
+          <span className='indicator__negative--highlighted'>{data.labels[0]}</span>
           <span className='text-muted ml-2 mr-2'>/</span>
-          <span className='indicator__neutral--highlighted'>{neu}%</span>
+          <span className='indicator__neutral--highlighted'>{data.labels[1]}</span>
           <span className='text-muted ml-2 mr-2'>/</span>
-          <span className='indicator__positive--highlighted'>{pos}%</span>
+          <span className='indicator__positive--highlighted'>{data.labels[2]}</span>
         </p>
       </div>
     </div>

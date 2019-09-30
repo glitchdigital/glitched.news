@@ -78,19 +78,24 @@ export default class extends React.Component {
     ['headline', 'text', 'overall'].forEach(chart => {
       if (sentiment[chart]) {
         pieCharts[chart].options.total = (Math.round(sentiment[chart].neg * 100) + Math.round(sentiment[chart].neu * 100) + Math.round(sentiment[chart].pos * 100)) * 2
+        
         pieCharts[chart].data.series[0].value = Math.round(sentiment[chart].neg * 100)
         pieCharts[chart].data.series[1].value = 100 - (Math.round(sentiment[chart].neg * 100) + Math.round(sentiment[chart].pos * 100))
         pieCharts[chart].data.series[2].value = Math.round(sentiment[chart].pos * 100)
 
-        if (pieCharts[chart].data.series[0].value > 10)
-          pieCharts[chart].data.labels[0] = `${pieCharts[chart].data.series[0].value}%`
-        if (pieCharts[chart].data.series[2].value > 10)
-          pieCharts[chart].data.labels[2] = `${pieCharts[chart].data.series[2].value}%`
+        pieCharts[chart].data.labels = [
+          `${pieCharts[chart].data.series[0].value}%`,
+          `${pieCharts[chart].data.series[1].value}%`,
+          `${pieCharts[chart].data.series[2].value}%` 
+        ]
       } else {
         pieCharts[chart].options.total = 200
+
         pieCharts[chart].data.series[0].value = 0
         pieCharts[chart].data.series[1].value = 100
         pieCharts[chart].data.series[2].value = 0
+
+        pieCharts[chart].data.labels = [ 0, 100, 0 ]
       }
     })
 

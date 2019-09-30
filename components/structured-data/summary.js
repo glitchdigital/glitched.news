@@ -43,6 +43,12 @@ export default class extends React.Component {
     pieChart.data.series[1].value = 100 - (Math.round(testResults.passed / total * 100) + Math.round(testResults.failed / total * 100))
     pieChart.data.series[2].value = Math.round(testResults.passed / total * 100)
     
+    pieChart.data.labels = [
+      `${pieChart.data.series[0].value}`,
+      `${pieChart.data.series[1].value}`,
+      `${pieChart.data.series[2].value}`
+    ]
+
     return (
       <div className='row'>
         <div className='col-sm-4'>
