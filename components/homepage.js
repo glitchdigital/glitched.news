@@ -17,13 +17,13 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2>Homepage</h2>
+        <h2 className='text-lowercase'>{homepage.domain}</h2>
         <p className='lead'>
-          Found <span className='badge badge-pill badge-info'>{homepage.links.length || 0} links</span> on the homepage to <span className='badge badge-pill badge-info'>{Object.keys(linksByDomain).length} domains</span>.
+          <span className='badge badge-pill badge-info'>{homepage.links.length || 0} links</span> on the homepage to <span className='badge badge-pill badge-info'>{Object.keys(linksByDomain).length} domains</span>
         </p>
         { homepage.links.length > 0 && 
           <>
-            <h3>Links by domain</h3>
+            <h4>Links by domain</h4>
             <ul className='text-truncate'>
               {Object.keys(linksByDomain).map((domain, i) => (
                 <li key={`homepage-link-domain-${i}-${domain}`}>
@@ -34,7 +34,7 @@ export default class extends React.Component {
             <hr/>
             {Object.keys(linksByDomain).map(domain => (
               <>
-                <h4>{domain}</h4>
+                <h5>{domain} <span className='badge badge-pill badge-info'>{linksByDomain[domain].length}</span></h5>
                 <ul className='text-truncate'>
                 {linksByDomain[domain].map((link, i) => (
                   <li key={`homepage-link-url-${i}-${link.url}`}>
