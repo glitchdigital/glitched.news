@@ -267,12 +267,13 @@ export default class extends React.Component {
                     { article.content && <Content content={article.content} /> } 
                     { article.blacklists && <Blacklists content={article.blacklists} /> }
                     { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
+                    <hr/>
                     { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <TrustSummary trustIndicators={trustIndicators} /> }
                     { article['structured-data'] && article['structured-data'].testResults && <>
                       <hr/>
                       <StructuredDataSummary testResults={article['structured-data'].testResults}/>
                       <hr/>
-                      <StructuredDataErrorsAndWarnings testResults={article['structured-data'].testResults}/>                      
+                      <StructuredDataErrorsAndWarnings testResults={article['structured-data'].testResults}/>
                     </> }
                   </section>
                   <section id="article-trust">

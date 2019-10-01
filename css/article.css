@@ -1,22 +1,3 @@
-.article__headline {
-  a:link,
-  a:visited,
-  a:hover,
-  a:active {
-    color: #444;
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 600;
-  }
-  
-  img {
-    display: none;
-  }
-}
-
 @media (min-width: 768px) {
   .article {
     .article__sections {

@@ -57,7 +57,7 @@ export default ({label, data, options, description}) => {
           <div className='d-inline-block indicator__barchart--neutral' style={{width: `${neu}%`}}/>
           {pos > 0 && <div className='d-inline-block indicator__barchart--positive' style={{width: `${pos}%`}}/>}
         </div>
-        <h5 className='text-center text-uppercase'>{label}</h5>
+        <h6 className='text-center text-uppercase'>{label}</h6>
         <p className='text-center text-muted mb-0'>
           <small>{description}</small>
         </p>

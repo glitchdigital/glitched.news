@@ -23,7 +23,7 @@ export default ({ test, description, value, passed, warning, info }) => {
         </span>
       </td>
       <td className='structured-data__test-descriptio'>{description || test}</td>
-      <td className='structured-data__test-value text-muted text-break'>
+      <td className='structured-data__test-value text-muted text-break '>
         {value && String(value) && String(value) !== '[object Object]' && String(value) }
       </td>
     </tr>

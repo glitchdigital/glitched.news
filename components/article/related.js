@@ -18,9 +18,9 @@ export default class extends React.Component {
         { related.articles.length > 0 && (
           <>
             <p>
-            Found <span className='badge badge-pill badge-info'>{related.articles.length}</span> articles that might be related.
+            Found <span className='badge badge-pill badge-info'>{related.articles.length} articles</span> that might be related.
             </p>
-            <ul>
+            <ul className='text-truncate'>
             {related.articles.map(article => (
               <li key={article.url}>
                 <Link

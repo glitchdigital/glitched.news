@@ -27,7 +27,7 @@ export default class extends React.Component {
         { links.links.length > 0 && 
           <>
             <h3>Links by domain</h3>
-            <ul>
+            <ul className='text-truncate'>
               {Object.keys(linksByDomain).map((domain, i) => (
                 <li key={`link-domain-${i}-${domain}`}>
                   <strong>{domain}</strong> <span className='badge badge-pill badge-info'>{linksByDomain[domain].length}</span>
@@ -38,7 +38,7 @@ export default class extends React.Component {
             {Object.keys(linksByDomain).map(domain => (
               <>
                 <h4>{domain}</h4>
-                <ul>
+                <ul className='text-truncate'>
                 {linksByDomain[domain].map((link, i) => (
                   <li key={`link-url-${i}-${link.url}`}>
                     <Link

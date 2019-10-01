@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 export default class extends React.Component {
   render() {
@@ -8,12 +8,12 @@ export default class extends React.Component {
       return null
 
     return (
-      <div className="article__headline mb-2">
-        <h6>HEADLINE</h6>
-        { content.image && <a target="_blank" href={content.url} rel='noreferrer'><img alt="Main image from article" src={content.image}/></a> }
-        <h1>
-          <a target="_blank" href={content.url} rel='noreferrer'>{content.title}</a>
-        </h1>
+      <div className='mb-2'>
+        <strong className='text-muted'>HEADLINE</strong>
+        { /* content.image && <a target='_blank' href={content.url} rel='noreferrer'><img alt='Main image from article' src={content.image}/></a> */ }
+        <h4 className='mt-0 mb-2'>
+          <a target='_blank' className='text-dark text-decoration-none' href={content.url} rel='noreferrer'>{content.title}</a>
+        </h4>
       </div>
     )
   }

@@ -80,22 +80,41 @@ table {
   font-size: 1.25em;
 }
 
+h1 {
+  font-size: 4em;
+  font-weight: 300;
+  line-height: 1.5em;
+  text-transform: capitalize;  
+}
+
 h2 {
   font-size: 3em;
   font-weight: 300;
-  line-height: 1.5em;  
-  text-transform: capitalize;  
+  line-height: 1.5em;
+  text-transform: capitalize;
 }
 
 h3 {
   font-weight: 300;
-  font-size: 1.5em;
+  font-size: 2.25em;
   line-height: 1.5em;
-  text-transform: capitalize;    
+  text-transform: capitalize;
 }
 
 h4 {
   font-weight: 600;
+  font-size: 1.75em;
+  line-height: 1.25em;
+}
+
+h5 {
+  font-weight: 600;
   font-size: 1.5em;
+  line-height: 1.25em;
+}
+
+h6 {
+  font-weight: 700;
+  font-size: 1.25em;
   line-height: 1.25em;
 }
