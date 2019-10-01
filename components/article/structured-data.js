@@ -14,7 +14,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h3>Structured data</h3>
+        <h2>Structured data</h2>
         <StructuredDataSummary testResults={testResults}/>
         <hr/>
         <StructuredDataErrorsAndWarnings testResults={testResults}/>

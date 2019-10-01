@@ -83,18 +83,19 @@ table {
 h2 {
   font-size: 3em;
   font-weight: 300;
+  line-height: 1.5em;  
+  text-transform: capitalize;  
 }
 
 h3 {
   font-weight: 300;
-  font-size: 2.5em;
-  line-height: 1.75em;
-  text-transform: capitalize;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  text-transform: capitalize;    
 }
 
 h4 {
   font-weight: 600;
   font-size: 1.5em;
   line-height: 1.25em;
-  text-transform: capitalize;
 }

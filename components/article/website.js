@@ -10,7 +10,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h3>About website</h3>
+        <h2>About website</h2>
         <ul>
         { hosting.location && hosting.location.country && (
           <li>

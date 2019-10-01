@@ -19,6 +19,7 @@ import Blacklists from 'components/article/blacklists'
 import StructuredData from 'components/article/structured-data'
 import StructuredDataSummary from 'components/structured-data/summary'
 import StructuredDataErrorsAndWarnings from 'components/structured-data/errors-and-warnings'
+import TrustSummary from 'components/trust/summary'
 
 const DEFAULT_SECTION = 'article-summary'
 // Server Side Events are an experimental feature for now
@@ -266,10 +267,9 @@ export default class extends React.Component {
                     { article.content && <Content content={article.content} /> } 
                     { article.blacklists && <Blacklists content={article.blacklists} /> }
                     { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
-                    { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
+                    { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <TrustSummary trustIndicators={trustIndicators} /> }
                     { article['structured-data'] && article['structured-data'].testResults && <>
                       <hr/>
-                      <h3>Structured data</h3>
                       <StructuredDataSummary testResults={article['structured-data'].testResults}/>
                       <hr/>
                       <StructuredDataErrorsAndWarnings testResults={article['structured-data'].testResults}/>                      

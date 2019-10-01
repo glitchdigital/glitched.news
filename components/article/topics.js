@@ -10,7 +10,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h3>Topics &amp; keywords</h3>
+        <h2>Topics &amp; keywords</h2>
         <p className='lead'>
           Found <span className='badge badge-pill badge-info'>{topics.keywords.length} keywords</span> and identified <span className='badge badge-pill badge-info'>{topics.topics.length} topics</span> that may be related to the article.
         </p>

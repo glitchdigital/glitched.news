@@ -10,7 +10,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h3>Social media</h3>
+        <h2>Social media</h2>
         <ul>
           { social.facebook.metadata && <li><strong>Facebook</strong> metadata found on page.</li> }
           { !social.facebook.metadata && <li>No Facebook metadata found on page.</li> }

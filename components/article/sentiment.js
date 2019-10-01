@@ -102,7 +102,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h3>Sentiment analysis</h3>
+        <h2>Sentiment analysis</h2>
         <p className='text-muted'>
           Sentiment analysis for English language articles.
         </p>
