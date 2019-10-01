@@ -32,20 +32,32 @@ module.exports = async (req, res) => {
     if (hasNewsArticleMetadata(metadata)) {
       trustIndicators.positive.push({
         text: "Page identifies itself as a news article",
-        description: ""
+        description: "This page uses markup which positively identifies itself as a news article."
       })
     } else {
-      trustIndicators.negative.push({text: "Page does not identify itself as a news article"})
+      trustIndicators.negative.push({
+        text: "Page does not identify itself as a news article",
+        description: "This page does not use markup which identifies itself as a news article."
+      })
     }
     if (isOpinionArticle(metadata)) {
-      trustIndicators.negative.push({text: "Page identifies as an opinion article"})
+      trustIndicators.negative.push({
+        text: "Page identifies as an opinion article",
+        description: "This is an opinion article and not a news article."
+    })
     }
   }
 
   if (url.startsWith('https://')) {
-    trustIndicators.positive.push({text: "URL is encrypted (uses HTTPS)"})
+    trustIndicators.positive.push({
+      text: "Uses encryption",
+      description: "This page uses HTTPS."
+    })
   } else {
-    trustIndicators.negative.push({text: "URL is not encrypted (does not use HTTPS)"})
+    trustIndicators.negative.push({
+      text: "Does not use encryption",
+      description: "This page does not use HTTPs."
+  })
   }
 
   if (structuredData.date) {

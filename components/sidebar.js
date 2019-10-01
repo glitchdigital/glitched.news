@@ -4,7 +4,7 @@ import classnames from 'classnames'
 const sidebarItems = {
   ['article-summary']: {
     text: 'Summary',
-    icon: 'ion-md-information-circle'
+    icon: 'ion-md-clipboard'
   },
   ['article-trust']: {
     text: 'Trust indicators',
