@@ -17,7 +17,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2 className='text-lowercase'>{homepage.domain}</h2>
+        <h2 className='text-primary text-truncate text-lowercase'>{homepage.domain}</h2>
         <p className='lead'>
           <span className='badge badge-pill badge-info'>{homepage.links.length || 0} links</span> on the homepage to <span className='badge badge-pill badge-info'>{Object.keys(linksByDomain).length} domains</span>
         </p>

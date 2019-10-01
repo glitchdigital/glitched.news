@@ -14,7 +14,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2><i className='ion-md-analytics mr-2'/> Structured data</h2>
+        <h2 className='text-primary'><i className='ion-md-analytics mr-2'/> Structured data</h2>
         <StructuredDataSummary testResults={testResults}/>
         <hr/>
         <StructuredDataErrorsAndWarnings testResults={testResults}/>

@@ -242,32 +242,33 @@ export default class extends React.Component {
     const { currentSection, url, article, inProgress, trustIndicators, feedback } = this.state
     return (
       <Page inputUrl={url} onInputSubmit={this.onSubmit} onInputChange={this.onChange} disableInput={inProgress}>
-        <main role="main">
-          <div className="d-none d-md-block">{ inProgress && <div className="pt-5"><Loader/></div> }</div>
-          <div className="container-fluid">
-            <div className="row">
-              <form className="d-md-none mb-3 pl-2 pr-2 w-100" onSubmit={this.onSubmit}>
-                <div className="input-group">
-                  <input id="inspect-url" className="form-control bg-light border-0" disabled={inProgress} placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" value={url} onChange={this.onChange} />
-                  <div className="input-group-append">
-                    <button type="submit" disabled={inProgress} className="btn btn-primary">Inspect</button>
+        <main role='main'>
+          <div className='d-none d-md-block'>{ inProgress && <div className='pt-5'><Loader/></div> }</div>
+          <div className='container-fluid'>
+            <div className='row'>
+              <form className='d-md-none mb-3 pl-2 pr-2 w-100' onSubmit={this.onSubmit}>
+                <div className='input-group'>
+                  <input id='inspect-url' className='form-control bg-light border-0' disabled={inProgress} placeholder='e.g. http://wwww.example.com/news/2019-01-01/article' name='url' type='text' value={url} onChange={this.onChange} />
+                  <div className='input-group-append'>
+                    <button type='submit' disabled={inProgress} className='btn btn-primary'>Inspect</button>
                   </div>
                 </div>
               </form>
               { url && !inProgress &&
-                <div className="col-md-4 col-lg-3 col-xl-2 d-none d-md-block sidebar bg-light">
+                <div className='col-md-4 col-lg-3 col-xl-2 d-none d-md-block sidebar bg-light'>
                   <Sidebar currentSection={currentSection} onClickHandler={this.toggleSection} rootUrl={article.links ? article.links.domain : null}/>
                 </div>
               }
-              <div className="col-md-8 col-lg-9 col-xl-10 ml-sm-auto article">
-                <div className="d-block d-md-none">{ inProgress && <Loader/> }</div>
-                <div className="article__sections">
-                  <section id="article-summary">
+              <div className='col-md-8 col-lg-9 col-xl-10 ml-sm-auto article'>
+                <div className='d-block d-md-none'>{ inProgress && <Loader/> }</div>
+                <div className='article__sections'>
+                  <section id='article-summary'>
                     { article.content && <Headline content={article.content} /> }
                     { article.content && <Content content={article.content} /> } 
                     { article.blacklists && <Blacklists content={article.blacklists} /> }
                     { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
                     <hr/>
+                    <h2 className='d-block d-md-none text-primary'>Summary</h2>
                     { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <TrustSummary trustIndicators={trustIndicators} /> }
                     { article['structured-data'] && article['structured-data'].testResults && <>
                       <hr/>
@@ -276,31 +277,31 @@ export default class extends React.Component {
                       <StructuredDataErrorsAndWarnings testResults={article['structured-data'].testResults}/>
                     </> }
                   </section>
-                  <section id="article-trust">
+                  <section id='article-trust'>
                     { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <Trust trustIndicators={trustIndicators} /> }
                   </section>
-                  <section id="article-sentiment">
+                  <section id='article-sentiment'>
                     { article.text && <Sentiment sentiment={article.text.sentiment} /> }
                   </section>
-                  <section id="article-factcheck"> 
+                  <section id='article-factcheck'> 
                     { article.content && article.factchecks && article.text && <FactCheck factchecks={article.factchecks} textAnalysis={article.text} /> }
                   </section>
-                  <section id="article-topics">
+                  <section id='article-topics'>
                     { article.topics && <Topics topics={article.topics} /> }
                   </section>
-                  <section id="article-social"> 
+                  <section id='article-social'> 
                     { article.social && article.social.facebook && <Social social={article.social} /> }
                   </section>
-                  <section id="article-structured-data"> 
+                  <section id='article-structured-data'> 
                     { article['structured-data'] && article['structured-data'].testResults && <StructuredData testResults={article['structured-data'].testResults} /> }
                   </section>
-                  <section id="article-links"> 
+                  <section id='article-links'> 
                     { article.content && article.links && <Links links={article.links} /> }
                   </section>
-                  <section id="article-related"> 
+                  <section id='article-related'> 
                     { article.related && <Related related={article.related} /> }
                   </section>
-                  <section id="homepage">
+                  <section id='homepage'>
                     { article.homepage && <Homepage homepage={article.homepage} /> }
                   </section>
                 </div>

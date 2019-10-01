@@ -10,7 +10,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2><i className='ion-md-quote mr-2'/> Facts, figures, quotes &amp; citations</h2>
+        <h2 className='text-primary'><i className='ion-md-quote mr-2'/> Facts, figures, quotes &amp; citations</h2>
         <p className='lead'>
           Found <span className='badge badge-pill badge-info'>{ textAnalysis.quotes.length } quotes</span> in the article.
         </p>

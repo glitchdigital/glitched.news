@@ -84,14 +84,16 @@ h1 {
   font-size: 2.5em;
   font-weight: 300;
   line-height: 1.5em;
-  text-transform: capitalize;  
+  text-transform: capitalize;
 }
 
 h2 {
   font-size: 1.75em;
   font-weight: 300;
-  line-height: 1.5em;
+  line-height: 1.75em;
   text-transform: capitalize;
+  border-bottom: 4px solid #eee;
+  margin-bottom: .5em;
 }
 
 h3 {
@@ -121,10 +123,10 @@ h6 {
 
 @media (min-width: 768px) {
   h1 {
-    font-size: 4em;
+    font-size: 3.5em;
   }
   h2 {
-    font-size: 3em;
+    font-size: 2.5em;
   }
   h3 {
     font-size: 2.25em;;
