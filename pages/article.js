@@ -255,11 +255,11 @@ export default class extends React.Component {
                 </div>
               </form>
               { url && !inProgress &&
-                <div className="col-md-3 col-lg-2 d-none d-md-block sidebar bg-light">
+                <div className="col-md-4 col-lg-3 col-xl-2 d-none d-md-block sidebar bg-light">
                   <Sidebar currentSection={currentSection} onClickHandler={this.toggleSection} rootUrl={article.links ? article.links.domain : null}/>
                 </div>
               }
-              <div className="col-md-9 col-lg-10 ml-sm-auto article">
+              <div className="col-md-8 col-lg-9 col-xl-10 ml-sm-auto article">
                 <div className="d-block d-md-none">{ inProgress && <Loader/> }</div>
                 <div className="article__sections">
                   <section id="article-summary">

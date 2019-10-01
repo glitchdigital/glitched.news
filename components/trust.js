@@ -12,7 +12,6 @@ export default class extends React.Component {
         <h2>Trust indicators</h2>
         <p className='lead mb-0'>Trust indicators based on article metadata.</p>        
         <TrustSummary trustIndicators={trustIndicators} />
-        <hr className="mb-4"/>
         <TrustIndicators trustIndicators={trustIndicators} />
       </>
     )
