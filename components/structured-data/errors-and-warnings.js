@@ -1,17 +1,17 @@
 const TestResult = ({test, passed, warning, description}) => {
-  let icon = '✕'
+  let icon = <i className='ion-md-close'/>
   let className = 'badge badge-pill badge-danger'
 
   if (passed) {
     if (info) {
-      icon = 'ⓘ'
+      icon = <i className='ion-md-information-circle'/>
       className = 'badge badge-pill badge-info'
     } else {
-      icon = '✓'
+      icon = <i className='ion-md-checkmark'/>
       className = 'badge badge-pill badge-success'
     }
   } else if (warning) {
-    icon = '⚠'
+    icon = <i className='ion-md-warning'/>
     className = ' badge badge-pill badge-warning'
   }
 
