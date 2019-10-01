@@ -12,10 +12,10 @@ const sidebarItems = {
   },
   ['article-sentiment']: {
     text: 'Sentiment analysis',
-    icon: 'ion-md-warning'
+    icon: 'ion-md-podium'
   },
   ['article-factcheck']: {
-    text: 'Facts & quotes',
+    text: 'Facts & citations',
     icon: 'ion-md-quote'
   },
   ['article-topics']: {

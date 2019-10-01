@@ -102,7 +102,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2>Sentiment analysis</h2>
+        <h2><i className='ion-md-podium mr-2'/> Sentiment analysis</h2>
         <p className='lead'>
           Sentiment analysis for English language articles.
         </p>

@@ -11,7 +11,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2>Related articles</h2>
+        <h2><i className='ion-md-albums mr-2'/> Related articles</h2>
         <p className="lead">
           Found <span className='badge badge-pill badge-info'>{related.domains.length} sites</span> with articles that might be related.
         </p>

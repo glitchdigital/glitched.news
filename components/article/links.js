@@ -20,7 +20,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2>Links from this page</h2>
+        <h2><i className='ion-md-link mr-2'/> Links on page</h2>
         <p className="lead">
           <span className='badge badge-pill badge-info'>{links.links.length || 0} links</span> on this page to <span className='badge badge-pill badge-info'>{Object.keys(linksByDomain).length} domains</span>
         </p>

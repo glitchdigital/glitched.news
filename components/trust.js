@@ -9,7 +9,7 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2>Trust indicators</h2>
+        <h2><i className='ion-md-checkmark-circle-outline mr-2'/> Trust indicators</h2>
         <p className='lead mb-0'>Trust indicators based on article metadata.</p>        
         <TrustSummary trustIndicators={trustIndicators} />
         <TrustIndicators trustIndicators={trustIndicators} />
