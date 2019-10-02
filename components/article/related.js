@@ -13,12 +13,12 @@ export default class extends React.Component {
         <hr/>
         <h2 className='text-primary'><i className='ion-md-albums mr-2'/> Related articles</h2>
         <p className="lead">
-          Found <span className='badge badge-pill badge-info'>{related.domains.length} sites</span> with articles that might be related.
+          <span className='badge badge-pill badge-info'>{related.domains.length} sites</span> are reporting similar news.
         </p>
         { related.articles.length > 0 && (
           <>
-            <p>
-            Found <span className='badge badge-pill badge-info'>{related.articles.length} articles</span> that might be related.
+            <p className="lead">
+              <span className='badge badge-pill badge-info'>{related.articles.length} articles</span> might be related.
             </p>
             <ul className='text-truncate'>
             {related.articles.map(article => (

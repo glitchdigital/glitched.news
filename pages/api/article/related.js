@@ -56,18 +56,33 @@ module.exports = async (req, res) => {
 
   if (domains.length > 0) {
     if (domains.length > 3) {
-      trustIndicators.positive.push({text: "Multiple sites have similar articles"})
+      trustIndicators.positive.push({
+        text: "Multiple sites have similar articles",
+        description: 'News stories that are accurate are usually reported on by multiple publications.'
+      })
     } else {
-      trustIndicators.negative.push({text: "Few other sites have similar articles"})
+      trustIndicators.negative.push({
+        text: "Few other sites have similar articles",
+        description: 'News stories that are accurate are usually reported on by multiple publications.\nIf few sites are reporting a story it can be harder to verify.'
+      })
     }
 
     if (articles.length > 10) {
-      trustIndicators.positive.push({text: "Multiple related articles found"})
+      trustIndicators.positive.push({
+        text: "Multiple related articles found",
+        description: 'The more articles covering a story, the easier it can be to verify.'
+      })
     } else {
-      trustIndicators.negative.push({text: "Not many other related articles found"})
+      trustIndicators.negative.push({
+        text: "Not many other related articles found",
+        description: 'A story that is not widely covered can be harder to verify.'
+      })
     }
   } else {
-    trustIndicators.negative.push({text: "No other similar articles found on other sites"})
+    trustIndicators.negative.push({
+      text: "No other similar articles found on other sites",
+      description: 'News stories that are accurate are usually reported on by multiple publications.\nIf few other sites are reporting the story it is harder to verify.'
+    })
   }
 
   return send(res, 200, {

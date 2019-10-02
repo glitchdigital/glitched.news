@@ -50,13 +50,13 @@ module.exports = async (req, res) => {
 
   if (url.startsWith('https://')) {
     trustIndicators.positive.push({
-      text: "Uses encryption",
-      description: "This page uses HTTPS."
+      text: "URL uses encryption",
+      description: "This page uses HTTPS. Legitimate news sites should all use encryption (but not all sites that use encryption are legitimate)."
     })
   } else {
     trustIndicators.negative.push({
-      text: "Does not use encryption",
-      description: "This page does not use HTTPs."
+      text: "URL does not use encryption",
+      description: "This page does not use HTTPS. Legitimate news sites should all use encryption (but not all sites that use encryption are legitimate)."
   })
   }
 
@@ -66,23 +66,38 @@ module.exports = async (req, res) => {
     const daysAgo = dateNow.diff(datePublished, 'days')
 
     if (daysAgo > 30) {
-      trustIndicators.negative.push({text: `The article publication date is ${datePublished.fromNow()}`})
+      trustIndicators.negative.push({
+        text: `The article publication date is ${datePublished.fromNow()}`,
+        description: 'Older articles may contain outdated information.'
+      })
     }
   }
 
   if (!structuredData.title) {
-    trustIndicators.negative.push({text: `Unable to clearly identify headline`})
+    trustIndicators.negative.push({
+      text: `Unable to clearly identify headline`,
+      description: 'It was not possibly to automatically identify the headline.'
+    })
   }
 
   const wordCount = articleText.split(' ').length;
   if (articleText) {
     if (wordCount < 500) {
-      trustIndicators.negative.push({text: `Article text is short`})
+      trustIndicators.negative.push({
+        text: `Article text is less than 500 words`,
+        description: 'Short articles can be a sign that there is not much detail to backup a headline.\nAccurate stories tend to be at least 500 words.'
+      })
     } else if (wordCount > 500) {
-      trustIndicators.positive.push({text: `Article length is at least 500 words`})
+      trustIndicators.positive.push({
+        text: `Article is at least 500 words`,
+        description: 'Accurate stories tend to be at least 500 words.'
+      })
     }
   } else {
-    trustIndicators.negative.push({text: `Unable to clearly identify main text of article`})
+    trustIndicators.negative.push({
+      text: `Unable to clearly identify main text of article`,
+      description: 'It was not possibly to automatically identify the main body of the article text.'
+    })
   }
 
   const headlineSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(structuredData.title)

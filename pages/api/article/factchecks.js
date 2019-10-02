@@ -87,7 +87,10 @@ module.exports = async (req, res) => {
 
   // If not disputed then only return one positive indicator (saying there were no negatives)
   if (potentiallyDisputed === false) {
-    trustIndicators.positive = [{text: "No related articles found on fact checking sites"}]
+    trustIndicators.positive = [{
+      text: "No related articles found on fact checking sites",
+      description: "If a story has been covered on a fact checking site the story may be known to have been misreported in the past."
+    }]
   }
 
   return send(res, 200, {

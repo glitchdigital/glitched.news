@@ -25,7 +25,10 @@ module.exports = async (req, res) => {
   ])
 
   if (blacklists.length === 0) {
-    trustIndicators.positive.push({ text: `${domain} not found on any blacklists` })
+    trustIndicators.positive.push({
+      text: `${domain} not found on any blacklists`,
+      description: 'This website is not listed on blacklists of sites known to publish false news.'
+    })
   }
   
   return send(res, 200, {
@@ -42,7 +45,10 @@ async function checkDailyDot(domain, trustIndicators, blacklists) {
   csvData.forEach(row => {
     const domainListed = row[0].toLowerCase()
     if (domainListed === domain) {
-      trustIndicators.negative.push({ text: `The Daily Dot has flagged ${domain}` })
+      trustIndicators.negative.push({ 
+        text: `Flagged by The Daily Dot`,
+        description: `The Daily Dot has flagged ${domain}`
+      })
       foundOnBlacklist = true
     }
   })
@@ -60,9 +66,15 @@ async function checkPolitifact(domain, trustIndicators, blacklists) {
     const reasonListed = (row[1]) ? row[1].toLowerCase() : null
     if (domainListed === domain) {
       if (reasonListed) {
-        trustIndicators.negative.push({ text: `Politifact has flagged ${domain} as "${reasonListed}"` })
+        trustIndicators.negative.push({ 
+          text: 'Flagged by Politifact',
+          description: `Politifact has flagged ${domain} as "${reasonListed}"`
+        })
       } else {
-        trustIndicators.negative.push({ text: `Politifact has flagged ${domain}` })
+        trustIndicators.negative.push({ 
+          text: 'Flagged by Politifact',
+          description: `Politifact has flagged ${domain}`
+        })
       }
       foundOnBlacklist = true
     }

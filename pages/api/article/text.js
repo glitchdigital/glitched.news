@@ -40,12 +40,16 @@ module.exports = async (req, res) => {
       sentencesWithNumbers.push(sentence.replace(/\n/g, ' '))
   })
 
-  if (quotes.length === 1) {
-    trustIndicators.positive.push({ text: `One quotes cited in article` })
-  } else if (quotes.length > 1) {
-    trustIndicators.positive.push({ text: `Multiple quotes (${quotes.length}) cited in article` })
+  if (quotes.length > 1) {
+    trustIndicators.positive.push({ 
+      text: `Multiple quotes cited in article`,
+      description: 'Articles that contain quotes are useful as quotes can be verified.'
+    })
   } else {
-    trustIndicators.negative.push({ text: `No quotes cited in article` })
+    trustIndicators.negative.push({
+      text: `No quotes cited in article`,
+      description: 'It is unusual for legitimate news articles not to contain multiple quotes.\nQuotes are useful as they can be verified.'
+    })
   }
 
   const articleHeadlineSentiment = SentimentIntensityAnalyzer.polarity_scores(structuredData.title)
@@ -74,6 +78,23 @@ module.exports = async (req, res) => {
   quotesWithNumbers.forEach(() => score += 5)
   sentencesWithNumbers.forEach(() => score += 2)
 
+  if (sentencesWithNumbers.length > 3) {
+    trustIndicators.positive.push({ 
+      text: `Multiple data points in article`,
+      description: 'Articles that contain multiple data points are useful as quotes can be verified.'
+    })
+  } else if (sentencesWithNumbers.length > 0) {
+    trustIndicators.positive.push({ 
+      text: `Few data points in article`,
+      description: 'Articles that contain few data points may be suspect as they may be harder to verify.'
+    })
+  } else {
+    trustIndicators.positive.push({ 
+      text: `No data points in article`,
+      description: 'Articles that contain no data points may be suspect as they may be harder to verify.'
+    })
+  }
+  
   if (articleText.length > 1500) {
     score += 20
   } else if (articleText.length > 1000) {
@@ -83,7 +104,10 @@ module.exports = async (req, res) => {
   }
 
   if (score > 50) {
-    trustIndicators.positive.push({text: "Article includes multiple quotes and data points"})
+    trustIndicators.positive.push({
+      text: "Article contains detailed and specific information",
+      description: 'Articles that contain lots of quotes and data points that can be fact checked are easier to verify.'
+    })
   }
 
   return send(res, 200, {

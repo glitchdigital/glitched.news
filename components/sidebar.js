@@ -42,7 +42,7 @@ export default class extends React.Component {
     return (
       <div className='sidebar-sticky'>
         <a className={classnames('d-block sidebar__heading p-2 text-lowercase font-weight-bold text-decoration-none', currentSection === 'homepage' ? 'bg-primary text-white' : 'text-primary')} onClick={onClickHandler} href='#homepage'>
-          {rootUrl ? rootUrl.replace(/^www\./, '') : 'Navigation' }
+          <i className='ion-md-paper mr-1'/> {rootUrl ? rootUrl.replace(/^www\./, '') : 'Navigation' }
         </a>
         <h6 className='sidebar__heading text-muted p-2 pt-3 text-uppercase font-weight-bold border-top'>
          Article analysis
