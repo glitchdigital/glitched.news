@@ -51,12 +51,12 @@ module.exports = async (req, res) => {
   if (url.startsWith('https://')) {
     trustIndicators.positive.push({
       text: "URL uses encryption",
-      description: "This page uses HTTPS. Legitimate news sites should all use encryption (but not all sites that use encryption are legitimate)."
+      description: "This page uses HTTPS.\nLegitimate news sites should all use encryption (but not all sites that use encryption are legitimate)."
     })
   } else {
     trustIndicators.negative.push({
       text: "URL does not use encryption",
-      description: "This page does not use HTTPS. Legitimate news sites should all use encryption (but not all sites that use encryption are legitimate)."
+      description: "This page does not use HTTPS.\nLegitimate news sites should all use encryption (but not all sites that use encryption are legitimate)."
   })
   }
 
@@ -67,7 +67,7 @@ module.exports = async (req, res) => {
 
     if (daysAgo > 30) {
       trustIndicators.negative.push({
-        text: `The article publication date is ${datePublished.fromNow()}`,
+        text: `Article publication date is ${datePublished.fromNow()}`,
         description: 'Older articles may contain outdated information.'
       })
     }

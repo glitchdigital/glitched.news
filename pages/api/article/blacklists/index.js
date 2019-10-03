@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
 
   if (blacklists.length === 0) {
     trustIndicators.positive.push({
-      text: `${domain} not found on any blacklists`,
+      text: 'Not found on any blacklists',
       description: 'This website is not listed on blacklists of sites known to publish false news.'
     })
   }
