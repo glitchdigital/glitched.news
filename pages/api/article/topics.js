@@ -56,8 +56,7 @@ module.exports = async (req, res) => {
       if (wordOccurance.token === word)
         keywords.push({
           name: word,
-          count: 0,
-          sentences: []
+          count: 0
         })
     })
   })
@@ -179,6 +178,8 @@ module.exports = async (req, res) => {
     keywords.forEach(keyword => {
       if (sentence.toLowerCase().includes(keyword.name.toLowerCase())) {
         keyword.count++
+        if (!keyword.sentences)
+          keyword.sentences = []
         keyword.sentences.push({
           text: sentence
         })

@@ -1,0 +1,6 @@
+.topics__chart {
+  .ct-bar {
+    stroke-width: 15px;
+    stroke: var(--info-color);
+  }
+}
