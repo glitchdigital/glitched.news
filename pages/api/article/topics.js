@@ -1,6 +1,10 @@
 const fetch = require('node-fetch')
 const unfluff = require('unfluff')
 const nlp = require('compromise')
+const sbdTokenizer = require('sbd')
+const Readability = require('readability')
+const JSDOM = require("jsdom").JSDOM
+const SentimentIntensityAnalyzer = require('vader-sentiment').SentimentIntensityAnalyzer
 const { findTitles } = require('entity-finder')
 const googleTrendsApi = require('google-trends-api')
 const stopwords = require('stopwords-en')
@@ -9,7 +13,10 @@ const mostCommon = require('most-common')
 const { send, queryParser } = require('lib/request-handler')
 const fetchOptions = require('lib/fetch-options')
 
-// @FIXME This contains a lot of English language specific logic!
+// Set to true to disable functionality that requires network access (eg for debugging)
+const OFFLINE_MODE = false
+
+// @FIXME Contains language specific logic that should only be applied when appropriate
 module.exports = async (req, res) => {
   const { url } = queryParser(req)
 
@@ -18,26 +25,39 @@ module.exports = async (req, res) => {
 
   // Fetch page
   const fetchRes = await fetch(encodeURI(url), fetchOptions)
-  const text = await fetchRes.text()
-  const structuredData = unfluff(text)
+  const html = await fetchRes.text()
+  
+  const structuredData = unfluff(html)
+  const dom = new JSDOM(html, { url })
+  const reader = new Readability(dom.window.document)
+  const parsedArticle = reader.parse()
+  let articleText = parsedArticle ? parsedArticle.textContent || structuredData.text || '' : ''
+
+  articleText = articleText.trim().replace(/([^\.])\n/g, "$1.\n")
+
+  const sentences = sbdTokenizer.sentences(articleText, { newline_boundaries: true, html_boundaries: true })
 
   // Build word list
-  const words = [ 
+  let words = [ 
     structuredData.title,
     structuredData.description,
     structuredData.tags,
-    structuredData.text,
-  ].join(' ').replace(/[^A-z0-9\-' ]/mg, '')
+    articleText,
+  ].join('. ').split(' ')
 
-  const wordOccurances = mostCommon(words.split(' '))
+  words.forEach((word, i) => {
+    words[i] = word.trim().replace(/\.$/, '')
+  })
+
+  const wordOccurances = mostCommon(words)
   let keywords = []
-  getKeywords(words).forEach(word => { 
+  getKeywords(words.join(' ')).forEach(word => { 
     wordOccurances.forEach(wordOccurance => {
-      // Only add 'keywords' that have occured at least twice 
-      if (wordOccurance.token === word && wordOccurance.count > 1)
+      if (wordOccurance.token === word)
         keywords.push({
           name: word,
-          count: wordOccurance.count
+          count: 0,
+          sentences: []
         })
     })
   })
@@ -55,7 +75,7 @@ module.exports = async (req, res) => {
       if (name.split(' ').length == 2 && name.match(/^(mr|ms|mrs|dr) /i))
         return
 
-      const matches = words.match(new RegExp(name.replace(/[^A-z0-9\-' ]/, ''), 'img'))
+      const matches = words.join(' ').match(new RegExp(name.replace(/[^A-z0-9\-' ]/, ''), 'img'))
       if (matches && matches[0]) {
         name = matches[0]
       }
@@ -104,7 +124,7 @@ module.exports = async (req, res) => {
           let description = (wikipediaData[0]) ? wikipediaData[0].description : null
           let topicUrl = (wikipediaData[0]) ? wikipediaData[0].url : null
 
-          const matches = words.match(new RegExp(name.replace(/[^A-z0-9\-' ]/, ''), 'img'))
+          const matches = words.join(' ').match(new RegExp(name.replace(/[^A-z0-9\-' ]/, ''), 'img'))
           if (matches && matches[0]) {
             name = matches[0]
           }
@@ -155,9 +175,21 @@ module.exports = async (req, res) => {
   })
   topics = Object.keys(filteredTopics).map(topic => { return filteredTopics[topic] })  
 
+  sentences.forEach(sentence => {
+    keywords.forEach(keyword => {
+      if (sentence.toLowerCase().includes(keyword.name.toLowerCase())) {
+        keyword.count++
+        keyword.sentences.push({
+          text: sentence
+        })
+      }
+    })
+  })
+
   // Sort topics by total count
   topics.sort((a, b) => { return b.count - a.count })
   keywords.sort((a, b) => { return b.count - a.count })
+
   /*
   keywords = keywords.filter((keyword, i) => {
     let keywordMatchesATopicName = false
@@ -173,7 +205,6 @@ module.exports = async (req, res) => {
   */
 
   let keywordsWithUrls = []
-  //keywords.forEach(async (keyword,i) => {
   for (let i in keywords) {
     const keyword = keywords[i]
     const wikipediaData = await getWikipediaEntities([keyword.name])
@@ -256,6 +287,8 @@ function cleanWords(array) {
 }
 
 async function getRelatedTopics(keywords) {
+  if (OFFLINE_MODE) return Promise.resolve({})
+
   try {
     const json = await googleTrendsApi.relatedTopics({
       keyword: keywords,
@@ -268,6 +301,8 @@ async function getRelatedTopics(keywords) {
 }
 
 async function getWikipediaEntities(concepts) {
+  if (OFFLINE_MODE) return Promise.resolve({})
+
   const wikipediaData = await Promise.all(
     // Limit to 100 tags
     concepts.slice(0,100).map(concept => {
