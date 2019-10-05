@@ -63,11 +63,6 @@ export default class extends React.Component {
     pieCharts.sentence.data.series[1].value = 100 - (Math.round(negativeSentences / sentiment.sentences.length * 100) + Math.round(positiveSentences / sentiment.sentences.length * 100))
     pieCharts.sentence.data.series[2].value = Math.round(positiveSentences / sentiment.sentences.length * 100)
 
-    if (pieCharts.sentence.data.series[0].value > 10)
-      pieCharts.sentence.data.labels[0] = `${pieCharts.sentence.data.series[0].value}%`
-    if (pieCharts.sentence.data.series[2].value > 10)
-      pieCharts.sentence.data.labels[2] = `${pieCharts.sentence.data.series[2].value}%`
-
     let sentimentText = 'This article contains mostly neutral sentences.'
     if (positiveSentences > neutralSentences && positiveSentences > negativeSentences) {
       sentimentText = 'This article contains mostly positive sentences.'
@@ -82,21 +77,21 @@ export default class extends React.Component {
         pieCharts[chart].data.series[0].value = Math.round(sentiment[chart].neg * 100)
         pieCharts[chart].data.series[1].value = 100 - (Math.round(sentiment[chart].neg * 100) + Math.round(sentiment[chart].pos * 100))
         pieCharts[chart].data.series[2].value = Math.round(sentiment[chart].pos * 100)
-
-        pieCharts[chart].data.labels = [
-          `${pieCharts[chart].data.series[0].value}%`,
-          `${pieCharts[chart].data.series[1].value}%`,
-          `${pieCharts[chart].data.series[2].value}%` 
-        ]
       } else {
         pieCharts[chart].options.total = 200
 
         pieCharts[chart].data.series[0].value = 0
         pieCharts[chart].data.series[1].value = 100
         pieCharts[chart].data.series[2].value = 0
-
-        pieCharts[chart].data.labels = [ 0, 100, 0 ]
       }
+    })
+
+    Object.keys(pieCharts).forEach(chart => {
+      pieCharts[chart].data.labels = [
+        `${pieCharts[chart].data.series[0].value}%`,
+        `${pieCharts[chart].data.series[1].value}%`,
+        `${pieCharts[chart].data.series[2].value}%` 
+      ]
     })
 
     return (
