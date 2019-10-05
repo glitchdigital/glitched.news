@@ -22,7 +22,7 @@ export default ({ children, disableInput, inputUrl, onInputSubmit, onInputChange
     <header className='container-fluid'>
       <nav className='navbar navbar-expand-md navbar-light fixed-top bg-white row border-bottom'>
         <div className='col-md-3 col-lg-2'>
-          <Link href='/'><a className='navbar-brand text-primary'><i class='ion-md-speedometer mr-1'/> Article Inspector</a></Link>
+          <Link href='/'><a className='navbar-brand text-primary'><i className='ion-md-speedometer mr-1'/> Article Inspector</a></Link>
         </div>
         <div className='col-md-9 col-lg-10 collapse navbar-collapse p-0 pr-2' id='navbarCollapse'>
           {!hideInput && 
