@@ -17,6 +17,12 @@ Run `npm run dev` to start in development mode.
 
 Run `npm run deploy` to deploy to the cloud (requires https://now.sh account).
 
+## API
+
+The API endpoint at `/api/article` is a REST API that takes a single argument `url`, which should be a fully qualified URL of an article. Results for individual URLs are cached for up to one hour.
+
+e.g. https://glitched.news/api/article?url=https://www.apnews.com/dc3a143f9b2a4c92887cc3f5a7f604ec
+
 ## Contributing
 
 Contributions in the form of feedback, bug reports, feature requests and pull requests are welcome.
