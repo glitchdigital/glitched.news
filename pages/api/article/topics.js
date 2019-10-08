@@ -1,20 +1,17 @@
-const fetch = require('node-fetch')
-const unfluff = require('unfluff')
 const nlp = require('compromise')
 const sbdTokenizer = require('sbd')
-const Readability = require('readability')
-const JSDOM = require("jsdom").JSDOM
-const SentimentIntensityAnalyzer = require('vader-sentiment').SentimentIntensityAnalyzer
 const { findTitles } = require('entity-finder')
 const googleTrendsApi = require('google-trends-api')
 const stopwords = require('stopwords-en')
-const mostCommon = require('most-common')
+const SentimentIntensityAnalyzer = require('vader-sentiment').SentimentIntensityAnalyzer
 
 const { send, queryParser } = require('lib/request-handler')
-const fetchOptions = require('lib/fetch-options')
+const { parseHtmlFromUrl } = require('lib/parse-html')
 
 // Set to true to disable functionality that requires network access (eg for debugging)
-const OFFLINE_MODE = false
+// @FIXME Push WikiData and Topic resolution to dedicated endpoints to avoid blocking,
+// otherwise request completion times can be excessive.
+const OFFLINE_MODE = true
 
 // @FIXME Contains language specific logic that should only be applied when appropriate
 module.exports = async (req, res) => {
@@ -23,42 +20,30 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  // Fetch page
-  const fetchRes = await fetch(encodeURI(url), fetchOptions)
-  const html = await fetchRes.text()
-  
-  const structuredData = unfluff(html)
-  const dom = new JSDOM(html, { url })
-  const reader = new Readability(dom.window.document)
-  const parsedArticle = reader.parse()
-  let articleText = parsedArticle ? parsedArticle.textContent || structuredData.text || '' : ''
+  let { structuredData, text } = req.locals ? req.locals : await parseHtmlFromUrl(url)
 
-  articleText = articleText.trim().replace(/([^\.])\n/g, "$1.\n")
+  // Add a full stop after the end of every line, if there is not one already
+  text = text.replace(/([^\.])\n/g, "$1.\n")
 
-  const sentences = sbdTokenizer.sentences(articleText, { newline_boundaries: true, html_boundaries: true })
+  // Get sentences in text
+  const sentences = sbdTokenizer.sentences(text, { newline_boundaries: true, html_boundaries: true })
 
   // Build word list
-  let words = [ 
-    structuredData.title,
-    structuredData.description,
-    structuredData.tags,
-    articleText,
-  ].join('. ').split(' ')
+  let words = `${structuredData.title} ${structuredData.description} ${structuredData.tags} ${text}`.split(' ')
 
-  words.forEach((word, i) => {
-    words[i] = word.trim().replace(/\.$/, '')
-  })
-
-  const wordOccurances = mostCommon(words)
   let keywords = []
   getKeywords(words.join(' ')).forEach(word => { 
-    wordOccurances.forEach(wordOccurance => {
-      if (wordOccurance.token === word)
-        keywords.push({
-          name: word,
-          count: 0
-        })
+    keywords.push({
+      name: word,
+      count: 0
     })
+    // wordOccurrences.forEach(wordOccurance => {
+    //   if (wordOccurance.token === word)
+    //     keywords.push({
+    //       name: word,
+    //       count: 0
+    //     })
+    // })
   })
 
   // Build topic list
@@ -176,13 +161,41 @@ module.exports = async (req, res) => {
 
   sentences.forEach(sentence => {
     keywords.forEach(keyword => {
+      
       if (sentence.toLowerCase().includes(keyword.name.toLowerCase())) {
         keyword.count++
+
+        const sentenceSentiment = SentimentIntensityAnalyzer.polarity_scores(sentence)
+
+        if (!keyword.sentiment) {
+          keyword.sentiment = {
+            positiveCount: 0,
+            negativeCount: 0,
+            neutralCount: 0
+          }
+        }
+
+        if (!keyword.sentiment) {
+          keyword.sentiment = sentenceSentiment.compound
+        } else {
+          if (sentenceSentiment.pos > sentenceSentiment.neg) {
+            keyword.sentiment.positiveCount++
+          } else if (sentenceSentiment.neg > sentenceSentiment.pos && sentenceSentiment.neg > sentenceSentiment.neu) {
+            keyword.sentiment.negativeCount++
+          } else {
+            keyword.sentiment.neutralCount++
+          }
+        }
+        
+        /*
         if (!keyword.sentences)
           keyword.sentences = []
+
         keyword.sentences.push({
-          text: sentence
+          text: sentence,
+          ...sentenceSentiment
         })
+        */
       }
     })
   })
@@ -216,13 +229,17 @@ module.exports = async (req, res) => {
   }
   keywords = keywordsWithUrls
   
-  const response = {
+  const responseData = {
     url,
     topics,
     keywords
   }
-  
-  return send(res, 200, response)
+
+  if (req.locals && req.locals.useStreamingResponseHandler) {
+    return Promise.resolve(responseData)
+  } else {
+    return send(res, 200, responseData)
+  }
 }
 
 function getKeywords(text) {
@@ -234,19 +251,21 @@ function getKeywords(text) {
   // Start with all the consecutive capitalized words as possible entities
   let keywords = consecutiveCapitalizedWords || []
 
-  // Strip the prefix "The " from words names
-  keywords.forEach((word, index) => {
-    if (word.startsWith("The "))
-      keywords[index] = word.replace(/^The /, '')
-  })
-
   // Next, add all the individually capitalized words
   if (capitalizedWords) {
     capitalizedWords.forEach(word => {
       keywords.push(word)
     })
   }
-  
+
+  // Strip the prefix / suffix "The" if font on keywords, to improve quality of results
+  keywords.forEach((word, index) => {
+    if (word.startsWith("The "))
+      keywords[index] = word.replace(/^The /, '')
+    if (word.endsWith(" The"))
+      keywords[index] = word.replace(/ The$/, '')
+  })
+
   // Remove duplicates
   keywords = cleanWords(keywords)
 

@@ -19,7 +19,7 @@ const sidebarItems = {
     icon: 'ion-md-quote'
   },
   ['article-topics']: {
-    text: 'Topics & keywords',
+    text: 'Topics',
     icon: 'ion-md-pricetag'
   },
   ['article-structured-data']: {

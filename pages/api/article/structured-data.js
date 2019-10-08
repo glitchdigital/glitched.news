@@ -1,10 +1,9 @@
-const fetch = require('node-fetch')
 const { structuredDataTestHtml } = require('structured-data-testing-tool')
 const { Google, SocialMedia } = require('structured-data-testing-tool/presets')
 const { groupTestResults } = require('structured-data-testing-tool/lib/group-test-results')
 
 const { send, queryParser } = require('lib/request-handler')
-const fetchOptions = require('lib/fetch-options')
+const { parseHtmlFromUrl } = require('lib/parse-html')
 
 module.exports = async (req, res) => {
   const { url } = queryParser(req)
@@ -12,15 +11,15 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
+  const { html } = req.locals ? req.locals : await parseHtmlFromUrl(url)
+  
   const trustIndicators = { positive: [], negative: [] }
 
-  const fetchRes = await fetch(encodeURI(url), fetchOptions)
-  const html = await fetchRes.text()
   const testResults = await structuredDataTestHtml(html, { presets: [ Google, SocialMedia ]})
   .then(res => res )
   .catch(err => err.res)
 
-  return send(res, 200, {
+  const responseData = {
     url,
     trustIndicators,
     testResults: {
@@ -30,5 +29,11 @@ module.exports = async (req, res) => {
       failed: testResults.failed.length,
       groups: groupTestResults(testResults.tests)
     }
-  })
+  }
+
+  if (req.locals && req.locals.useStreamingResponseHandler) {
+    return Promise.resolve(responseData)
+  } else {
+    return send(res, 200, responseData)
+  }
 }

@@ -1,10 +1,8 @@
-const unfluff = require('unfluff')
 const googleNews = require('my-google-news')
-const fetch = require('node-fetch')
 const urlParser = require('url')
 
 const { send, queryParser } = require('lib/request-handler')
-const fetchOptions = require('lib/fetch-options')
+const { parseHtmlFromUrl } = require('lib/parse-html')
 
 googleNews.resultsPerPage = 25 // Can be max 100
 
@@ -14,10 +12,7 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  // Fetch page
-  const fetchRes = await fetch(encodeURI(url), fetchOptions)
-  const text = await fetchRes.text()
-  const structuredData = unfluff(text)
+  const { structuredData } = req.locals ? req.locals : await parseHtmlFromUrl(url)
 
   // Build word list
   const words = [ 
@@ -85,10 +80,16 @@ module.exports = async (req, res) => {
     })
   }
 
-  return send(res, 200, {
+  const responseData = {
     url,
     articles,
     domains,
     trustIndicators
-  })
+  }
+
+  if (req.locals && req.locals.useStreamingResponseHandler) {
+    return Promise.resolve(responseData)
+  } else {
+    return send(res, 200, responseData)
+  }
 }

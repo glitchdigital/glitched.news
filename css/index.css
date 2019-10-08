@@ -7,10 +7,11 @@
 @import "structured-data";
 
 :root {
-  --danger-color: rgba(226,43,40);
-  --warning-color: rgba(249,175,12);
+  --danger-color: rgb(226,43,40);
+  --warning-color: rgb(249,175,12);
   --success-color: rgb(40,167,69);
   --info-color: rgb(98, 153, 255);
+  --primary-color: rgb(10,97,254);
 }
 
 .text-danger {
@@ -79,6 +80,7 @@ table {
 
 .lead {
   font-size: 1.25em;
+  color: #666;
 }
 
 h1 {

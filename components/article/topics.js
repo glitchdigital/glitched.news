@@ -9,17 +9,22 @@ export default class extends React.Component {
       return null
 
     const options = {
-      seriesBarDistance: 10,
       reverseData: true,
       horizontalBars: true,
       axisX: {
         onlyInteger: true,
+        showGrid: true,
+        showLabel: false
       },
       axisY: {
-        offset: 100
+        offset: 200,
+        showGrid: false,
+        showLabel: true
       }
     }
   
+    const wordFrequency = topics.keywords.map(keyword => ({ text: keyword.name, value: keyword.count }))
+
     const keywordData = {}
 
     if (topics.keywords) {
@@ -37,17 +42,21 @@ export default class extends React.Component {
     return (
       <>
         <hr/>
-        <h2 className='text-primary'><i className='ion-md-pricetag mr-2'/> Topics &amp; keywords</h2>
+        <h2 className='text-primary'><i className='ion-md-pricetag mr-2'/> Topics</h2>
         <p className='lead'>
-          Found <span className='badge badge-pill badge-info'>{topics.keywords.length} keywords</span> and identified <span className='badge badge-pill badge-info'>{topics.topics.length} topics</span> that may be related to the article.
+          Topics identified using Natural Language Processing (NLP)
+        </p>
+        <p>
+          {/* Found <span className='badge badge-pill badge-info'>{topics.keywords.length} keywords</span> and identified <span className='badge badge-pill badge-info'>{topics.topics.length} topics</span> that may be related to the article. */}
+          Found <span className='badge badge-pill badge-info'>{topics.keywords.length} topics</span> on this page.
         </p>
         <div className='row'>
-          <div className='col-md-6'>
-            <h4>Keywords</h4>
+          <div className='col-md-12'>
+            {/* <h4>Keywords</h4> */}
             <hr/>
             {(!topics.keywords || topics.keywords.length === 0) && <p className='text-muted'>No keywords found.</p>}
             { topics.keywords && topics.keywords.length > 0 &&
-              <>
+              <div className='rounded border mb-3'>
                 <ChartistGraph
                   type={'Bar'}
                   className={'topics__chart'}
@@ -55,11 +64,11 @@ export default class extends React.Component {
                   options={options}
                   data={keywordData}
                   />
-              </>
+              </div>
             }
           </div>
-          <div className='col-md-6'>
-          <h4>Topics</h4>
+          {/* <div className='col-md-6'>
+            <h4>Topics</h4>
             <hr/>
             {(!topics.topics || topics.topics.length === 0) && <p className='text-muted'>No topics identified.</p>}
             { topics.topics && topics.topics.length > 0 &&
@@ -73,10 +82,30 @@ export default class extends React.Component {
                   />
               </>
             }
+          </div> */}
+        </div>
+        {/*
+        <div className='row'>
+          <div className='col-md-12'>
+            <ul className='list-unstyled'>
+            {topics.keywords.map((keyword, i) => (
+              <li key={`keyword-${i}`}>
+                <p>
+                  <span className='lead'><span className='badge badge-pill badge-primary mr-1'>{keyword.name}</span></span> <strong>{keyword.count || 1}</strong> mentions of this keyword
+                  {keyword.url && (
+                    <>
+                      {' '}<br/><small><a target='_blank' href={keyword.url} rel='noreferrer'>{keyword.name} on Wikipedia</a></small>
+                    </>
+                  )}
+                </p>
+              </li>
+            ))}
+            </ul>
           </div>
         </div>
-        <div className='row'>
-          <div className='col-md-6'>
+        */ }
+        {/* <div className='row'>
+          <div className='col-md-12'>
             <ul className='list-unstyled'>
             {topics.keywords.map((keyword, i) => (
               <li key={`keyword-${i}`}>
@@ -108,7 +137,7 @@ export default class extends React.Component {
             ))}
             </ul>
           </div>
-        </div>
+        </div> */}
       </>
     )
   }

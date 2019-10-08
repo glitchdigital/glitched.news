@@ -28,7 +28,7 @@ export default ({ children, disableInput, inputUrl, onInputSubmit, onInputChange
           {!hideInput && 
             <form className='form-inline mt-10 mt-md-10 navbar-nav mr-auto d-block w-100' onSubmit={onInputSubmit}>
               <div className='input-group'>
-                <input className='form-control bg-light border-0' disabled={disableInput} placeholder='e.g. http://wwww.example.com/news/2019-01-01/article' name='url' type='text' value={inputUrl} onChange={onInputChange} />
+                <input className='form-control' disabled={disableInput} placeholder='e.g. http://wwww.example.com/news/2019-01-01/article' name='url' type='text' value={inputUrl} onChange={onInputChange} />
                 <div className='input-group-append'>
                   <button type='submit' disabled={disableInput} className='btn btn-primary'>Inspect</button>
                 </div>

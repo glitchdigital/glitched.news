@@ -50,12 +50,12 @@ export default class extends React.Component {
     ]
 
     return (
-      <div className='row'>
+      <div className='row mb-2'>
         <div className='col-sm-4'>
           <Indicator label='Structured data test' {...pieChart} description='Failed / Warnings / Passed'/>
         </div>
         <div className='col-sm-8'>
-          <h4>Structured data test results</h4>
+          <h4>Structured data test</h4>
           <p className='lead'>Structured data refers to metadata found on web pages. </p>
           <p>
             Structured data is used by search engines and social media sites to help machines 'read' articles,

@@ -248,7 +248,7 @@ export default class extends React.Component {
             <div className='row'>
               <form className='d-md-none mb-3 pl-2 pr-2 w-100' onSubmit={this.onSubmit}>
                 <div className='input-group'>
-                  <input id='inspect-url' className='form-control bg-light border-0' disabled={inProgress} placeholder='e.g. http://wwww.example.com/news/2019-01-01/article' name='url' type='text' value={url} onChange={this.onChange} />
+                  <input id='inspect-url' className='form-control' disabled={inProgress} placeholder='e.g. http://wwww.example.com/news/2019-01-01/article' name='url' type='text' value={url} onChange={this.onChange} />
                   <div className='input-group-append'>
                     <button type='submit' disabled={inProgress} className='btn btn-primary'>Inspect</button>
                   </div>
@@ -263,20 +263,37 @@ export default class extends React.Component {
                 <div className='d-block d-md-none'>{ inProgress && <Loader/> }</div>
                 <div className='article__sections'>
                   <section id='article-summary'>
-                    { article.content && <Headline content={article.content} /> }
-                    { article.content && <Content content={article.content} /> } 
-                    { article.blacklists && <Blacklists content={article.blacklists} /> }
-                    { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
+                    { article.content && <h2 className='text-primary'><i className='ion-md-clipboard mr-2'/> Summary</h2> }
+                    { article.content && <div className='border rounded pt-3 pl-3 pr-3 mt-1 mb-2'>
+                      <Headline content={article.content} /> 
+                      <Content content={article.content} />
+                      { article.blacklists && <Blacklists content={article.blacklists} /> }
+                      { article.hosting && article.domain && <Website hosting={article.hosting} domain={article.domain} /> }
+                      { article.text && article.topics && <>
+                        <h6>About this page</h6>
+                        <ul>
+                          <li>
+                            Found <span className='font-weight-bold'>{ article.text.quotes.length } quotes</span> on this page
+                          </li>
+                          <li>
+                            Found <span className='font-weight-bold'>{ article.text.quotesWithNumbers.length } quotes</span> and <span className='font-weight-bold'>{ article.text.sentencesWithNumbers.length } sentences</span> which cite specific dates or numbers
+                          </li>
+                          <li>
+                            This page contains <span className='font-weight-bold'>{article.text.wordCount} words</span> and mentions <span className='font-weight-bold'>{article.topics.keywords.length} topics</span>
+                          </li>
+                          <li>
+                            This page has been given a citation score of <span className='font-weight-bold'>{article.text.score}</span>
+                          </li>
+                        </ul>
+                      </> }
+                    </div> }
                     {/* Only show summary information on larger displays  */}
                     <div className='d-none d-md-block'>
-                      <hr/>
                       { (trustIndicators.positive.length > 0 || trustIndicators.negative.length > 0) && <TrustSummary trustIndicators={trustIndicators} /> }
-                      { article['structured-data'] && article['structured-data'].testResults && <>
-                        <hr/>
+                      { article['structured-data'] && article['structured-data'].testResults && <div className="mt-4">
                         <StructuredDataSummary testResults={article['structured-data'].testResults}/>
-                        <hr/>
                         <StructuredDataErrorsAndWarnings testResults={article['structured-data'].testResults}/>
-                      </> }
+                      </div> }
                     </div>
                   </section>
                   <section id='article-trust'>

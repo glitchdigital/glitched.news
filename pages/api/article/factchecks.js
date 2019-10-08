@@ -1,9 +1,8 @@
 const fetch = require('node-fetch')
-const unfluff = require('unfluff')
 const google = require('google')
 
 const { send, queryParser } = require('lib/request-handler')
-const fetchOptions = require('lib/fetch-options')
+const { parseHtmlFromUrl } = require('lib/parse-html')
 
 google.resultsPerPage = 25
 
@@ -13,9 +12,7 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
   
-  const fetchRes = await fetch(encodeURI(url), fetchOptions)
-  const text = await fetchRes.text()
-  const structuredData = unfluff(text)
+  const { structuredData } = req.locals ? req.locals : await parseHtmlFromUrl(url)
 
   const trustIndicators = { positive: [], negative: [] }
 
@@ -93,12 +90,18 @@ module.exports = async (req, res) => {
     }]
   }
 
-  return send(res, 200, {
+  const responseData = {
     url,
     ...factChecks,
     trustIndicators,
     potentiallyDisputed
-  })
+  }
+
+  if (req.locals && req.locals.useStreamingResponseHandler) {
+    return Promise.resolve(responseData)
+  } else {
+    return send(res, 200, responseData)
+  }
 }
 
 async function getFacebookShareCount(url) {

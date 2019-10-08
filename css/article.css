@@ -8,6 +8,11 @@
       hr:first-child {
         display: none;
       }
+      &#article-summary {
+        hr:first-child {
+          display: block;
+        }
+      }
     }
   }
 }

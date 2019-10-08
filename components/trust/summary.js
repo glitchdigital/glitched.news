@@ -1,7 +1,7 @@
 export default ({ trustIndicators }) => (
   <div className='row row-eq-height'>
-    <div className='col-md-6 p-3'>
-      <div className='h-100 border rounded shadow-sm'>
+    <div className='col-md-6 mb-2 mt-2'>
+      <div className='h-100 border rounded'>
         <div className='bg-light border-bottom pt-2 pb-2 pr-3 pl-3'>
           <strong className='d-inline-block mb-2 text-uppercase text-muted'>
             Trust indicators
@@ -20,8 +20,8 @@ export default ({ trustIndicators }) => (
         </div>
       </div>
     </div>
-    <div className='col-md-6 p-3'>
-      <div className='h-100 border rounded shadow-sm'>
+    <div className='col-md-6 mb-2 mt-2'>
+      <div className='h-100 border rounded'>
         <div className='bg-light border-bottom pt-2 pb-2 pr-3 pl-3'>
           <strong className='d-inline-block mb-2 text-uppercase text-muted'>
             Trust indicators

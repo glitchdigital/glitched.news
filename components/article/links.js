@@ -21,8 +21,11 @@ export default class extends React.Component {
       <>
         <hr/>
         <h2 className='text-primary'><i className='ion-md-link mr-2'/> Links on page</h2>
-        <p className="lead">
-          <span className='badge badge-pill badge-info'>{links.links.length || 0} links</span> on this page to <span className='badge badge-pill badge-info'>{Object.keys(linksByDomain).length} domains</span>
+        <p className='lead'>
+          Links found on the this page
+        </p>
+        <p>
+          Found <span className='badge badge-pill badge-info'>{links.links.length || 0} links</span> to <span className='badge badge-pill badge-info'>{Object.keys(linksByDomain).length} domains</span> on this page.  
         </p>
         { links.links.length > 0 && 
           <>
@@ -37,7 +40,7 @@ export default class extends React.Component {
             <hr/>
             {Object.keys(linksByDomain).map(domain => (
               <>
-                <h5>{domain} <span className='badge badge-pill badge-info'>{linksByDomain[domain].length}</span></h5>
+                <h6 className='text-lowercase'>{domain} <span className='badge badge-pill badge-info'>{linksByDomain[domain].length}</span></h6>
                 <ul className='text-truncate'>
                 {linksByDomain[domain].map((link, i) => (
                   <li key={`link-url-${i}-${link.url}`}>

@@ -12,22 +12,26 @@ export default class extends React.Component {
         <hr/>
         <h2 className='text-primary'><i className='ion-md-quote mr-2'/> Facts, figures, quotes &amp; citations</h2>
         <p className='lead'>
+          Extracts verifiable information such as quotes, numbers and dates.
+        </p>
+        <p>
           Found <span className='badge badge-pill badge-info'>{ textAnalysis.quotes.length } quotes</span> in the article.
         </p>
-        <p className='lead'>
-          <span className='badge badge-pill badge-info'>{ textAnalysis.quotesWithNumbers.length } quotes</span> and <span className='badge badge-pill badge-info'>{ textAnalysis.sentencesWithNumbers.length } sentences</span> cite specific dates or numbers.
+        <p>
+          Found <span className='badge badge-pill badge-info'>{ textAnalysis.quotesWithNumbers.length } quotes</span> and <span className='badge badge-pill badge-info'>{ textAnalysis.sentencesWithNumbers.length } sentences</span> which cite specific dates or numbers.
         </p>
-        <hr/>
-        <p className='lead'>
-          Citation score <span className='badge badge-pill badge-info'>{textAnalysis.score}</span>
+        <p>
+          This article has been given a citation score of <span className='badge badge-pill badge-info'>{textAnalysis.score}</span> points.*
         </p>
         <p className='text-muted font-italic'>
-          Citation score is an experimental attempt at a metric to quantify the likely veracity of an article, based on the text of the article. Scores are always positive. Higher is better. There is no upper limit. Biased towards longer articles. The score for an article may vary over time as the mechanism is refined.
+          <small>
+            * This score is an experimental attempt at a metric to quantify the <strong>likely veracity and specific number of citations of facts in an article</strong>, based on the text of the article.
+          </small>
         </p>
         {textAnalysis.quotes.length > 0 && <>
           <hr/>
           <h4>Quotes</h4> 
-          <ol className='ml-3'>
+          <ol>
           {textAnalysis.quotes.map((quote, i) => (
             <li key={`${quote}-${i}`}><em>{quote}</em></li>
           ))}
@@ -36,10 +40,7 @@ export default class extends React.Component {
         {textAnalysis.sentencesWithNumbers.length > 0 && <>
           <hr/>
           <h4>Numbers and dates</h4>
-          <p className='lead'>
-            Numbers and dates should be attributable to a source and verifiable.
-          </p>
-          <ol className='ml-3'>
+          <ol>
           {textAnalysis.sentencesWithNumbers.map((citation, i) => (
             <li key={`${citation}-${i}`}><em>{citation}</em></li>
           ))}
@@ -52,7 +53,7 @@ export default class extends React.Component {
             <p>
               Fact checks from <a target='_blank' href='https://www.snopes.com' rel='noreferrer'>Snopes</a> that might be related
             </p>
-            <ol className='ml-3'>
+            <ol>
             {factchecks['snopes'].slice(0,5).map((link, i) => (
               <li key={`snopes-${link.url}`}>
                 <a target='_blank' href={link.url} rel='noreferrer'>{link.title}</a>
@@ -69,7 +70,7 @@ export default class extends React.Component {
             <p>
               Fact checks from <a target='_blank' href='https://www.factcheck.org' rel='noreferrer'>FactCheck.org</a> that might be related
             </p>
-            <ol className='ml-3'>
+            <ol>
             {factchecks['factcheck.org'].slice(0,5).map((link, i) => (
               <li key={`factcheck.org-${link.url}`}>
                 <a target='_blank' href={link.url} rel='noreferrer'>{link.title}</a>

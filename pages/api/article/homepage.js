@@ -19,30 +19,35 @@ module.exports = async (req, res) => {
 
   const fetchRes = await fetch(encodeURI(homepage), fetchOptions)
   const html = await fetchRes.text()
-
   const dom = new JSDOM(html, { homepage })
 
   let links = []
   dom.window.document.querySelectorAll('a').forEach(node => {
-    let url = node.getAttribute('href') || ''
+    let linkUrl = node.getAttribute('href') || ''
 
-    if (url.startsWith('javascript:'))
+    if (linkUrl.startsWith('javascript:'))
       return
 
-    url = normalizeUrl(url, homepage)
+    linkUrl = normalizeUrl(linkUrl, homepage)
 
     links.push({
-      url,
+      url: linkUrl,
       text: node.textContent.replace('\n', '').trim() || '',
-      domain: urlParts.parse(url).hostname
+      domain: urlParts.parse(linkUrl).hostname
     })
   })
   // Remove duplicate URLs
   links = links.filter((obj, pos, arr) => arr.map(mapObj => mapObj['url']).indexOf(obj['url']) === pos)
 
-  return send(res, 200, {
+  const responseData = {
     domain,
     homepage,
     links
-  })
+  }
+
+  if (req.locals && req.locals.useStreamingResponseHandler) {
+    return Promise.resolve(responseData)
+  } else {
+    return send(res, 200, responseData)
+  }
 }

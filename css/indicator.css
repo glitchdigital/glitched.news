@@ -62,6 +62,14 @@
             display: none;
           }
         }
+
+        .ct-series {
+          path {
+          }
+          path[*value='0'] {
+            display: none;
+          }
+        }
       }
       &.indicator__piechart--gauge {
         height: 6em;

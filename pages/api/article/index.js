@@ -1,9 +1,34 @@
 //require('promise.allsettled').shim()
-const fetch = require('node-fetch')
+
 const { send, queryParser } = require('lib/request-handler')
+const { parseHtmlFromUrl } = require('lib/parse-html')
+
+const requestHandlers = {
+  blacklists: require('./blacklists'),
+  content: require('./content'),
+  factchecks: require('./factchecks'),
+  hosting: require('./hosting'),
+  related: require('./related'),
+  text: require('./text'),
+  homepage: require('./homepage'),
+  links: require('./links'),
+  topics: require('./topics'),
+  'structured-data': require('./structured-data')
+}
 
 module.exports = async (req, res) => {
   const { url, stream } = queryParser(req)
+
+  if (!url)
+    return send(res, 400, { error: 'URL parameter missing' })
+
+  // Add parse HTML to req object so can be re-used by endpoints
+  // This avoids having to fetch and parse the URL for each endpoint.
+  req.locals = {
+    url,
+    useStreamingResponseHandler: true,
+    ...await parseHtmlFromUrl(url)
+  }
 
   const endpoints = [
     'blacklists',
@@ -20,9 +45,6 @@ module.exports = async (req, res) => {
     'structured-data'
   ]
 
-  const protocol = (req.headers['x-forwarded-proto']) ? req.headers['x-forwarded-proto'] : 'http'
-  const server = req.headers['host']
-
   let data = {}
 
   if (stream === 'true') {
@@ -37,13 +59,11 @@ module.exports = async (req, res) => {
     res.write(`id: none\n`)
 
     endpoints.map(async (endpoint) => {
-      try {
-        const fetchRequest = await fetch(`${protocol}://${server}/api/article/${endpoint}?url=${encodeURIComponent(url)}`)
-        data[endpoint] = await fetchRequest.json()
-      } catch (e) {
+      if (requestHandlers[endpoint]) {
+        data[endpoint] = await requestHandlers[endpoint](req, res)
+      } else {
         data[endpoint] = null
       }
-      
       // Return data to client
       res.write(`data: ${JSON.stringify({
         endpoint,
@@ -61,8 +81,11 @@ module.exports = async (req, res) => {
     // Use fetch to call each endpoint concurrently
     await Promise.all(
       endpoints.map(async (endpoint) => {
-        const fetchRequest = await fetch(`${protocol}://${server}/api/article/${endpoint}?url=${encodeURIComponent(url)}`)
-        data[endpoint] = await fetchRequest.json()
+        if (requestHandlers[endpoint]) {
+          data[endpoint] = await requestHandlers[endpoint](req, res)
+        } else {
+          data[endpoint] = null
+        }
         return Promise.resolve()
       })
     )

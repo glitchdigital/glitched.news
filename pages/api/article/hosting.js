@@ -14,11 +14,17 @@ module.exports = async (req, res) => {
   const hostname = urlParts.hostname
 
   dns.resolve(hostname, (error, address, family) => {
-    return send(res, 200, {
+    const responseData = {
       url,
       hostname,
       ip: address,
       location: (address) ? geoip.lookup(address[0]) : null
-    })
+    }
+  
+    if (req.locals && req.locals.useStreamingResponseHandler) {
+      return Promise.resolve(responseData)
+    } else {
+      return send(res, 200, responseData)
+    }
   })
 }

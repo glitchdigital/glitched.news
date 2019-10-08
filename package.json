@@ -1,6 +1,6 @@
 {
   "name": "glitched-news",
-  "version": "5.5.0",
+  "version": "6.0.0",
   "description": "A prototype research tool to demonstrate how metadata and automated analysis can be combined.",
   "repository": "https://github.com/glitchdigital/glitched.news",
   "scripts": {
@@ -69,7 +69,7 @@
     "@lingui/macro": "^2.8.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-macros": "^2.6.1",
-    "now": "^16.3.0",
+    "now": "^16.3.1",
     "npm-check-updates": "^3.1.23",
     "raw-loader": "^3.1.0"
   }

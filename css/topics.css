@@ -1,6 +1,22 @@
 .topics__chart {
+  .ct-label {
+    color: #fff;
+    background: var(--info-color);
+    display: inline-block;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100%;
+    float: right;
+    margin-top: 4px;
+    padding: .4em .6em;
+    border-radius: 10px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .ct-bar {
-    stroke-width: 15px;
-    stroke: var(--info-color);
+    stroke-width: 20px;
+    stroke: var(--primary-color);
   }
 }

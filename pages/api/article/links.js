@@ -1,50 +1,54 @@
-const urlParser = require('url')
 const JSDOM = require("jsdom").JSDOM
-const fetch = require('node-fetch')
+const urlParser = require('url')
 
 const { send, queryParser } = require('lib/request-handler')
-const fetchOptions = require('lib/fetch-options')
+const { parseHtmlFromUrl } = require('lib/parse-html')
 const normalizeUrl = require('lib/normalize-url')
 
 // Given a URL, wil return the domain, homepage and a list of links on the page
 module.exports = async (req, res) => {
-  const { url } = queryParser(req)
+  const { url: queryUrl } = queryParser(req)
 
-  if (!url)
+  if (!queryUrl)
     return send(res, 400, { error: 'URL parameter missing' })
+
+  const { html, url } = req.locals ? req.locals : await parseHtmlFromUrl(queryUrl)
 
   const urlParts = urlParser.parse(url)
   const path = urlParts.path
   const domain = urlParts.hostname
   const homepage = `${urlParts.protocol}//${urlParts.host}`
 
-  const fetchRes = await fetch(encodeURI(url), fetchOptions)
-  const html = await fetchRes.text()
-
-  const dom = new JSDOM(html, { url })
+  const dom = new JSDOM(html, { queryUrl })
 
   let links = []
   dom.window.document.querySelectorAll('a').forEach(node => {
-    let url = node.getAttribute('href') || ''
+    let linkUrl = node.getAttribute('href') || ''
 
-    if (url.startsWith('javascript:'))
+    if (linkUrl.startsWith('javascript:'))
       return
 
-    url = normalizeUrl(url, homepage)
+    linkUrl = normalizeUrl(linkUrl, homepage)
 
     links.push({
-      url,
+      url: linkUrl,
       text: node.textContent.replace('\n', '').trim() || '',
-      domain: urlParts.parse(url).hostname
+      domain: urlParts.parse(linkUrl).hostname
     })
   })
   // Remove duplicate URLs
   links = links.filter((obj, pos, arr) => arr.map(mapObj => mapObj['url']).indexOf(obj['url']) === pos)
 
-  return send(res, 200, {
+  const responseData = {
     domain,
     path,
     homepage,
-    links,
-  })
+    links
+  }
+
+  if (req.locals && req.locals.useStreamingResponseHandler) {
+    return Promise.resolve(responseData)
+  } else {
+    return send(res, 200, responseData)
+  }
 }

@@ -12,11 +12,11 @@ module.exports = async (req, res) => {
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  const trustIndicators = { positive: [], negative: [] }
   const urlParts = urlParser.parse(url)
   const domainParts = domainParser.parse(urlParts.hostname)
   const domain = domainParts.tld === 'localhost' ? 'localhost' : `${domainParts.sld}.${domainParts.tld}`.toLowerCase()
 
+  const trustIndicators = { positive: [], negative: [] }
   let blacklists = []
 
   blacklistChecks = await Promise.all([
@@ -31,12 +31,18 @@ module.exports = async (req, res) => {
     })
   }
   
-  return send(res, 200, {
+  const responseData = {
     url,
     domain,
     blacklists,
     trustIndicators
-  })
+  }
+
+  if (req.locals && req.locals.useStreamingResponseHandler) {
+    return Promise.resolve(responseData)
+  } else {
+    return send(res, 200, responseData)
+  } 
 }
 
 async function checkDailyDot(domain, trustIndicators, blacklists) {

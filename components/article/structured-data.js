@@ -16,14 +16,13 @@ export default class extends React.Component {
         <hr/>
         <h2 className='text-primary'><i className='ion-md-analytics mr-2'/> Structured data</h2>
         <StructuredDataSummary testResults={testResults}/>
-        <hr/>
         <StructuredDataErrorsAndWarnings testResults={testResults}/>
         <hr/>
-        <h4>Detailed information</h4>
-        <p className='lead'>
+        <h4>Complete results</h4>
+        <p>
           Detailed test results for review and debugging.
         </p>
-        <table className='table table-sm w-100'>
+        <table className='table table-sm border w-100'>
           <tbody>
             {Object.keys(testResults.groups).map(group => {
               return (

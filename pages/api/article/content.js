@@ -1,32 +1,18 @@
-const unfluff = require('unfluff')
-const Readability = require('readability')
-const JSDOM = require("jsdom").JSDOM
-const fetch = require('node-fetch')
-
-const WAE = require('web-auto-extractor').default
 const moment = require('moment')
-const vader = require('vader-sentiment')
+const SentimentIntensityAnalyzer = require('vader-sentiment').SentimentIntensityAnalyzer
 
 const { send, queryParser } = require('lib/request-handler')
-const fetchOptions = require('lib/fetch-options')
+const { parseHtmlFromUrl } = require('lib/parse-html')
 
-// @TODO Consider pros and cons of breaking out functionality into different endpoints
 module.exports = async (req, res) => {
   const { url } = queryParser(req)
 
   if (!url)
     return send(res, 400, { error: 'URL parameter missing' })
 
-  const trustIndicators = { positive: [], negative: [] }
-  const fetchRes = await fetch(encodeURI(url), fetchOptions)
-  const html = await fetchRes.text()
-  const structuredData = unfluff(html)
-  const metadata = WAE().parse(html)
+  const { metadata, structuredData, text } = req.locals ? req.locals : await parseHtmlFromUrl(url)
 
-  const dom = new JSDOM(html, { url })
-  const reader = new Readability(dom.window.document)
-  const parsedArticle = reader.parse()
-  const articleText = parsedArticle ? parsedArticle.textContent || structuredData.text || '' : ''
+  const trustIndicators = { positive: [], negative: [] }
 
   if (metadata) {
     if (hasNewsArticleMetadata(metadata)) {
@@ -80,8 +66,8 @@ module.exports = async (req, res) => {
     })
   }
 
-  const wordCount = articleText.split(' ').length;
-  if (articleText) {
+  const wordCount = text.split(' ').length;
+  if (text) {
     if (wordCount < 500) {
       trustIndicators.negative.push({
         text: `Article text is less than 500 words`,
@@ -100,9 +86,9 @@ module.exports = async (req, res) => {
     })
   }
 
-  const headlineSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(structuredData.title)
-  const textSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(articleText)
-  const overallSentiment = vader.SentimentIntensityAnalyzer.polarity_scores(`${structuredData.title} ${structuredData.description} ${articleText}`)
+  const headlineSentiment = SentimentIntensityAnalyzer.polarity_scores(structuredData.title)
+  const textSentiment = SentimentIntensityAnalyzer.polarity_scores(text)
+  const overallSentiment = SentimentIntensityAnalyzer.polarity_scores(`${structuredData.title} ${structuredData.description} ${text}`)
 
   const sentiment = {
     headline: { 
@@ -125,14 +111,20 @@ module.exports = async (req, res) => {
     }
   }
   
-  return send(res, 200, {
+  const responseData = {
     url,
     ...structuredData,
-    characterCount: articleText.length,
+    characterCount: text.length,
     wordCount,
     sentiment,
-    trustIndicators,
-  })
+    trustIndicators
+  }
+
+  if (req.locals && req.locals.useStreamingResponseHandler) {
+    return Promise.resolve(responseData)
+  } else {
+    return send(res, 200, responseData)
+  }
 }
 
 function hasNewsArticleMetadata(metadata) {

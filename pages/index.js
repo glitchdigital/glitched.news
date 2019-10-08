@@ -62,10 +62,10 @@ export default class extends React.Component {
               </h3>
               <form className="form rounded shadow bg-white mt-md-10 text-left mr-auto w-100" onSubmit={this.onSubmit}>  
                 <label htmlFor="home-url" className="mb-1">
-                  <Trans id="url_prompt">Enter a news article URL to analyze</Trans>
+                  <Trans id="url_prompt">Enter an article URL to analyze</Trans>
                 </label>
                 <div className="input-group">
-                  <input id="home-url" autoFocus={true} className="form-control bg-light border-0" placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={url} onChange={this.onChange} />
+                  <input id="home-url" autoFocus={true} className="form-control" placeholder="e.g. http://wwww.example.com/news/2019-01-01/article" name="url" type="text" defaultValue={url} onChange={this.onChange} />
                   <div className="input-group-append">
                     <button type="submit" className="btn btn-primary">Inspect</button>
                   </div>
