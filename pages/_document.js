@@ -23,6 +23,8 @@ export default class Document extends NextDocument {
         <Head>
           <meta name="description" content="A prototype research tool to demonstrate how metadata and automated analysis can be combined."/>
           <script dangerouslySetInnerHTML={{ __html: i18nCatalog }} />
+          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92465819-3"></script>
+          <script dangerouslySetInnerHTML={{ __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-92465819-3');` }} />
         </Head>
         <body>
           <Main />
