@@ -6,7 +6,7 @@ export default ({ trustIndicators }) => (
           <strong className='d-inline-block mb-2 text-uppercase text-muted'>
             Trust indicators
           </strong>
-          <h4 className='text-danger'><i class='ion-md-remove-circle mr-1'/> Negative indicators</h4>
+          <h4 className='text-danger'><i className='ion-md-remove-circle mr-1'/> Negative indicators</h4>
         </div>
         <div className='p-3'>
           { trustIndicators.negative.length === 0 && <p className='text-muted'>No negative indicators found.</p> }
@@ -26,7 +26,7 @@ export default ({ trustIndicators }) => (
           <strong className='d-inline-block mb-2 text-uppercase text-muted'>
             Trust indicators
           </strong>
-          <h4 className='text-success'><i class='ion-md-add-circle mr-1'/> Positive indicators</h4>
+          <h4 className='text-success'><i className='ion-md-add-circle mr-1'/> Positive indicators</h4>
         </div>
         <div className='p-3'>
           { trustIndicators.positive.length === 0 && <p className='text-muted'>No positive indicators found.</p> }

@@ -1,10 +1,12 @@
 import React from "react"
 import NextApp from "next/app"
+import Router from "next/router";
+import withGA from "next-ga";
 import { I18nProvider } from "@lingui/react"
 
 import getCatalog from "@catalogs"
 
-export default class App extends NextApp {
+class App extends NextApp {
   static async getInitialProps({ Component, ctx }) {
     // Look for 'locale' value in query string, if none look for host header
     let locale = ctx.query.locale
@@ -30,3 +32,5 @@ export default class App extends NextApp {
     )
   }
 }
+
+export default withGA('UA-92465819-3', Router)(App);
