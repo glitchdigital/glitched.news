@@ -1,5 +1,6 @@
 import React from 'react'
 import Router from 'next/router'
+import Head from 'next/head'
 
 import Page from 'components/page'
 import Sidebar from 'components/sidebar'
@@ -242,6 +243,7 @@ export default class extends React.Component {
     const { currentSection, url, article, inProgress, trustIndicators, feedback } = this.state
     return (
       <Page inputUrl={url} onInputSubmit={this.onSubmit} onInputChange={this.onChange} disableInput={inProgress}>
+        <Head><title>{url}</title></Head>
         <main role='main'>
           <div className='d-none d-md-block'>{ inProgress && <div className='pt-5'><Loader/></div> }</div>
           <div className='container-fluid'>
