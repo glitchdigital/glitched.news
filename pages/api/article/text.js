@@ -70,17 +70,17 @@ module.exports = async (req, res) => {
 
   if (sentencesWithNumbers.length > 3) {
     trustIndicators.positive.push({ 
-      text: `Multiple data points in article`,
+      text: `Multiple data points found in article`,
       description: 'Articles that contain multiple data points are useful as quotes can be verified.'
     })
   } else if (sentencesWithNumbers.length > 0) {
-    trustIndicators.positive.push({ 
-      text: `Few data points in article`,
+    trustIndicators.negative.push({ 
+      text: `Few data points found in article`,
       description: 'Articles that contain few data points may be suspect as they may be harder to verify.'
     })
   } else {
-    trustIndicators.positive.push({ 
-      text: `No data points in article`,
+    trustIndicators.negative.push({ 
+      text: `No data points found in article`,
       description: 'Articles that contain no data points may be suspect as they may be harder to verify.'
     })
   }
@@ -96,8 +96,13 @@ module.exports = async (req, res) => {
 
   if (score > 50) {
     trustIndicators.positive.push({
-      text: "Article contains detailed and specific information",
-      description: 'Articles that contain lots of quotes and data points that can be fact checked are easier to verify.'
+      text: "Contains detailed and verifiable information",
+      description: 'Articles that contain extensive quotes and specific data points that can be fact checked are easier to verify.'
+    })
+  } else {
+    trustIndicators.negative.push({
+      text: "Contains little detailed and verifiable information",
+      description: 'Articles that are sparse in quotes or specific data points can be hard to verify.'
     })
   }
 
