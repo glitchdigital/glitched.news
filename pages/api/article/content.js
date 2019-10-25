@@ -17,18 +17,18 @@ module.exports = async (req, res) => {
   if (metadata) {
     if (hasNewsArticleMetadata(metadata)) {
       trustIndicators.positive.push({
-        text: "Page identifies itself as a news article",
-        description: "This page uses markup which positively identifies itself as a news article."
+        text: "Identifies itself as a news article",
+        description: "This page uses markup which identifies itself as a news article.\nNote: If this is not actually a news article then it is representing itself incorrectly. Opinion columns should be published as opinion articles and not as news articles."
       })
     } else {
       trustIndicators.negative.push({
-        text: "Page does not identify itself as a news article",
+        text: "Does not identify itself as a news article",
         description: "This page does not use markup which identifies itself as a news article."
       })
     }
     if (isOpinionArticle(metadata)) {
       trustIndicators.negative.push({
-        text: "Page identifies as an opinion article",
+        text: "Identifies as an opinion article",
         description: "This is an opinion article and not a news article."
     })
     }

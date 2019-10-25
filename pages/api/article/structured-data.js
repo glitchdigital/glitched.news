@@ -15,9 +15,27 @@ module.exports = async (req, res) => {
   
   const trustIndicators = { positive: [], negative: [] }
 
-  const testResults = await structuredDataTestHtml(html, { presets: [ Google, SocialMedia ]})
+  let testResults = await structuredDataTestHtml(html, { presets: [ Google, SocialMedia ]})
   .then(res => res )
   .catch(err => err.res)
+
+  if (!testResults.structuredData.metatags.description) {
+    const descriptionTest = {
+      test: 'description',
+      type: 'metatag',
+      description: 'missing page description',
+      group: 'Metatags',
+      passed: false,
+      value: null,
+      error: {
+      type: 'MISSING_PROPERTY',
+      message: 'Could not find description metatag'
+      },
+    };
+
+    testResults.tests.push(descriptionTest)
+    testResults.failed.push(descriptionTest)
+  }
 
   const responseData = {
     url,
