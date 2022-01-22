@@ -46,7 +46,7 @@
     "my-google-news": "^3.0.0",
     "next": "^9.0.7",
     "next-ga": "^2.3.4",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "nprogress": "^0.2.0",
     "postcss": "^7.0.18",
     "postcss-import": "^12.0.1",
