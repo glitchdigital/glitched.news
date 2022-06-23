@@ -37,7 +37,7 @@
     "google-trends-api": "^4.9.0",
     "ionicons": "^4.6.3",
     "isomorphic-unfetch": "^3.0.0",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "micro": "^9.3.4",
     "micro-query": "^0.3.0",
     "moment": "^2.24.0",
